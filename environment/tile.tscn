@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://tujgyhnoijet"]
+
+[ext_resource type="Script" path="res://environment/tile.gd" id="1_h2ntn"]
+[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="2_imb45"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axcy1"]
+size = Vector2(8, 8)
+
+[node name="Tile" type="StaticBody2D"]
+script = ExtResource("1_h2ntn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_imb45")
+offset = Vector2(4, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_axcy1")

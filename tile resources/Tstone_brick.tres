@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://8kpp3ic1xwx5"]
+
+[ext_resource type="Script" path="res://tile resources/TileRes.gd" id="1_v83le"]
+[ext_resource type="Texture2D" uid="uid://dctmjapn8cu1y" path="res://art/tiles/t_stoneBrick.png" id="2_w4mxx"]
+
+[resource]
+script = ExtResource("1_v83le")
+mining_tier = 1
+mining_time = 2.2
+texture = ExtResource("2_w4mxx")

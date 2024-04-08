@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://cuq6v60t1om6v"]
+
+[ext_resource type="Script" path="res://Clicker.gd" id="2_s25y4"]
+[ext_resource type="Resource" uid="uid://8kpp3ic1xwx5" path="res://Tile Resources/Tstone_brick.tres" id="2_voefd"]
+[ext_resource type="Script" path="res://GameWorld.gd" id="3_2d4e8"]
+[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/t_dirt.png" id="4_ulk37"]
+[ext_resource type="Resource" uid="uid://ddddogchb06nd" path="res://Tile Resources/Tgrass.tres" id="4_xikho"]
+[ext_resource type="Resource" uid="uid://ca6p1wk1sv4cf" path="res://Tile Resources/Tdirt.tres" id="5_7t21h"]
+[ext_resource type="Resource" uid="uid://cykthmd63n6ie" path="res://Tile Resources/Tstone.tres" id="5_kn1p3"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_8dxor"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(140, 0)
+zoom = Vector2(4, 4)
+
+[node name="GameWorld" type="Node2D" parent="."]
+script = ExtResource("3_2d4e8")
+
+[node name="Hotbar" type="Node2D" parent="." node_paths=PackedStringArray("tileGrid")]
+position = Vector2(4, -73)
+scale = Vector2(3, 3)
+script = ExtResource("2_s25y4")
+tileGrid = NodePath("../GameWorld")
+tile_resources = Array[Resource("res://Tile Resources/TileResource.gd")]([ExtResource("5_7t21h"), ExtResource("4_xikho"), ExtResource("5_kn1p3"), ExtResource("2_voefd")])
+
+[node name="Background" type="Sprite2D" parent="Hotbar"]
+position = Vector2(1.19209e-07, 0)
+scale = Vector2(3.5, 3.5)
+texture = SubResource("PlaceholderTexture2D_8dxor")
+
+[node name="TileDisplay" type="Sprite2D" parent="Hotbar"]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_ulk37")
