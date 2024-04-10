@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://4yjppfwxcxhu"]
+
+[ext_resource type="Texture2D" uid="uid://b35evwql0mmui" path="res://art/Character.png" id="1_73lk5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n3y1i"]
+size = Vector2(16, 16)
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_n3y1i")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="SpriteHolder" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
+position = Vector2(0, -8)
+texture = ExtResource("1_73lk5")
+
+[node name="AttackCollider" type="Area2D" parent="SpriteHolder"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/AttackCollider"]
+
+[node name="HealthManager" type="Node" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

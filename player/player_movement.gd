@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var anim : AnimatedSprite2D
+@export var anim : AnimationPlayer
 var anim_locked = false
 
 var gravity = 200
@@ -9,6 +9,9 @@ var speed = 75
 var max_wall_slide_speed = 20
 var max_fall_speed = 700
 var gravity_acceleration = 1.7
+
+func _ready():
+	GlobalReferences.player = self
 
 func _physics_process(delta):
 	_check_for_attack()
@@ -40,9 +43,6 @@ func _determine_vertical_velocity(delta):
 	if Input.is_action_just_pressed("Jump"):
 		if is_on_floor():
 			velocity.y = jump_force
-			if !anim_locked:
-				anim.play("jump")
-				anim_locked = true
 		elif is_on_wall():
 			velocity.y = jump_force
 			velocity.x = get_wall_normal().x * speed
@@ -78,7 +78,7 @@ func _determine_animation():
 		_set_animation("airborne")
 
 func _set_animation(new_anim : String):
-	if anim.animation == new_anim:
+	if anim.current_animation == new_anim:
 		return
 	
 	anim.play(new_anim)
@@ -86,22 +86,17 @@ func _set_animation(new_anim : String):
 func _check_for_attack():
 	if Input.is_action_just_pressed("mb_left"):
 		if !anim_locked:
-			anim.play("attack_slash")
+			anim.play("attack_sweep")
 			anim_locked = true
-		elif _animation_percentage(anim.animation) > 0.5:
-			if anim.animation == "attack_slash":
-				anim.play("attack_sweep")
-			else:
-				anim.play("attack_slash")
-	
-	elif Input.is_action_just_pressed("mb_right"):
-		if !anim_locked:
-			anim.play("attack_stab")
-			anim_locked = true
-		elif _animation_percentage(anim.animation) > 0.5:
-			if anim.animation == "attack_slash" or anim.animation == "attack_sweep":
+		elif _animation_percentage(anim.current_animation) > 0.5:
+			if anim.current_animation == "attack_sweep":
 				anim.play("attack_stab")
+			else:
+				anim.play("attack_sweep")
 
 func _animation_percentage(animation : String) -> float:
-	var temp = float(anim.frame) / anim.sprite_frames.get_frame_count(animation)
-	return temp
+	return anim.current_animation_position / anim.current_animation_length
+
+
+func _on_attack_collision(body):
+	body.queue_free()

@@ -1,0 +1,159 @@
+[gd_scene load_steps=13 format=3 uid="uid://esyukhbiigbp"]
+
+[ext_resource type="PackedScene" uid="uid://4yjppfwxcxhu" path="res://enemies/enemy.tscn" id="1_hx0ad"]
+[ext_resource type="Script" path="res://enemies/ghost_movement.gd" id="2_dck7n"]
+[ext_resource type="Texture2D" uid="uid://r1f3tbpjdp1l" path="res://art/32x32Ghost_FullSheet.png" id="2_pkpsi"]
+
+[sub_resource type="Animation" id="Animation_qdgev"]
+resource_name = "chase"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 3), Vector2i(5, 3), Vector2i(5, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_togmp"]
+resource_name = "chase_bob"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 2), Vector2i(5, 2), Vector2i(5, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_eiad6"]
+resource_name = "death"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 4), Vector2i(5, 4), Vector2i(5, 4)]
+}
+
+[sub_resource type="Animation" id="Animation_2d2wh"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 1), Vector2i(5, 1), Vector2i(5, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_frl5y"]
+resource_name = "idle_bob"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 0), Vector2i(5, 0), Vector2i(5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pc8rf"]
+resource_name = "phase_in"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 5), Vector2i(6, 5), Vector2i(6, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_cqtii"]
+resource_name = "phase_out"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2i(0, 6), Vector2i(7, 6), Vector2i(7, 6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aep17"]
+_data = {
+"chase": SubResource("Animation_qdgev"),
+"chase_bob": SubResource("Animation_togmp"),
+"death": SubResource("Animation_eiad6"),
+"idle": SubResource("Animation_2d2wh"),
+"idle_bob": SubResource("Animation_frl5y"),
+"phase_in": SubResource("Animation_pc8rf"),
+"phase_out": SubResource("Animation_cqtii")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5pxu1"]
+radius = 8.0
+
+[node name="E_Ghost" instance=ExtResource("1_hx0ad")]
+collision_mask = 0
+script = ExtResource("2_dck7n")
+
+[node name="AnimationPlayer" parent="." index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_aep17")
+}
+
+[node name="Sprite2D" parent="SpriteHolder" index="0"]
+texture = ExtResource("2_pkpsi")
+hframes = 8
+vframes = 7
+frame = 24
+
+[node name="AttackCollider" parent="SpriteHolder" index="1"]
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="SpriteHolder/AttackCollider" index="0"]
+position = Vector2(2, -8)
+shape = SubResource("CircleShape2D_5pxu1")
+
+[connection signal="body_entered" from="SpriteHolder/AttackCollider" to="." method="_on_attack_collision"]
