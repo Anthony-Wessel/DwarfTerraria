@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
-[ext_resource type="PackedScene" uid="uid://esyukhbiigbp" path="res://enemies/e_ghost.tscn" id="5_1j2cr"]
+[ext_resource type="PackedScene" uid="uid://mwyo4mpnf5rh" path="res://enemies/e_wolf.tscn" id="5_movl0"]
 [ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://player/player.tscn" id="8_2mjqa"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
 
@@ -20,4 +20,5 @@ position = Vector2(28, -25)
 [node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("9_rwkjp")]
 player = NodePath("../Player")
 
-[node name="E_Ghost" parent="." instance=ExtResource("5_1j2cr")]
+[node name="E_Wolf" parent="." instance=ExtResource("5_movl0")]
+position = Vector2(111, -8)

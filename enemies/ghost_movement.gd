@@ -17,12 +17,14 @@ var state = 0
 func set_attack_state():
 	state = 2
 	$SpriteHolder/AttackCollider/CollisionShape2D.disabled = false
+	$AnimationPlayer.play("chase_bob")
 	
 func set_circle_state():
 	state = 1
 	$SpriteHolder/AttackCollider/CollisionShape2D.disabled = true
 	$Timer.timeout.connect(set_attack_state)
 	$Timer.start(4)
+	$AnimationPlayer.play("idle_bob")
 
 func _ready():
 	set_circle_state()
@@ -52,6 +54,12 @@ func _process(delta):
 		movement = -diff.normalized() * chase_speed
 	
 	position += movement * delta
+	
+	
+	if diff.x < 0:
+		$SpriteHolder.scale.x = -1
+	elif diff.x > 0:
+		$SpriteHolder.scale.x = 1
 
 
 func _on_attack_collision(body):
