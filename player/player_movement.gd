@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var anim : AnimationPlayer
+@export var inventory : Node
 var anim_locked = false
 
 var gravity = 200
@@ -10,7 +11,7 @@ var max_wall_slide_speed = 20
 var max_fall_speed = 700
 var gravity_acceleration = 1.7
 
-func _ready():
+func _init():
 	GlobalReferences.player = self
 
 func _physics_process(delta):

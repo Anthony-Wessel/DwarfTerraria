@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dvjhsqiap8w8s"]
+[gd_scene load_steps=8 format=3 uid="uid://dvjhsqiap8w8s"]
 
 [ext_resource type="Script" path="res://camera and ui/clicker.gd" id="1_5dys7"]
 [ext_resource type="Resource" uid="uid://ca6p1wk1sv4cf" path="res://tile resources/Tdirt.tres" id="2_uccxu"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://cykthmd63n6ie" path="res://tile resources/Tstone.tres" id="4_ep453"]
 [ext_resource type="Resource" uid="uid://8kpp3ic1xwx5" path="res://tile resources/Tstone_brick.tres" id="5_phra4"]
 [ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="6_h4brq"]
+[ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://inventory/hotbar.tscn" id="7_jj5i1"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_5dys7")
@@ -22,3 +23,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
 texture = ExtResource("6_h4brq")
+
+[node name="Hotbar" parent="." instance=ExtResource("7_jj5i1")]

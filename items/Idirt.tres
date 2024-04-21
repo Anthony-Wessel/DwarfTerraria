@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://brm30g40d2uih"]
+
+[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="1_ddjil"]
+[ext_resource type="Script" path="res://item.gd" id="1_ncyat"]
+
+[resource]
+script = ExtResource("1_ncyat")
+name = "dirt"
+image = ExtResource("1_ddjil")
