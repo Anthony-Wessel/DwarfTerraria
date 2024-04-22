@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyc1pjxxak635"]
+
+[ext_resource type="Script" path="res://items/pickups/pickup_factory.gd" id="1_3nbug"]
+
+[node name="pickup_factory" type="Node"]
+script = ExtResource("1_3nbug")

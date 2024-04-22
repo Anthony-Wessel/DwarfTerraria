@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://76i0rmsk2qyg"]
+[gd_scene load_steps=9 format=3 uid="uid://76i0rmsk2qyg"]
 
-[ext_resource type="Script" path="res://inventory/display_inventory.gd" id="1_ov1kx"]
-[ext_resource type="Resource" uid="uid://o0302yifnps0" path="res://items/Igrass.tres" id="2_q62fj"]
+[ext_resource type="Script" path="res://inventory/hotbar.gd" id="1_4svr7"]
+[ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="2_ef5tr"]
+[ext_resource type="Texture2D" uid="uid://cfy811qh3w2y" path="res://art/SquareHighlight.png" id="2_jmjjt"]
+[ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="3_lh0q7"]
 
 [sub_resource type="Gradient" id="Gradient_maepp"]
 offsets = PackedFloat32Array(0)
@@ -19,16 +21,17 @@ gradient = SubResource("Gradient_aesyt")
 width = 48
 height = 48
 
-[node name="Hotbar" type="Control" node_paths=PackedStringArray("display_slots")]
+[node name="Hotbar" type="Control" node_paths=PackedStringArray("display_slots", "highlight")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ov1kx")
+script = ExtResource("1_4svr7")
 display_slots = [NodePath("TextureRect/HBoxContainer/TextureRect/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect2/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect3/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect4/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect5/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect6/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect7/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect8/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect9/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect10/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect11/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect12/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect13/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect14/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect15/TextureRect"), NodePath("TextureRect/HBoxContainer/TextureRect16/TextureRect")]
-test_item = ExtResource("2_q62fj")
+default_items = Array[Resource("res://items/item.gd")]([ExtResource("2_ef5tr"), ExtResource("3_lh0q7")])
+highlight = NodePath("TextureRect/HBoxContainer/TextureRect/TextureRect/Highlight")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -63,6 +66,20 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Highlight" type="TextureRect" parent="TextureRect/HBoxContainer/TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_jmjjt")
+expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="TextureRect/HBoxContainer"]
 layout_mode = 2

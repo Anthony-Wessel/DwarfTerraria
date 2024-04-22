@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsl7qb62ync4g"]
+
+[ext_resource type="Script" path="res://items/pickups/item_pickup.gd" id="1_bypjb"]
+[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="1_q2e00"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jmb5"]
+size = Vector2(4, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a87r1"]
+size = Vector2(4, 4)
+
+[node name="item_pickup" type="RigidBody2D"]
+collision_layer = 8
+max_contacts_reported = 3
+lock_rotation = true
+script = ExtResource("1_bypjb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_4jmb5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_q2e00")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_a87r1")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_player_entered"]

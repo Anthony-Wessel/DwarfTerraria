@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2cc1q0qf1ig3"
-path="res://.godot/imported/128x80Minotaur_FullSheet.png-2db87ebe9190088146fa0b2ef1555a09.ctex"
+uid="uid://djgeik7ctiprs"
+path="res://.godot/imported/48x48Worm_FullSheet.png-84708a94896e9dab3939dd1a46fbe1de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/128x80Minotaur_FullSheet.png"
-dest_files=["res://.godot/imported/128x80Minotaur_FullSheet.png-2db87ebe9190088146fa0b2ef1555a09.ctex"]
+source_file="res://art/enemies/48x48Worm_FullSheet.png"
+dest_files=["res://.godot/imported/48x48Worm_FullSheet.png-84708a94896e9dab3939dd1a46fbe1de.ctex"]
 
 [params]
 

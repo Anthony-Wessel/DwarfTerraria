@@ -15,7 +15,7 @@ func _init():
 	GlobalReferences.player = self
 
 func _physics_process(delta):
-	_check_for_attack()
+	#_check_for_attack()
 	_determine_horizontal_velocity(delta)
 	_determine_vertical_velocity(delta)
 	move_and_slide()
@@ -84,16 +84,15 @@ func _set_animation(new_anim : String):
 	
 	anim.play(new_anim)
 
-func _check_for_attack():
-	if Input.is_action_just_pressed("mb_left"):
-		if !anim_locked:
+func attack():
+	if !anim_locked:
+		anim.play("attack_sweep")
+		anim_locked = true
+	elif _animation_percentage(anim.current_animation) > 0.5:
+		if anim.current_animation == "attack_sweep":
+			anim.play("attack_stab")
+		else:
 			anim.play("attack_sweep")
-			anim_locked = true
-		elif _animation_percentage(anim.current_animation) > 0.5:
-			if anim.current_animation == "attack_sweep":
-				anim.play("attack_stab")
-			else:
-				anim.play("attack_sweep")
 
 func _animation_percentage(animation : String) -> float:
 	return anim.current_animation_position / anim.current_animation_length

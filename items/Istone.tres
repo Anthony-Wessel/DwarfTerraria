@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://crsauq3fnbdtl"]
-
-[ext_resource type="Texture2D" uid="uid://vscwpqmigl8w" path="res://art/tiles/t_stone.png" id="1_8sqme"]
-[ext_resource type="Script" path="res://item.gd" id="2_7va0o"]
-
-[resource]
-script = ExtResource("2_7va0o")
-name = "stone"
-image = ExtResource("1_8sqme")

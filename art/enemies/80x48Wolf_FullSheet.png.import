@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b35evwql0mmui"
-path="res://.godot/imported/Character.png-02ea7c594d992302b8d161fb096af54c.ctex"
+uid="uid://63c15m62phss"
+path="res://.godot/imported/80x48Wolf_FullSheet.png-9b7dc0f550a10391daea69efca477d66.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Character.png"
-dest_files=["res://.godot/imported/Character.png-02ea7c594d992302b8d161fb096af54c.ctex"]
+source_file="res://art/enemies/80x48Wolf_FullSheet.png"
+dest_files=["res://.godot/imported/80x48Wolf_FullSheet.png-9b7dc0f550a10391daea69efca477d66.ctex"]
 
 [params]
 

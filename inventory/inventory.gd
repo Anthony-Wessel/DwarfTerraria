@@ -10,6 +10,9 @@ func _init():
 		contents.append(ItemStack.new())
 
 func add_item(item : Item):
+	if item == null:
+		print("Can't add null item")
+		return
 	var first_null = null
 	for stack in contents:
 		if stack.item == null and first_null == null:
