@@ -36,6 +36,14 @@ func load_game():
 func get_tile(x, y):
 	return (get_child((x+y*gameSave.width)) as Tile)
 
+func mine_tile(x, y, mining_tier, amount):
+	var tile = get_tile(x,y)
+	if tile.item == null:
+		return
+	tile.remaining_health -= amount*(1+(mining_tier-tile.item.mining_tier+1)*0.2)
+	if tile.remaining_health <= 0:
+		set_tile(x,y,null)
+
 func set_tile(x,y,item : TileItem):
 	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
 		return

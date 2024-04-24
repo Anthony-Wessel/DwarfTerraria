@@ -1,10 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://tujgyhnoijet"]
+[gd_scene load_steps=10 format=3 uid="uid://tujgyhnoijet"]
 
 [ext_resource type="Script" path="res://environment/tile.gd" id="1_h2ntn"]
 [ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="2_imb45"]
+[ext_resource type="Texture2D" uid="uid://bi30i5t2jevl4" path="res://art/tiles/tileBreakAnimation.png" id="3_s7uyn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_axcy1"]
 size = Vector2(8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kq0u"]
+atlas = ExtResource("3_s7uyn")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhqxj"]
+atlas = ExtResource("3_s7uyn")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wn1y"]
+atlas = ExtResource("3_s7uyn")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7fcpp"]
+atlas = ExtResource("3_s7uyn")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4k35f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kq0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yhqxj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wn1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7fcpp")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Tile" type="StaticBody2D"]
 script = ExtResource("1_h2ntn")
@@ -16,3 +53,7 @@ offset = Vector2(4, 4)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_axcy1")
+
+[node name="MiningAnimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_4k35f")
