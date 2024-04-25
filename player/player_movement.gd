@@ -56,7 +56,7 @@ func _determine_vertical_velocity(delta):
 			else:
 				velocity.y += gravity*delta
 	
-	if is_on_wall():
+	if is_on_wall() and (Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_D)):
 		velocity.y = min(max_wall_slide_speed, velocity.y)
 	else:
 		velocity.y = min(max_fall_speed, velocity.y)

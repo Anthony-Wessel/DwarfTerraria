@@ -69,7 +69,9 @@ func _handle_mouse_input(delta):
 func _handle_tool_usage(tool: ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
 		var tile_pos = Vector2i(tileGrid.get_local_mouse_position()/8)
-		tileGrid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
+		var distance_to_player = GlobalReferences.player.global_position - (tileGrid.global_position+Vector2(tile_pos)*8)
+		if distance_to_player.length() <= 5*8:
+			tileGrid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
 
 
 func _handle_weapon_usage(weapon: WeaponItem, delta):

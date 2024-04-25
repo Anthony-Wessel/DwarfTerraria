@@ -51,7 +51,7 @@ func set_tile(x,y,item : TileItem):
 	var selected_tile = get_tile(x,y)
 	
 	if item == null and selected_tile.item != null:
-		PickupFactory.Instance.spawn_pickup(selected_tile.item, selected_tile.position)
+		PickupFactory.Instance.spawn_pickup(selected_tile.item, selected_tile.position+Vector2(4,4))
 	
 	selected_tile.item = item
 	gameSave.tiles[x+y*gameSave.width] = item
