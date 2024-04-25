@@ -4,8 +4,8 @@ extends CharacterBody2D
 var anim_locked = false
 
 var gravity = 200
-var jump_force = -70
-var speed = 75
+var jump_force = -100
+var speed = 25
 var max_fall_speed = 700
 var gravity_acceleration = 1.7
 
@@ -19,7 +19,7 @@ func _process(delta):
 	var diff = player.position - position
 	velocity.x = min(max(diff.x, -1), 1) * speed
 	
-	if diff.y < -1:
+	if diff.y < -1 or !$SpriteHolder/FloorDetector.is_floor_detected():
 		# try jumping
 		if is_on_floor():
 			velocity.y = jump_force
