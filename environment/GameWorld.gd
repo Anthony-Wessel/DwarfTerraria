@@ -2,11 +2,12 @@ class_name GameWorld
 extends Node2D
 
 static var tile_scene = preload("res://environment/tile.tscn")
+static var instance : GameWorld
 
 var gameSave : GameSave
 
 func _init():
-	GlobalReferences.gameWorld = self
+	instance = self
 
 func _ready():
 	load_game()
@@ -34,6 +35,8 @@ func load_game():
 	# Load flags from game save
 	
 func get_tile(x, y):
+	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
+		return null
 	return (get_child((x+y*gameSave.width)) as Tile)
 
 func mine_tile(x, y, mining_tier, amount):
@@ -56,6 +59,9 @@ func set_tile(x,y,item : TileItem):
 	selected_tile.item = item
 	gameSave.tiles[x+y*gameSave.width] = item
 	save_game()
+
+func global_to_tile_coordinates(global_coords : Vector2):
+	return (global_coords - global_position)/8
 
 func save_game():
 	ResourceSaver.save(gameSave, "res://game saves/game_save_resource.tres")

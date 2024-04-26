@@ -9,5 +9,5 @@ func enable(item_ : Item, position_ : Vector2):
 	position = position_
 
 func _on_player_entered(body):
-	GlobalReferences.player.inventory.add_item(item)
+	Player.instance.inventory.add_item(item)
 	queue_free()

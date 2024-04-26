@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://enemies/grounded_enemy_movement.gd" id="1_je7ku"]
 [ext_resource type="Texture2D" uid="uid://ddky7a3mfyd6d" path="res://icon.svg" id="1_l55vi"]
-[ext_resource type="Script" path="res://floor_detector.gd" id="3_ujbe5"]
+[ext_resource type="Script" path="res://enemies/floor_detector.gd" id="3_ujbe5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ngcot"]
 
@@ -42,5 +42,15 @@ script = ExtResource("3_ujbe5")
 position = Vector2(12, 4)
 shape = SubResource("CircleShape2D_1ehtn")
 
+[node name="ObstacleDetector" type="Area2D" parent="SpriteHolder"]
+collision_layer = 0
+script = ExtResource("3_ujbe5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/ObstacleDetector"]
+position = Vector2(15, -4)
+shape = SubResource("CircleShape2D_1ehtn")
+
 [connection signal="body_entered" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_detected"]
 [connection signal="body_exited" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_lost"]
+[connection signal="body_entered" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_detected"]
+[connection signal="body_exited" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_lost"]

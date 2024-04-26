@@ -32,10 +32,11 @@ func add_item(item : Item):
 func remove_item(item : Item):
 	for stack in contents:
 		if stack.item == item:
-			stack.count -= 0
+			stack.count -= 1
 			if stack.count == 0:
 				stack.item = null
 			inventory_updated.emit(contents)
+			return
 
 
 

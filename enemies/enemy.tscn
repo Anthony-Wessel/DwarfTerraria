@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://4yjppfwxcxhu"]
-
-[ext_resource type="Texture2D" uid="uid://b35evwql0mmui" path="res://art/Character.png" id="1_73lk5"]
+[gd_scene load_steps=2 format=3 uid="uid://4yjppfwxcxhu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3y1i"]
 size = Vector2(16, 16)
@@ -19,7 +17,6 @@ debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
 position = Vector2(0, -8)
-texture = ExtResource("1_73lk5")
 
 [node name="AttackCollider" type="Area2D" parent="SpriteHolder"]
 

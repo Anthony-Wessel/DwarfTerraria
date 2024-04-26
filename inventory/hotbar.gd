@@ -12,8 +12,8 @@ var tileGrid : GameWorld
 var hotbar_keycodes = [49,50,51,52,53,54,55,56,57,48,45,61, 4194438, 4194439, 4194440, 4194441]
 
 func _ready():
-	tileGrid = GlobalReferences.gameWorld
-	inventory = GlobalReferences.player.inventory
+	tileGrid = GameWorld.instance
+	inventory = Player.instance.inventory
 	inventory.inventory_updated.connect(update_display)
 	for i in range(default_items.size()):
 		inventory.add_item(default_items[i])
@@ -69,14 +69,14 @@ func _handle_mouse_input(delta):
 func _handle_tool_usage(tool: ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
 		var tile_pos = Vector2i(tileGrid.get_local_mouse_position()/8)
-		var distance_to_player = GlobalReferences.player.global_position - (tileGrid.global_position+Vector2(tile_pos)*8)
+		var distance_to_player = Player.instance.global_position - (tileGrid.global_position+Vector2(tile_pos)*8)
 		if distance_to_player.length() <= 5*8:
 			tileGrid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
 
 
 func _handle_weapon_usage(weapon: WeaponItem, delta):
 	if Input.is_action_just_pressed("mb_left"):
-		GlobalReferences.player.attack()
+		Player.instance.attack()
 
 
 func _handle_tile_usage(tile: TileItem, delta):
@@ -84,9 +84,16 @@ func _handle_tile_usage(tile: TileItem, delta):
 		# Determine what tile the mouse is hovering over
 		var tile_pos = Vector2i(tileGrid.get_local_mouse_position()/8)
 		
+		# Don't place a tile if it is out of reach
+		var distance_to_player = Player.instance.global_position - (tileGrid.global_position+Vector2(tile_pos)*8)
+		if distance_to_player.length() > 5*8:
+			return
+			
 		# If the hovered tile is already the selected item, don't do anything
 		if tileGrid.get_tile(tile_pos.x ,tile_pos.y).item == tile:
 			return
 		
 		# Place the selected tile item
 		tileGrid.set_tile(tile_pos.x, tile_pos.y, tile)
+		inventory.remove_item(tile)
+

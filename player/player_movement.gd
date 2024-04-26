@@ -1,4 +1,7 @@
+class_name Player
 extends CharacterBody2D
+
+static var instance
 
 @export var anim : AnimationPlayer
 @export var inventory : Node
@@ -12,7 +15,7 @@ var max_fall_speed = 700
 var gravity_acceleration = 1.7
 
 func _init():
-	GlobalReferences.player = self
+	instance = self
 
 func _physics_process(delta):
 	#_check_for_attack()

@@ -13,13 +13,13 @@ var player : Node2D
 
 func _process(delta):
 	if player == null:
-		player = GlobalReferences.player
+		player = Player.instance
 		return
 	
 	var diff = player.position - position
 	velocity.x = min(max(diff.x, -1), 1) * speed
 	
-	if diff.y < -1 or !$SpriteHolder/FloorDetector.is_floor_detected():
+	if diff.y < -1 or !$SpriteHolder/FloorDetector.is_floor_detected() or $SpriteHolder/ObstacleDetector.is_floor_detected():
 		# try jumping
 		if is_on_floor():
 			velocity.y = jump_force
