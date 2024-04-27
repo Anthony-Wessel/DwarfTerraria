@@ -1,20 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dvjhsqiap8w8s"]
 
-[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="6_h4brq"]
-[ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://inventory/hotbar.tscn" id="7_jj5i1"]
+[ext_resource type="Script" path="res://camera and ui/hud.gd" id="1_buxde"]
+[ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://camera and ui/hotbar.tscn" id="7_jj5i1"]
 
-[node name="HUD" type="CanvasLayer"]
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_right = 80.0
-offset_bottom = 80.0
-
-[node name="TileSelector" type="TextureRect" parent="MarginContainer"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-size_flags_stretch_ratio = 0.0
-texture = ExtResource("6_h4brq")
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("hotbar")]
+script = ExtResource("1_buxde")
+hotbar = NodePath("Hotbar")
 
 [node name="Hotbar" parent="." instance=ExtResource("7_jj5i1")]

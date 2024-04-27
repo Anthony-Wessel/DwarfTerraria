@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=18 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://player/player_movement.gd" id="1_n3c7b"]
 [ext_resource type="Texture2D" uid="uid://bhdskuvoxveq3" path="res://art/spritesheet.png" id="2_oln52"]
 [ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
+[ext_resource type="Script" path="res://player/item_user.gd" id="4_klp2n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_po2bp"]
 size = Vector2(14, 15)
@@ -252,5 +253,8 @@ disabled = true
 
 [node name="Inventory" type="Node" parent="."]
 script = ExtResource("3_g1w5g")
+
+[node name="ItemUser" type="Node" parent="."]
+script = ExtResource("4_klp2n")
 
 [connection signal="body_entered" from="SpriteHolder/AttackCollider" to="." method="_on_attack_collision"]
