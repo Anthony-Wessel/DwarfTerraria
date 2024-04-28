@@ -102,4 +102,6 @@ func _animation_percentage(animation : String) -> float:
 
 
 func _on_attack_collision(body):
-	body.queue_free()
+	# deal damage
+	# apply knockback
+	body.get_child(0).get_hit(1, position)

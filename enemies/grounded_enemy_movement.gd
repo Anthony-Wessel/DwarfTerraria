@@ -11,13 +11,17 @@ var gravity_acceleration = 1.7
 
 var player : Node2D
 
+var stunned = false
+
 func _process(delta):
 	if player == null:
 		player = Player.instance
 		return
 	
+	
 	var diff = player.position - position
-	velocity.x = min(max(diff.x, -1), 1) * speed
+	if !stunned:
+		velocity.x = min(max(diff.x, -1), 1) * speed
 	
 	if diff.y < -1 or !$SpriteHolder/FloorDetector.is_floor_detected() or $SpriteHolder/ObstacleDetector.is_floor_detected():
 		# try jumping
@@ -35,3 +39,11 @@ func _process(delta):
 		$SpriteHolder.scale.x = -1
 	elif diff.x > 0:
 		$SpriteHolder.scale.x = 1
+
+
+func _on_hit():
+	stunned = true
+	
+	await get_tree().create_timer(1.0).timeout
+	
+	stunned = false
