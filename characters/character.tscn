@@ -1,9 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=16 format=3 uid="uid://bbk30r003xeiw"]
 
-[ext_resource type="Script" path="res://player/player_movement.gd" id="1_n3c7b"]
-[ext_resource type="Texture2D" uid="uid://bhdskuvoxveq3" path="res://art/spritesheet.png" id="2_oln52"]
-[ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
-[ext_resource type="Script" path="res://player/item_user.gd" id="4_klp2n"]
+[ext_resource type="Script" path="res://characters/character_movement.gd" id="1_umt8s"]
+[ext_resource type="Script" path="res://characters/character_animation.gd" id="2_ddfxg"]
+[ext_resource type="Texture2D" uid="uid://bhdskuvoxveq3" path="res://art/character spritesheets/red_knight.png" id="3_lu77g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_po2bp"]
 size = Vector2(14, 15)
@@ -58,18 +57,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2i(0, 2), Vector2i(13, 2), Vector2i(13, 2)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteHolder/AttackCollider/CollisionShape2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.25, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
 
 [sub_resource type="Animation" id="Animation_8w3uf"]
 resource_name = "attack_sweep"
@@ -86,18 +73,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2i(0, 1), Vector2i(12, 1), Vector2i(12, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteHolder/AttackCollider/CollisionShape2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.25, 0.45),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_3fyxu"]
@@ -213,48 +188,27 @@ _data = {
 "run": SubResource("Animation_pckuq")
 }
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q3f3u"]
-radius = 1.41027
-height = 9.99472
-
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("anim", "inventory")]
+[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder")]
 collision_layer = 2
-script = ExtResource("1_n3c7b")
-anim = NodePath("AnimationPlayer")
-inventory = NodePath("Inventory")
+script = ExtResource("1_umt8s")
+sprite_holder = NodePath("SpriteHolder")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7.5)
 shape = SubResource("RectangleShape2D_po2bp")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." node_paths=PackedStringArray("character_movement")]
 libraries = {
 "": SubResource("AnimationLibrary_jemen")
 }
+script = ExtResource("2_ddfxg")
+character_movement = NodePath("..")
 
 [node name="SpriteHolder" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
 position = Vector2(4.5, -10.5)
 scale = Vector2(0.333, 0.333)
-texture = ExtResource("2_oln52")
+texture = ExtResource("3_lu77g")
 hframes = 14
 vframes = 12
-frame = 40
-
-[node name="AttackCollider" type="Area2D" parent="SpriteHolder"]
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/AttackCollider"]
-position = Vector2(11, -7)
-rotation = 1.5708
-shape = SubResource("CapsuleShape2D_q3f3u")
-disabled = true
-
-[node name="Inventory" type="Node" parent="."]
-script = ExtResource("3_g1w5g")
-
-[node name="ItemUser" type="Node" parent="."]
-script = ExtResource("4_klp2n")
-
-[connection signal="body_entered" from="SpriteHolder/AttackCollider" to="." method="_on_attack_collision"]

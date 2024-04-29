@@ -10,7 +10,7 @@ var cam_reference
 func _ready():
 	cam_reference = get_viewport().get_camera_2d()
 
-func _process(delta):
+func _process(_delta):
 	# Every 1/attempt_frequency seconds 
 	if Time.get_ticks_msec()-last_attempt > 1000.0/attempt_frequency:
 		attempt_spawn()

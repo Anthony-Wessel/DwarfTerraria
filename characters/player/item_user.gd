@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 var held_item : Item
 var tile_grid : GameWorld
@@ -28,7 +28,7 @@ func handle_tile_usage(tile : TileItem, delta):
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
 		
 		# Don't place a tile if it is out of reach
-		var distance_to_player = get_parent().global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
+		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
 		if distance_to_player.length() > 5*8:
 			return
 			
@@ -43,10 +43,10 @@ func handle_tile_usage(tile : TileItem, delta):
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
-		var distance_to_player = Player.instance.global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
+		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
 		if distance_to_player.length() <= 5*8:
 			tile_grid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
 
 func handle_weapon_usage(weapon : WeaponItem, delta):
 	if Input.is_action_just_pressed("mb_left"):
-		Player.instance.attack()
+		pass#Player.instance.attack()

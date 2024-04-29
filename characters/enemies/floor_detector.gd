@@ -1,3 +1,4 @@
+class_name TileDetector
 extends Area2D
 
 var detected_tiles : Array[Node]

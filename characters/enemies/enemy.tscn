@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://4yjppfwxcxhu"]
+
+[ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_gmpjo"]
+[ext_resource type="Texture2D" uid="uid://cxurujna0geeu" path="res://art/character spritesheets/green_knight.png" id="2_6qiax"]
+[ext_resource type="Script" path="res://characters/enemies/grounded_enemy_movement.gd" id="2_eyuho"]
+[ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="2_s0e6e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gpn3t"]
+radius = 1.41421
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tl8h1"]
+radius = 2.0
+
+[node name="Enemy" instance=ExtResource("1_gmpjo")]
+speed = 60
+
+[node name="Sprite2D" parent="SpriteHolder" index="0"]
+texture = ExtResource("2_6qiax")
+
+[node name="FloorDetector" type="Area2D" parent="SpriteHolder" index="1"]
+collision_layer = 0
+script = ExtResource("2_s0e6e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/FloorDetector" index="0"]
+position = Vector2(5, 2)
+shape = SubResource("CircleShape2D_gpn3t")
+
+[node name="ObstacleDetector" type="Area2D" parent="SpriteHolder" index="2"]
+collision_layer = 0
+script = ExtResource("2_s0e6e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/ObstacleDetector" index="0"]
+position = Vector2(10, -3)
+shape = SubResource("CircleShape2D_tl8h1")
+
+[node name="EnemyControl" type="Node2D" parent="." index="3" node_paths=PackedStringArray("character_movement", "floor_detector", "obstacle_detector")]
+script = ExtResource("2_eyuho")
+character_movement = NodePath("..")
+floor_detector = NodePath("../SpriteHolder/FloorDetector")
+obstacle_detector = NodePath("../SpriteHolder/ObstacleDetector")
+
+[connection signal="body_entered" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_detected"]
+[connection signal="body_exited" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_lost"]
+[connection signal="body_entered" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_detected"]
+[connection signal="body_exited" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_lost"]

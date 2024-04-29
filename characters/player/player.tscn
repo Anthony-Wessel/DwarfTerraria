@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bp4qkuukddqqv"]
+
+[ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
+[ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
+[ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
+[ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
+
+[node name="Player" instance=ExtResource("1_vgd4h")]
+
+[node name="Sprite2D" parent="SpriteHolder" index="0"]
+frame = 56
+
+[node name="PlayerControl" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inventory", "character_movement")]
+script = ExtResource("1_n3c7b")
+inventory = NodePath("../Inventory")
+character_movement = NodePath("..")
+
+[node name="Inventory" type="Node" parent="." index="4"]
+script = ExtResource("3_g1w5g")
+
+[node name="ItemUser" type="Node2D" parent="." index="5"]
+script = ExtResource("4_klp2n")
