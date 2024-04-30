@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7hk8pa2ece0a"
-path="res://.godot/imported/pickaxe.png-dd0a9c76088ca4d6b46263c23ae6fd0b.ctex"
+uid="uid://bvamr0yqa5jk4"
+path="res://.godot/imported/pickaxe2.png-0df6383204047bf7da4eb79c27a8a7a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/weapons/pickaxe.png"
-dest_files=["res://.godot/imported/pickaxe.png-dd0a9c76088ca4d6b46263c23ae6fd0b.ctex"]
+source_file="res://art/tools/pickaxe2.png"
+dest_files=["res://.godot/imported/pickaxe2.png-0df6383204047bf7da4eb79c27a8a7a1.ctex"]
 
 [params]
 

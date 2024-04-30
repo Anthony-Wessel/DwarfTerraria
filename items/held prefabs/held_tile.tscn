@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://boilk75bfdiqm"]
+
+[ext_resource type="PackedScene" uid="uid://b6wwd40v3y18t" path="res://items/held prefabs/held_prefab_base.tscn" id="1_kqtiw"]
+[ext_resource type="Texture2D" uid="uid://d0o508252bvm8" path="res://art/tiles/t_dirt.png" id="2_x4k52"]
+
+[sub_resource type="Animation" id="Animation_qrbna"]
+resource_name = "use"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.5708, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_som60"]
+_data = {
+"use": SubResource("Animation_qrbna")
+}
+
+[node name="HeldTile" instance=ExtResource("1_kqtiw")]
+
+[node name="Sprite2D" parent="." index="0"]
+position = Vector2(0, -4)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_x4k52")
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_som60")
+}

@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://c3j00ysiprev5"]
+[gd_resource type="Resource" script_class="ToolItem" load_steps=4 format=3 uid="uid://c3j00ysiprev5"]
 
 [ext_resource type="Script" path="res://items/tool_item.gd" id="1_j6uqi"]
+[ext_resource type="PackedScene" uid="uid://vw1mpfmsulxe" path="res://items/held prefabs/held_pickaxe.tscn" id="1_wdmin"]
 [ext_resource type="Texture2D" uid="uid://csyry7d8u5lh5" path="res://art/tools/pickaxe.png" id="2_wesky"]
 
 [resource]
 script = ExtResource("1_j6uqi")
 mining_tier = 1
-mining_speed = 1.0
+mining_speed = 4.0
+held_prefab = ExtResource("1_wdmin")
 name = "pickaxe"
 texture = ExtResource("2_wesky")

@@ -4,6 +4,8 @@ var held_item : Item
 var tile_grid : GameWorld
 var inventory : Inventory
 
+var held_prefab : HeldItem
+
 func _init():
 	HUD.instance.hotbar.on_selected_item_changed.connect(swap_item)
 
@@ -13,6 +15,15 @@ func _ready():
 
 func swap_item(new_item : Item):
 	held_item = new_item
+	
+	if new_item == null:
+		return
+	
+	if held_prefab != null:
+		held_prefab.queue_free()
+	held_prefab = new_item.held_prefab.instantiate()
+	held_prefab.collision_detected.connect(handle_hit)
+	add_child(held_prefab)
 
 func _process(delta):
 	if held_item is TileItem:
@@ -42,6 +53,7 @@ func handle_tile_usage(tile : TileItem, delta):
 
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
+		held_prefab.use(tool.mining_speed)
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
 		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
 		if distance_to_player.length() <= 5*8:
@@ -49,4 +61,8 @@ func handle_tool_usage(tool : ToolItem, delta):
 
 func handle_weapon_usage(weapon : WeaponItem, delta):
 	if Input.is_action_just_pressed("mb_left"):
-		pass#Player.instance.attack()
+		held_prefab.use(weapon.speed)
+
+func handle_hit(body):
+	var diff = body.global_position - global_position
+	(body as CharacterMovement).force_velocity(Vector2(sign(diff.x)*70,-50))
