@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bbk30r003xeiw"]
+[gd_scene load_steps=17 format=3 uid="uid://bbk30r003xeiw"]
 
 [ext_resource type="Script" path="res://characters/character_movement.gd" id="1_umt8s"]
 [ext_resource type="Script" path="res://characters/character_animation.gd" id="2_ddfxg"]
@@ -188,6 +188,9 @@ _data = {
 "run": SubResource("Animation_pckuq")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pgmhl"]
+size = Vector2(14, 15)
+
 [node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder")]
 collision_layer = 2
 script = ExtResource("1_umt8s")
@@ -212,3 +215,11 @@ scale = Vector2(0.333, 0.333)
 texture = ExtResource("3_lu77g")
 hframes = 14
 vframes = 12
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_pgmhl")

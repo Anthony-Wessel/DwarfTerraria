@@ -12,11 +12,15 @@ var gravity_acceleration = 1.7
 var jump_held = false
 
 var horizontal := 0
+var stun := false
 
 func set_horizontal_movement(movement : int):
 	horizontal = movement
 
 func jump():
+	if stun:
+		return
+	
 	if is_on_floor():
 		velocity.y = jump_force
 	elif is_on_wall():
@@ -27,13 +31,22 @@ func jump():
 func hold_jump():
 	jump_held = true
 
+func force_velocity(force : Vector2):
+	velocity = force
+	
+	stun = true
+	await get_tree().create_timer(0.5).timeout
+	stun = false
+	
+
 func _physics_process(delta):
 	# HORIZONTAL
-	if is_on_floor():
-		velocity.x = horizontal*speed
-	else:
-		velocity.x = velocity.x + (horizontal * speed * 2 * delta)
-		velocity.x = max(-speed, min(speed, velocity.x))
+	if !stun:
+		if is_on_floor():
+			velocity.x = horizontal*speed
+		else:
+			velocity.x = velocity.x + (horizontal * speed * 2 * delta)
+			velocity.x = max(-speed, min(speed, velocity.x))
 	
 	if horizontal > 0:
 		$SpriteHolder.scale.x = 1

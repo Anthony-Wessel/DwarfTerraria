@@ -6,17 +6,21 @@
 [ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
+collision_mask = 5
 
 [node name="Sprite2D" parent="SpriteHolder" index="0"]
 frame = 56
 
-[node name="PlayerControl" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inventory", "character_movement")]
+[node name="Hitbox" parent="." index="3"]
+collision_layer = 2
+
+[node name="PlayerControl" type="Node2D" parent="." index="4" node_paths=PackedStringArray("inventory", "character_movement")]
 script = ExtResource("1_n3c7b")
 inventory = NodePath("../Inventory")
 character_movement = NodePath("..")
 
-[node name="Inventory" type="Node" parent="." index="4"]
+[node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
 
-[node name="ItemUser" type="Node2D" parent="." index="5"]
+[node name="ItemUser" type="Node2D" parent="." index="6"]
 script = ExtResource("4_klp2n")

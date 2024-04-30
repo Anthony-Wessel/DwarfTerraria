@@ -24,3 +24,10 @@ func _process(delta):
 		
 	if jump and character_movement.velocity.y >= 0:
 		character_movement.jump()
+
+
+func _on_collided_with_player(area):
+	# TODO: Deal damage to player
+	var diff = area.global_position - global_position
+	(area.get_parent() as CharacterMovement).force_velocity(Vector2(sign(diff.x)*70,-50))
+	character_movement.force_velocity(Vector2(0,0))
