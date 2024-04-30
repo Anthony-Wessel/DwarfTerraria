@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
 [ext_resource type="PackedScene" uid="uid://cyc1pjxxak635" path="res://items/pickups/pickup_factory.tscn" id="6_vd6l4"]
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
-[ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://player/player.tscn" id="8_2mjqa"]
-[ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://enemies/enemy_spawner.tscn" id="8_38sfi"]
+[ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
+[ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
 
 [node name="Main" type="Node2D"]

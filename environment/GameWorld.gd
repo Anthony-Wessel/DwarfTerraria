@@ -14,13 +14,13 @@ func _ready():
 
 func load_game():
 	# Create new game save
-	#gameSave = GameSave.new()
-	#gameSave.width = 100
-	#gameSave.height = 75
-	#WorldGenerator.GenerateWorld(gameSave)
+	gameSave = GameSave.new()
+	gameSave.width = 100
+	gameSave.height = 75
+	WorldGenerator.GenerateWorld(gameSave)
 	
 	# Load game save
-	gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
+	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
 	# Load tiles from game save
 	for y in gameSave.height:
