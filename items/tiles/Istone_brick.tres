@@ -9,4 +9,4 @@ mining_tier = 1
 mining_time = 1.5
 name = "stone brick"
 texture = ExtResource("1_6wj68")
-type = 2
+held_texture = ExtResource("1_6wj68")

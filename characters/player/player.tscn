@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=6 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
 [ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
+[ext_resource type="PackedScene" uid="uid://b6wwd40v3y18t" path="res://items/held prefabs/held_prefab_base.tscn" id="3_lkeaf"]
 [ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
@@ -11,9 +12,13 @@ collision_mask = 5
 [node name="Sprite2D" parent="SpriteHolder" index="0"]
 frame = 56
 
-[node name="ItemUser" type="Node2D" parent="SpriteHolder" index="1"]
+[node name="ItemUser" type="Node2D" parent="SpriteHolder" index="1" node_paths=PackedStringArray("inventory", "held_prefab")]
 position = Vector2(2, -9)
 script = ExtResource("4_klp2n")
+inventory = NodePath("../../Inventory")
+held_prefab = NodePath("HeldPrefabBase")
+
+[node name="HeldPrefabBase" parent="SpriteHolder/ItemUser" index="0" instance=ExtResource("3_lkeaf")]
 
 [node name="Hitbox" parent="." index="3"]
 collision_layer = 2
@@ -25,3 +30,5 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
+
+[connection signal="collision_detected" from="SpriteHolder/ItemUser/HeldPrefabBase" to="SpriteHolder/ItemUser" method="handle_hit"]

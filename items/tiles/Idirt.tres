@@ -9,4 +9,4 @@ mining_tier = 0
 mining_time = 1.0
 name = "dirt"
 texture = ExtResource("1_ddjil")
-type = 2
+held_texture = ExtResource("1_ddjil")

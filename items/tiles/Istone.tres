@@ -9,4 +9,4 @@ mining_tier = 1
 mining_time = 1.0
 name = "stone"
 texture = ExtResource("1_8sqme")
-type = 2
+held_texture = ExtResource("1_8sqme")

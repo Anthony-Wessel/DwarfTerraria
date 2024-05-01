@@ -15,9 +15,7 @@ func _process(delta):
 	character_movement.set_horizontal_movement(sign(diff.x))
 
 	var jump = false
-	if diff.y < -5:
-		jump = true
-	elif obstacle_detector.is_floor_detected() and floor_detector.is_floor_detected():
+	if obstacle_detector.is_floor_detected() and floor_detector.is_floor_detected():
 		jump = true
 	elif !floor_detector.is_floor_detected() and (!diff.y>5):
 		jump = true

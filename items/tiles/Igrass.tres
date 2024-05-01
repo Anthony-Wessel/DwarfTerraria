@@ -9,4 +9,4 @@ mining_tier = 0
 mining_time = 1.1
 name = "grass"
 texture = ExtResource("1_surl7")
-type = 2
+held_texture = ExtResource("1_surl7")
