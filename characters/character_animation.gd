@@ -4,6 +4,11 @@ extends AnimationPlayer
 var anim_locked := false
 
 func _process(delta):
+	if character_movement.velocity.length() > 0:
+		_set_animation("run")
+	else:
+		_set_animation("idle")
+	"""
 	if anim_locked:
 		if !is_playing():
 			anim_locked = false
@@ -19,6 +24,7 @@ func _process(delta):
 		_set_animation("open_door")
 	else:
 		_set_animation("airborne")
+"""
 
 func _set_animation(new_anim : String):
 	if current_animation == new_anim:
