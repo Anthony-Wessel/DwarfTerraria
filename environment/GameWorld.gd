@@ -41,6 +41,8 @@ func get_tile(x, y):
 
 func mine_tile(x, y, mining_tier, amount):
 	var tile = get_tile(x,y)
+	if tile == null:
+		return
 	if tile.item == null:
 		return
 	tile.remaining_health -= amount*(1+(mining_tier-tile.item.mining_tier+1)*0.2)
