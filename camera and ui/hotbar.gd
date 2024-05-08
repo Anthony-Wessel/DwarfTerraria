@@ -4,7 +4,9 @@ extends Control
 @export var inventory_root : Control
 @export var hotbar_container : Control
 @export var inventory_container : Control
-var display_slots : Array[TextureRect]
+var display_slots : Array[InventoryTile]
+
+signal inventory_panel_closed
 
 @export var highlight : Control
 signal on_selected_item_changed(new_item : Item)
@@ -27,15 +29,15 @@ func _ready():
 	
 	# Grab a reference for each item slot
 	for slot in hotbar_container.get_children():
-		display_slots.append(slot.get_child(0))
+		display_slots.append(slot)
 	for slot in inventory_container.get_children():
-		display_slots.append(slot.get_child(0))
+		display_slots.append(slot)
 	
 	for i in display_slots.size():
 		var lambda = func():
-			print(i)
-			hand.hover_updated(inventory, i)
-		display_slots[i].get_parent().mouse_entered.connect(lambda)
+			if inventory_root.visible:
+				hand.hover_updated(inventory, i)
+		display_slots[i].mouse_entered.connect(lambda)
 	
 	# Add the default items
 	for i in range(default_items.size()):
@@ -46,10 +48,7 @@ func _ready():
 func update_display(new_contents : Array[Inventory.ItemStack]):
 	selected_item_changed()
 	for i in range(min(display_slots.size(), new_contents.size())):
-		if new_contents[i].item == null:
-			display_slots[i].texture = null
-		else:
-			display_slots[i].texture = new_contents[i].item.texture
+		display_slots[i].update(new_contents[i])
 
 func selected_item_changed():
 	on_selected_item_changed.emit(inventory.contents[selected_slot].item)
@@ -64,6 +63,8 @@ func _input(event):
 		
 		if key_event.keycode == KEY_TAB:
 			inventory_root.visible = !inventory_root.visible
+			if !inventory_root.visible:
+				inventory_panel_closed.emit()
 		
 		var index = hotbar_keycodes.find(key_event.keycode)
 		if index != -1:
@@ -88,7 +89,7 @@ func _input(event):
 				selected_slot = 11
 			slot_changed = true
 	
-	highlight.reparent(display_slots[selected_slot].get_parent(), false)
+	highlight.reparent(display_slots[selected_slot], false)
 	if slot_changed:
 		on_selected_item_changed.emit(inventory.contents[selected_slot].item)
 	

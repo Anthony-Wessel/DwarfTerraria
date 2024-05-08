@@ -90,6 +90,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Inventory_BG" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5

@@ -10,33 +10,56 @@ func _init():
 		contents.append(ItemStack.new())
 
 func add_item(item : Item):
+	add_items(item, 1)
+
+func remove_item(item : Item):
+	remove_items(item, 1)
+
+func remove_items(item : Item, count : int):
+	for stack in contents:
+		if stack.item == item:
+			if stack.count >= count:
+				stack.count -= count
+				if stack.count == 0:
+					stack.item = null
+				inventory_updated.emit(contents)
+				return
+			else:
+				count = count - stack.count
+				stack.count = 0
+				stack.item = null
+
+func remove_from_slot(slot : int, count : int):
+	if contents[slot].count < count:
+		return false
+	
+	contents[slot].count -= count
+	if contents[slot].count == 0:
+		contents[slot].item = null
+	
+	inventory_updated.emit(contents)
+	return true
+
+func add_items(item : Item, count : int) -> bool :
 	if item == null:
 		print("Can't add null item")
-		return
+		return false
 	var first_null = null
 	for stack in contents:
 		if stack.item == null and first_null == null:
 			first_null = stack
 		elif stack.item == item:
-			stack.count += 1
+			stack.count += count
 			inventory_updated.emit(contents)
-			return
+			return true
 	
 	if first_null == null:
-		return null
+		return false
 	else:
 		first_null.item = item
-		first_null.count = 1
+		first_null.count = count
 		inventory_updated.emit(contents)
-
-func remove_item(item : Item):
-	for stack in contents:
-		if stack.item == item:
-			stack.count -= 1
-			if stack.count == 0:
-				stack.item = null
-			inventory_updated.emit(contents)
-			return
+		return true
 
 func swap_stack(new_stack : ItemStack, slot_index : int) -> ItemStack :
 	var removed_stack = contents[slot_index]
@@ -46,6 +69,15 @@ func swap_stack(new_stack : ItemStack, slot_index : int) -> ItemStack :
 	
 	return removed_stack
 
+func has_items(item : Item, minimum_count : int) -> bool :
+	var total = 0
+	for stack in contents:
+		if stack.item == item:
+			total += stack.count
+			if total >= minimum_count:
+				return true
+	
+	return false
 
 class ItemStack:
 	var item : Item

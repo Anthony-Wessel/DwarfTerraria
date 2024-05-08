@@ -1,14 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvjhsqiap8w8s"]
+[gd_scene load_steps=6 format=3 uid="uid://dvjhsqiap8w8s"]
 
 [ext_resource type="Script" path="res://camera and ui/hud.gd" id="1_buxde"]
 [ext_resource type="PackedScene" uid="uid://sxdl3dgmqtsw" path="res://camera and ui/inventory_hand.tscn" id="3_26st4"]
+[ext_resource type="PackedScene" uid="uid://be07yo7k73wdo" path="res://camera and ui/storage_panel.tscn" id="4_i78tg"]
+[ext_resource type="PackedScene" uid="uid://dlmw7jdl1r66s" path="res://inventory/inventory.tscn" id="5_dvapd"]
 [ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://camera and ui/hotbar.tscn" id="7_jj5i1"]
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("hotbar", "hand")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("hotbar", "hand", "storage", "temp_inventory")]
 script = ExtResource("1_buxde")
 hotbar = NodePath("Hotbar")
 hand = NodePath("InventoryHand")
+storage = NodePath("StoragePanel")
+temp_inventory = NodePath("Inventory")
 
 [node name="Hotbar" parent="." instance=ExtResource("7_jj5i1")]
 
+[node name="StoragePanel" parent="." instance=ExtResource("4_i78tg")]
+
 [node name="InventoryHand" parent="." instance=ExtResource("3_26st4")]
+
+[node name="Inventory" parent="." instance=ExtResource("5_dvapd")]
