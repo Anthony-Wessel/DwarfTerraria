@@ -25,3 +25,4 @@ player = NodePath("../Player")
 pickup_scene = ExtResource("7_ko0fq")
 
 [node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
+attempt_frequency = 0

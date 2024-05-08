@@ -48,7 +48,6 @@ _data = {
 }
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
-collision_mask = 5
 
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {

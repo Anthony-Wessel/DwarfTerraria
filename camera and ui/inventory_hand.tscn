@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://sxdl3dgmqtsw"]
+
+[ext_resource type="Script" path="res://inventory_hand.gd" id="1_ktkfv"]
+
+[node name="InventoryHand" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ktkfv")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2

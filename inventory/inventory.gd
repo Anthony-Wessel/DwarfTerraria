@@ -1,7 +1,7 @@
 class_name Inventory
 extends Node
 
-@export var size := 16
+var size := 60
 var contents : Array[ItemStack]
 signal inventory_updated(updated_contents : Array[ItemStack])
 
@@ -38,6 +38,13 @@ func remove_item(item : Item):
 			inventory_updated.emit(contents)
 			return
 
+func swap_stack(new_stack : ItemStack, slot_index : int) -> ItemStack :
+	var removed_stack = contents[slot_index]
+	contents[slot_index] = new_stack
+	
+	inventory_updated.emit(contents)
+	
+	return removed_stack
 
 
 class ItemStack:
