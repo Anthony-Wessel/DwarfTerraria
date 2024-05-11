@@ -16,7 +16,7 @@ func load_game():
 	# Create new game save
 	gameSave = GameSave.new()
 	gameSave.width = 100
-	gameSave.height = 75
+	gameSave.height = 100
 	WorldGenerator.GenerateWorld(gameSave)
 	
 	# Load game save

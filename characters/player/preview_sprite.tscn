@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6yvvsx2s2pue"]
+
+[ext_resource type="Script" path="res://characters/player/preview_sprite.gd" id="1_umxxr"]
+
+[node name="PreviewSprite" type="Node2D"]
+script = ExtResource("1_umxxr")
+
+[node name="Sprite0" type="Sprite2D" parent="."]
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 8, 8)
+
+[node name="Sprite1" type="Sprite2D" parent="."]
+position = Vector2(8, 0)
+centered = false
+region_enabled = true
+region_rect = Rect2(8, 0, 8, 8)
+
+[node name="Sprite2" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 8, 8)
+
+[node name="Sprite3" type="Sprite2D" parent="."]
+position = Vector2(0, 8)
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 8, 8, 8)
+
+[node name="Sprite4" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
+centered = false
+region_enabled = true
+region_rect = Rect2(8, 8, 8, 8)
+
+[node name="Sprite5" type="Sprite2D" parent="."]
+position = Vector2(16, 8)
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 8, 8, 8)
+
+[node name="Sprite6" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 16, 8, 8)
+
+[node name="Sprite7" type="Sprite2D" parent="."]
+position = Vector2(8, 16)
+centered = false
+region_enabled = true
+region_rect = Rect2(8, 16, 8, 8)
+
+[node name="Sprite8" type="Sprite2D" parent="."]
+position = Vector2(16, 16)
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 16, 8, 8)
