@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://76i0rmsk2qyg"]
+[gd_scene load_steps=9 format=3 uid="uid://76i0rmsk2qyg"]
 
 [ext_resource type="Script" path="res://camera and ui/hotbar.gd" id="1_4svr7"]
 [ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="2_ef5tr"]
 [ext_resource type="Texture2D" uid="uid://cfy811qh3w2y" path="res://art/SquareHighlight.png" id="2_jmjjt"]
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="3_lh0q7"]
+[ext_resource type="Resource" uid="uid://bwd3v5xwl7v8n" path="res://items/multiblocks/Ifurnace.tres" id="4_d2cpr"]
 [ext_resource type="PackedScene" uid="uid://07hqf0hubxah" path="res://camera and ui/inventory_tile.tscn" id="5_eay3n"]
 
 [sub_resource type="Gradient" id="Gradient_2h5e7"]
@@ -23,7 +24,7 @@ inventory_root = NodePath("Inventory_BG")
 hotbar_container = NodePath("Hotbar_BG/HBoxContainer")
 inventory_container = NodePath("Inventory_BG/GridContainer")
 highlight = NodePath("Hotbar_BG/HBoxContainer/InventoryTile/Highlight")
-default_items = Array[Resource("res://items/item.gd")]([ExtResource("2_ef5tr"), ExtResource("3_lh0q7")])
+default_items = Array[Resource("res://items/item.gd")]([ExtResource("2_ef5tr"), ExtResource("3_lh0q7"), ExtResource("4_d2cpr")])
 
 [node name="Hotbar_BG" type="TextureRect" parent="."]
 layout_mode = 1

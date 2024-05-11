@@ -26,6 +26,8 @@ func swap_item(new_item : Item):
 func _process(delta):
 	if held_item is TileItem:
 		handle_tile_usage(held_item, delta)
+	if held_item is MultiblockItem:
+		handle_multiblock_usage(held_item, delta)
 	elif held_item is ToolItem:
 		handle_tool_usage(held_item, delta)
 	elif held_item is WeaponItem:
@@ -42,13 +44,35 @@ func handle_tile_usage(tile : TileItem, delta):
 		if distance_to_player.length() > 5*8:
 			return
 			
-		# If the hovered tile is already the selected item, don't do anything
-		if tile_grid.get_tile(tile_pos.x ,tile_pos.y).item == tile:
+		# If the hovered tile is not empty, don't do anything
+		if !tile_grid.get_tile(tile_pos.x ,tile_pos.y).empty:
 			return
 		
 		# Place the selected tile item
 		tile_grid.set_tile(tile_pos.x, tile_pos.y, tile)
 		inventory.remove_item(tile)
+
+func handle_multiblock_usage(multiblock : MultiblockItem, delta):
+	if Input.is_action_pressed("mb_left"):
+		held_prefab.use("use_tile", 5.0)
+		# Determine what tile the mouse is hovering over
+		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
+		
+		# Don't place a tile if it is out of reach
+		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
+		if distance_to_player.length() > 5*8:
+			return
+			
+		# If the hovered tile is not empty, don't do anything
+		for a in multiblock.size.x:
+			for b in multiblock.size.y:
+				var t = tile_grid.get_tile(tile_pos.x+a ,tile_pos.y+b)
+				if t != null and !t.empty:
+					return
+		
+		# Place the selected tile item
+		tile_grid.set_multiblock(tile_pos.x, tile_pos.y, multiblock)
+		inventory.remove_item(multiblock)
 
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):

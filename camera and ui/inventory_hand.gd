@@ -19,9 +19,11 @@ func _ready():
 func hover_updated(inventory : Inventory, index : int):
 	hovered_inventory = inventory
 	hovered_index = index
-	#print(index)
 
 func _input(event):
+	if hovered_inventory == null:
+		return
+	
 	var mb_event = event as InputEventMouseButton
 	if mb_event:
 		# Left CLick

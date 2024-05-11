@@ -1,24 +1,38 @@
 class_name Tile
 extends Node2D
 
-var item : TileItem :
-	get:
-		return item
-	set(value):
-		item = value
-		if value != null:
-			$Sprite2D.texture = value.texture
-			$CollisionShape2D.disabled = false
-			remaining_health = value.mining_time
-		else:
-			$Sprite2D.texture = null
-			$CollisionShape2D.disabled = true
-			$MiningAnimation.frame = 0
+signal broke
 
-var remaining_health : float :
-	get:
-		return remaining_health
-	set(value):
-		remaining_health = value
-		var percent_mined = 1-remaining_health/item.mining_time
-		$MiningAnimation.frame = int(percent_mined*4)
+var empty := true
+
+var tier : int
+var max_health : float
+var remaining_health : float
+
+func mine(mining_tier : int, amount : float) -> bool :
+	if mining_tier < tier:
+		return false
+	remaining_health -= amount*(1+(mining_tier-tier+1)*0.2)
+	if remaining_health <= 0:
+		destroy()
+		return true
+	
+	var percent_mined = 1-remaining_health/max_health
+	$MiningAnimation.frame = int(percent_mined*4)
+	return false
+
+func destroy():
+	$Sprite2D.texture = null
+	$CollisionShape2D.disabled = true
+	empty = true
+	$MiningAnimation.frame = 0
+	broke.emit()
+
+func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int):
+	$Sprite2D.texture = texture
+	$CollisionShape2D.disabled = !collision_enabled
+	remaining_health = health
+	max_health = health
+	$MiningAnimation.frame = 0
+	empty = false
+	tier = mining_tier

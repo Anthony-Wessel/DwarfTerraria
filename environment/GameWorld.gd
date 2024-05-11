@@ -28,7 +28,11 @@ func load_game():
 			var newTile = tile_scene.instantiate()
 			add_child(newTile)
 			newTile.position = Vector2i(x*8,y*8)
-			(newTile as Tile).item = gameSave.tiles[x+y*gameSave.width]
+			var item = gameSave.tiles[x+y*gameSave.width]
+			if item != null:
+				set_tile(x,y, item, false)
+	
+	# Load multiblocks
 	
 	# Load entities from game save
 	# Load player info from game save
@@ -41,26 +45,41 @@ func get_tile(x, y):
 
 func mine_tile(x, y, mining_tier, amount):
 	var tile = get_tile(x,y)
-	if tile == null:
+	if tile == null or tile.empty:
 		return
-	if tile.item == null:
-		return
-	tile.remaining_health -= amount*(1+(mining_tier-tile.item.mining_tier+1)*0.2)
-	if tile.remaining_health <= 0:
-		set_tile(x,y,null)
+	if tile.mine(mining_tier, amount):
+		gameSave.tiles[x+y+gameSave.width] = null
+		save_game()
 
-func set_tile(x,y,item : TileItem):
+func set_tile(x,y,item : TileItem, save := true):
 	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
 		return
 	
 	var selected_tile = get_tile(x,y)
+	selected_tile.place(item.texture, true, item.mining_time, item.mining_tier)
 	
-	if item == null and selected_tile.item != null:
-		PickupFactory.Instance.spawn_pickup(selected_tile.item, selected_tile.position+Vector2(4,4))
+	var spawn_item = func():
+		PickupFactory.Instance.spawn_pickup(item, selected_tile.position+Vector2(4,4))
+	selected_tile.broke.connect(spawn_item)
 	
-	selected_tile.item = item
-	gameSave.tiles[x+y*gameSave.width] = item
-	save_game()
+	if save:
+		gameSave.tiles[x+y*gameSave.width] = item
+		save_game()
+
+func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
+	var multiblock = multiblock_item.prefab.instantiate() as Multiblock
+	multiblock.position = Vector2(x*8, y*8)
+	add_child(multiblock)
+	
+	for a in multiblock_item.size.x:
+		for b in multiblock_item.size.y:
+			var t = get_tile(x+a, y+b)
+			t.place(null, false, 1, 0)
+			t.broke.connect(multiblock.on_broken)
+			multiblock.composite_tiles.append(t)
+			var spawn_item = func():
+				PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * 4))
+			multiblock.destroyed.connect(spawn_item)
 
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/8
