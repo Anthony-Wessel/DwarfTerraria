@@ -24,7 +24,7 @@ func attempt_spawn():
 	
 	var floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
 	var drop_height = 0
-	while (floor_tile == null or floor_tile.item == null):
+	while (floor_tile == null or floor_tile.empty == null):
 		tile_coords.y += 1
 		floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
 		drop_height += 1
@@ -39,7 +39,7 @@ func attempt_spawn():
 	for offset in empty_tiles_relative:
 		var coords = tile_coords+offset
 		var tile = GameWorld.instance.get_tile(coords.x, coords.y)
-		if tile != null and tile.item != null:
+		if tile != null and !tile.empty:
 			return
 	
 

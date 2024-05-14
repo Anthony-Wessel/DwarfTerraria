@@ -1,16 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbk30r003xeiw"]
+[gd_scene load_steps=8 format=3 uid="uid://bbk30r003xeiw"]
 
 [ext_resource type="Script" path="res://characters/character_movement.gd" id="1_umt8s"]
 [ext_resource type="Script" path="res://characters/character_animation.gd" id="2_ddfxg"]
 [ext_resource type="Texture2D" uid="uid://bhdskuvoxveq3" path="res://art/character spritesheets/red_knight.png" id="3_lu77g"]
+[ext_resource type="Script" path="res://characters/hitbox.gd" id="4_og3xo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_po2bp"]
-size = Vector2(14, 15)
+size = Vector2(10, 15)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jwyaq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pgmhl"]
-size = Vector2(14, 15)
+size = Vector2(10, 15)
 
 [node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder")]
 collision_layer = 2
@@ -41,6 +42,7 @@ frame = 154
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 0
+script = ExtResource("4_og3xo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(0, -7.5)

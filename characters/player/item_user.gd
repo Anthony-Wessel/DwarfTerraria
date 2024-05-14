@@ -85,6 +85,7 @@ func handle_weapon_usage(weapon : WeaponItem, delta):
 func handle_hit(body):
 	var diff = body.global_position - global_position
 	(body as CharacterMovement).force_velocity(Vector2(sign(diff.x)*70,-50))
+	
 
 func update_preview_sprite(new_pos : Vector2i):
 	preview_sprite.update_texture(held_item.texture)

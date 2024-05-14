@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://4yjppfwxcxhu"]
+[gd_scene load_steps=13 format=3 uid="uid://4yjppfwxcxhu"]
 
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_gmpjo"]
 [ext_resource type="Texture2D" uid="uid://bnelh7vm78ga5" path="res://art/enemies/zombie_spritesheet.png" id="2_bllf8"]
-[ext_resource type="Script" path="res://characters/enemies/grounded_enemy_movement.gd" id="2_eyuho"]
+[ext_resource type="Script" path="res://characters/enemies/grounded_enemy_control.gd" id="2_eyuho"]
 [ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="2_s0e6e"]
+[ext_resource type="Script" path="res://characters/hurtbox.gd" id="5_3bscv"]
+[ext_resource type="Script" path="res://characters/enemies/enemy_health.gd" id="6_y8kay"]
 
 [sub_resource type="Animation" id="Animation_f3hrk"]
 resource_name = "idle"
@@ -52,9 +54,16 @@ radius = 1.41421
 [sub_resource type="CircleShape2D" id="CircleShape2D_tl8h1"]
 radius = 2.0
 
-[node name="Enemy" instance=ExtResource("1_gmpjo")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wb628"]
+size = Vector2(10, 15)
+
+[node name="Enemy" node_paths=PackedStringArray("hitbox") instance=ExtResource("1_gmpjo")]
 collision_layer = 4
+hitbox = NodePath("Hitbox")
 speed = 40
+
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(1, -7.5)
 
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
@@ -87,7 +96,9 @@ shape = SubResource("CircleShape2D_tl8h1")
 
 [node name="Hitbox" parent="." index="3"]
 collision_layer = 4
-collision_mask = 2
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2(1, -7.5)
 
 [node name="EnemyControl" type="Node2D" parent="." index="4" node_paths=PackedStringArray("character_movement", "floor_detector", "obstacle_detector")]
 script = ExtResource("2_eyuho")
@@ -95,8 +106,21 @@ character_movement = NodePath("..")
 floor_detector = NodePath("../SpriteHolder/FloorDetector")
 obstacle_detector = NodePath("../SpriteHolder/ObstacleDetector")
 
+[node name="Hurtbox" type="Area2D" parent="." index="5"]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("5_3bscv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(1, -7.5)
+shape = SubResource("RectangleShape2D_wb628")
+
+[node name="EnemyHealth" type="Node" parent="." index="6" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("6_y8kay")
+hitbox = NodePath("../Hitbox")
+
 [connection signal="body_entered" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_detected"]
 [connection signal="body_exited" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_lost"]
 [connection signal="body_entered" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_detected"]
 [connection signal="body_exited" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_lost"]
-[connection signal="area_entered" from="Hitbox" to="EnemyControl" method="_on_collided_with_player"]
+[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]

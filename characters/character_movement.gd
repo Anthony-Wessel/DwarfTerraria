@@ -2,6 +2,7 @@ class_name CharacterMovement
 extends CharacterBody2D
 
 @export var sprite_holder : Node2D
+@export var hitbox : Hitbox
 
 var gravity = 200
 @export var jump_force = -70
@@ -13,6 +14,9 @@ var jump_held = false
 
 var horizontal := 0
 var stun := false
+
+func _ready():
+	hitbox.hit.connect(handle_hit)
 
 func set_horizontal_movement(movement : int):
 	horizontal = movement
@@ -65,3 +69,7 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	jump_held = false
+
+func handle_hit(damage : float, collision_position : Vector2):
+	var diff = global_position - collision_position
+	force_velocity(Vector2(sign(diff.x)*70,-50))

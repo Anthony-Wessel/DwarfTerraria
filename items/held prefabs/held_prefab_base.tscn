@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6wwd40v3y18t"]
+[gd_scene load_steps=9 format=3 uid="uid://b6wwd40v3y18t"]
 
 [ext_resource type="Texture2D" uid="uid://c6pk6i103vp63" path="res://art/weapons/sword2.png" id="1_6f4t3"]
 [ext_resource type="Script" path="res://items/held prefabs/held_item.gd" id="1_u8lec"]
+[ext_resource type="Script" path="res://characters/hurtbox.gd" id="3_s8mrn"]
 
 [sub_resource type="Animation" id="Animation_q4vp2"]
 resource_name = "use_tile"
@@ -125,8 +126,11 @@ libraries = {
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 4
+script = ExtResource("3_s8mrn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0.5, -10)
 shape = SubResource("RectangleShape2D_roec6")
 disabled = true
+
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]

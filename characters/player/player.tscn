@@ -48,7 +48,8 @@ _data = {
 "run": SubResource("Animation_1vyll")
 }
 
-[node name="Player" instance=ExtResource("1_vgd4h")]
+[node name="Player" node_paths=PackedStringArray("hitbox") instance=ExtResource("1_vgd4h")]
+hitbox = NodePath("Hitbox")
 
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
