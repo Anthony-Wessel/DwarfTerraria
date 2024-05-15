@@ -51,11 +51,16 @@ func handle_tile_usage(tile : TileItem, delta):
 		update_preview_sprite(tile_pos)
 		
 	if Input.is_action_pressed("mb_left"):
+		if preview_intersections[0]:
+			return
+		
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected tile item
 		tile_grid.set_tile(tile_pos.x, tile_pos.y, tile)
 		inventory.remove_item(tile)
+		
+		update_preview_sprite(tile_pos)
 
 func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 	# Determine what tile the mouse is hovering over
@@ -64,11 +69,16 @@ func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 		update_preview_sprite(tile_pos)
 	
 	if Input.is_action_pressed("mb_left"):
+		for intersection in preview_intersections:
+			if intersection:
+				return
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected multiblock item
 		tile_grid.set_multiblock(tile_pos.x, tile_pos.y, multiblock)
 		inventory.remove_item(multiblock)
+		
+		update_preview_sprite(tile_pos)
 
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
@@ -88,6 +98,8 @@ func handle_hit(body):
 	
 
 func update_preview_sprite(new_pos : Vector2i):
+	if held_item == null:
+		return
 	preview_sprite.update_texture(held_item.texture)
 	preview_sprite.global_position = tile_grid.global_position+Vector2(new_pos)*8
 	

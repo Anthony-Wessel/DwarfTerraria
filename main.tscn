@@ -12,8 +12,9 @@
 
 [node name="HUD" parent="." instance=ExtResource("1_l83f0")]
 
-[node name="GameWorld" type="Node2D" parent="."]
+[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("2_k6kdb")
+player = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)
@@ -25,3 +26,4 @@ player = NodePath("../Player")
 pickup_scene = ExtResource("7_ko0fq")
 
 [node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
+attempt_frequency = 5

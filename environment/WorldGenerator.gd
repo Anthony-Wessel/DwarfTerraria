@@ -30,6 +30,8 @@ static func GenerateWorld(worldResource : GameSave):
 		heights.append(heights[i-1] + increment)
 		remaining_tiles -= 1
 	
+	var midpoint = worldResource.width / 2
+	worldResource.player_spawn = 8*Vector2(midpoint, 100-heights[midpoint])
 	
 	var columns = []
 	for h in heights:

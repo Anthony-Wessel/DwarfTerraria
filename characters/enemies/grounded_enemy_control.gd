@@ -16,7 +16,7 @@ func _process(delta):
 
 	var jump = false
 	if obstacle_detector.is_floor_detected() and floor_detector.is_floor_detected():
-		jump = true
+		pass#jump = true
 	elif !floor_detector.is_floor_detected() and (!diff.y>5):
 		jump = true
 		

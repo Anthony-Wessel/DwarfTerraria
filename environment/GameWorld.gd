@@ -5,6 +5,7 @@ static var tile_scene = preload("res://environment/tile.tscn")
 static var instance : GameWorld
 
 var gameSave : GameSave
+@export var player : CharacterMovement
 
 func _init():
 	instance = self
@@ -36,6 +37,7 @@ func load_game():
 	
 	# Load entities from game save
 	# Load player info from game save
+	player.global_position = global_position + gameSave.player_spawn
 	# Load flags from game save
 	
 func get_tile(x, y):

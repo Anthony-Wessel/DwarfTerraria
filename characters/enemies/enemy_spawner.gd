@@ -16,15 +16,15 @@ func _process(_delta):
 		attempt_spawn()
 		last_attempt = Time.get_ticks_msec()
 	
-var empty_tiles_relative = [Vector2(0,-2), Vector2(-1,-2), Vector2(1,-2), Vector2(0,-1), Vector2(-1,-1), Vector2(1,-1)]
+var empty_tiles_relative = [Vector2i(0,-2), Vector2i(-1,-2), Vector2i(1,-2), Vector2i(0,-1), Vector2i(-1,-1), Vector2i(1,-1)]
 func attempt_spawn():
 	var pos = generate_spawn_position()
 	
-	var tile_coords = GameWorld.instance.global_to_tile_coordinates(pos)
+	var tile_coords : Vector2i  = GameWorld.instance.global_to_tile_coordinates(pos)
 	
 	var floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
 	var drop_height = 0
-	while (floor_tile == null or floor_tile.empty == null):
+	while (floor_tile == null or floor_tile.empty):
 		tile_coords.y += 1
 		floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
 		drop_height += 1
@@ -42,9 +42,10 @@ func attempt_spawn():
 		if tile != null and !tile.empty:
 			return
 	
-
+	
+	#print(pos, ", ", tile_coords, ", ", drop_height)
 	var spawned_enemy = enemy_scene.instantiate()
-	spawned_enemy.position = pos
+	spawned_enemy.position = (tile_coords + Vector2i(0,-1)) * 8
 	add_child(spawned_enemy)
 	
 func generate_spawn_position():

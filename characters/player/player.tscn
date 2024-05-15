@@ -48,8 +48,7 @@ _data = {
 "run": SubResource("Animation_1vyll")
 }
 
-[node name="Player" node_paths=PackedStringArray("hitbox") instance=ExtResource("1_vgd4h")]
-hitbox = NodePath("Hitbox")
+[node name="Player" instance=ExtResource("1_vgd4h")]
 
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
@@ -73,18 +72,19 @@ preview_sprite = NodePath("../../PreviewSprite")
 
 [node name="HeldPrefabBase" parent="SpriteHolder/ItemUser" index="0" instance=ExtResource("3_lkeaf")]
 
+[node name="Hitbox" parent="SpriteHolder" index="3"]
+collision_layer = 2
+immunity_length = 1.0
+
 [node name="PreviewSprite" parent="." index="3" instance=ExtResource("5_ynaqn")]
 position = Vector2(2, -9)
 
-[node name="Hitbox" parent="." index="4"]
-collision_layer = 2
-
-[node name="PlayerControl" type="Node2D" parent="." index="5" node_paths=PackedStringArray("inventory", "character_movement")]
+[node name="PlayerControl" type="Node2D" parent="." index="4" node_paths=PackedStringArray("inventory", "character_movement")]
 script = ExtResource("1_n3c7b")
 inventory = NodePath("../Inventory")
 character_movement = NodePath("..")
 
-[node name="Inventory" type="Node" parent="." index="6"]
+[node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
 
 [connection signal="collision_detected" from="SpriteHolder/ItemUser/HeldPrefabBase" to="SpriteHolder/ItemUser" method="handle_hit"]
