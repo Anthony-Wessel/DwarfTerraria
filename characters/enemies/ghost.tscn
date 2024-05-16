@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://dlvy4hxs6qu1a"]
+
+[ext_resource type="Script" path="res://characters/enemies/ghost_movement.gd" id="1_3trwk"]
+[ext_resource type="Texture2D" uid="uid://cll7vcxj4ma07" path="res://art/enemies/blob.png" id="2_wde6r"]
+[ext_resource type="Script" path="res://characters/hitbox.gd" id="3_6mn4n"]
+[ext_resource type="Script" path="res://characters/hurtbox.gd" id="4_ja4xu"]
+[ext_resource type="Script" path="res://characters/enemies/enemy_health.gd" id="5_s10rb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ri12q"]
+radius = 4.12311
+
+[sub_resource type="Animation" id="Animation_ualgn"]
+resource_name = "fluctuate"
+length = 0.4
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t0erm"]
+_data = {
+"fluctuate": SubResource("Animation_ualgn")
+}
+
+[node name="ghost" type="Node2D"]
+script = ExtResource("1_3trwk")
+
+[node name="SpriteHolder" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
+texture = ExtResource("2_wde6r")
+hframes = 3
+
+[node name="Hitbox" type="Area2D" parent="SpriteHolder"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_6mn4n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/Hitbox"]
+shape = SubResource("CircleShape2D_ri12q")
+
+[node name="Hurtbox" type="Area2D" parent="SpriteHolder"]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("4_ja4xu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/Hurtbox"]
+shape = SubResource("CircleShape2D_ri12q")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fluctuate"
+libraries = {
+"": SubResource("AnimationLibrary_t0erm")
+}
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("5_s10rb")
+
+[connection signal="hit" from="SpriteHolder/Hitbox" to="." method="on_hit"]
+[connection signal="hit" from="SpriteHolder/Hitbox" to="Health" method="handle_hit"]
+[connection signal="area_entered" from="SpriteHolder/Hurtbox" to="SpriteHolder/Hurtbox" method="_on_area_entered"]
+[connection signal="hit" from="SpriteHolder/Hurtbox" to="." method="_on_attack_collision"]

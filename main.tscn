@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
 [ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
 [ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
-[ext_resource type="PackedScene" uid="uid://d3c5b5278odna" path="res://characters/enemies/flying_enemy.tscn" id="8_cv3og"]
+[ext_resource type="PackedScene" uid="uid://dlvy4hxs6qu1a" path="res://characters/enemies/ghost.tscn" id="8_h8g7d"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
 
 [node name="Main" type="Node2D"]
@@ -28,5 +28,5 @@ pickup_scene = ExtResource("7_ko0fq")
 
 [node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
 
-[node name="flying_enemy" parent="." instance=ExtResource("8_cv3og")]
-position = Vector2(430, 155)
+[node name="ghost" parent="." instance=ExtResource("8_h8g7d")]
+position = Vector2(231, 250)

@@ -1,10 +1,8 @@
-extends CharacterBody2D
+extends Node2D
 
-@export var anim : AnimationPlayer
-
-var circle_speed = 75
-var circle_distance = 100
-var chase_speed = 100
+var circle_speed = 60
+var circle_distance = 70
+var chase_speed = 80
 
 var player : Node2D
 
@@ -16,26 +14,22 @@ var state = 0
 
 func set_attack_state():
 	state = 2
-	$SpriteHolder/AttackCollider/CollisionShape2D.disabled = false
-	$AnimationPlayer.play("chase_bob")
 	
 func set_circle_state():
 	state = 1
-	$SpriteHolder/AttackCollider/CollisionShape2D.disabled = true
 	$Timer.timeout.connect(set_attack_state)
 	$Timer.start(4)
-	$AnimationPlayer.play("idle_bob")
 
 func _ready():
 	set_circle_state()
+	$Timer.timeout.connect(set_attack_state)
 
 func _process(delta):
 	if player == null:
-		player = GlobalReferences.player
+		player = Player.instance
 		return
-		
 
-	var diff : Vector2 = player.position - position
+	var diff : Vector2 = (player.global_position + Vector2(0,-10))- global_position
 	var movement : Vector2
 	
 	if state == 1: # circle player
@@ -62,5 +56,8 @@ func _process(delta):
 		$SpriteHolder.scale.x = 1
 
 
-func _on_attack_collision(body):
-	print(body)
+func _on_attack_collision():
+	set_circle_state()
+
+func on_hit(damage, collision_position):
+	set_circle_state()
