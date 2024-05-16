@@ -1,0 +1,87 @@
+[gd_scene load_steps=11 format=3 uid="uid://d3c5b5278odna"]
+
+[ext_resource type="Script" path="res://characters/enemies/flying_movement.gd" id="1_i0ui8"]
+[ext_resource type="Texture2D" uid="uid://dtoxkihrk1bwk" path="res://art/enemies/bat.png" id="2_6rt6c"]
+[ext_resource type="Script" path="res://characters/enemies/flyer_control.gd" id="3_bkhfi"]
+[ext_resource type="Script" path="res://characters/hitbox.gd" id="3_ioo8i"]
+[ext_resource type="Script" path="res://characters/hurtbox.gd" id="4_fwfee"]
+[ext_resource type="Script" path="res://characters/enemies/enemy_health.gd" id="6_n7mgl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jspdc"]
+radius = 4.12311
+
+[sub_resource type="Animation" id="Animation_xk7ho"]
+resource_name = "flap"
+length = 0.4
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3kfr5"]
+_data = {
+"flap": SubResource("Animation_xk7ho")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_etlt6"]
+radius = 4.0
+
+[node name="flying_enemy" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_i0ui8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jspdc")
+
+[node name="SpriteHolder" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
+scale = Vector2(-1, 1)
+texture = ExtResource("2_6rt6c")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "flap"
+libraries = {
+"": SubResource("AnimationLibrary_3kfr5")
+}
+
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("sprite")]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_ioo8i")
+sprite = NodePath("../SpriteHolder/Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_etlt6")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("4_fwfee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_etlt6")
+
+[node name="FlyerControl" type="Node" parent="." node_paths=PackedStringArray("movement")]
+script = ExtResource("3_bkhfi")
+movement = NodePath("..")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("6_n7mgl")
+
+[connection signal="hit" from="Hitbox" to="." method="handle_hit"]
+[connection signal="hit" from="Hitbox" to="FlyerControl" method="on_hit"]
+[connection signal="hit" from="Hitbox" to="Health" method="handle_hit"]
+[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]
+[connection signal="hit" from="Hurtbox" to="FlyerControl" method="on_hit_player"]

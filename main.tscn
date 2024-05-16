@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=9 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
 [ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
 [ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
+[ext_resource type="PackedScene" uid="uid://d3c5b5278odna" path="res://characters/enemies/flying_enemy.tscn" id="8_cv3og"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
 
 [node name="Main" type="Node2D"]
@@ -26,4 +27,6 @@ player = NodePath("../Player")
 pickup_scene = ExtResource("7_ko0fq")
 
 [node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
-attempt_frequency = 5
+
+[node name="flying_enemy" parent="." instance=ExtResource("8_cv3og")]
+position = Vector2(430, 155)
