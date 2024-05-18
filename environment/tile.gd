@@ -4,6 +4,7 @@ extends Node2D
 signal broke
 
 var empty := true
+var collision_enabled := false
 
 var tier : int
 var max_health : float
@@ -31,6 +32,7 @@ func destroy():
 func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int):
 	$Sprite2D.texture = texture
 	$CollisionShape2D.disabled = !collision_enabled
+	self.collision_enabled = collision_enabled
 	remaining_health = health
 	max_health = health
 	$MiningAnimation.frame = 0

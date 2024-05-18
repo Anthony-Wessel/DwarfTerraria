@@ -109,9 +109,10 @@ func update_preview_sprite(new_pos : Vector2i):
 		for i in preview_intersections.size():
 			preview_intersections[i] = true
 	else:
+		for i in preview_intersections.size():
+			preview_intersections[i] = false
 		var multiblock = held_item as MultiblockItem
 		if multiblock:
-		# If the hovered tile is not empty, don't allow placement
 			for a in multiblock.size.x:
 				for b in multiblock.size.y:
 					var t = tile_grid.get_tile(new_pos.x+a ,new_pos.y+b)
@@ -119,7 +120,7 @@ func update_preview_sprite(new_pos : Vector2i):
 						preview_intersections[a+b*3] = true
 					else:
 						preview_intersections[a+b*3] = false
-		else:
+		else: # If the hovered tile is not empty, don't allow placement
 			var t = tile_grid.get_tile(new_pos.x ,new_pos.y)
 			if t != null and !t.empty:
 				preview_intersections[0] = true

@@ -24,10 +24,12 @@ func open_inventory(inventory : Inventory):
 	HUD.instance.hotbar.inventory_root.visible = true
 	HUD.instance.hand.other_inventory = inventory
 	inventory.inventory_updated.connect(update_display)
+	update_display(inventory.contents)
 
 func close():
-	current_inventory.inventory_updated.disconnect(update_display)
-	current_inventory = null
+	if current_inventory != null:
+		current_inventory.inventory_updated.disconnect(update_display)
+		current_inventory = null
 	$TextureRect.visible = false
 
 func update_display(new_contents : Array[Inventory.ItemStack]):

@@ -79,9 +79,10 @@ func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
 			t.place(null, false, 1, 0)
 			t.broke.connect(multiblock.on_broken)
 			multiblock.composite_tiles.append(t)
-			var spawn_item = func():
-				PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * 4))
-			multiblock.destroyed.connect(spawn_item)
+	
+	var spawn_item = func():
+		PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * 4))
+	multiblock.destroyed.connect(spawn_item)
 
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/8

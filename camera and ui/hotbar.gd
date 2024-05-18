@@ -11,9 +11,6 @@ signal inventory_panel_closed
 @export var highlight : Control
 signal on_selected_item_changed(new_item : Item)
 
-@export var default_items : Array[Item]
-
-
 var selected_slot := 0
 var inventory : Inventory
 var hand : InventoryHand
@@ -38,11 +35,6 @@ func _ready():
 			if inventory_root.visible:
 				hand.hover_updated(inventory, i)
 		display_slots[i].mouse_entered.connect(lambda)
-	
-	# Add the default items
-	for i in range(default_items.size()):
-		inventory.add_item(default_items[i])
-	selected_item_changed()
 
 
 func update_display(new_contents : Array[Inventory.ItemStack]):

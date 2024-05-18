@@ -22,7 +22,6 @@ func set_circle_state():
 
 func _ready():
 	set_circle_state()
-	$Timer.timeout.connect(set_attack_state)
 
 func _process(delta):
 	if player == null:

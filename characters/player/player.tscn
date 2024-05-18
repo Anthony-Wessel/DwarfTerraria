@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=14 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://b6wwd40v3y18t" path="res://items/held prefabs/held_prefab_base.tscn" id="3_lkeaf"]
 [ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
 [ext_resource type="PackedScene" uid="uid://b6yvvsx2s2pue" path="res://characters/player/preview_sprite.tscn" id="5_ynaqn"]
+[ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="8_c54jc"]
+[ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="9_s4rys"]
+[ext_resource type="Resource" uid="uid://b0gkvnqghddws" path="res://items/multiblocks/Ichest.tres" id="10_neh63"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -86,5 +89,7 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
+default_items = Array[Resource("res://items/item.gd")]([ExtResource("8_c54jc"), ExtResource("9_s4rys"), ExtResource("10_neh63")])
+default_items_count = Array[int]([1, 1, 1])
 
 [connection signal="collision_detected" from="SpriteHolder/ItemUser/HeldPrefabBase" to="SpriteHolder/ItemUser" method="handle_hit"]
