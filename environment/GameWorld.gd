@@ -28,7 +28,7 @@ func load_game():
 		for x in gameSave.width:
 			var newTile = tile_scene.instantiate()
 			add_child(newTile)
-			newTile.position = Vector2i(x*8,y*8)
+			newTile.position = Vector2i(x*GlobalReferences.TILE_SIZE,y*GlobalReferences.TILE_SIZE)
 			var item = gameSave.tiles[x+y*gameSave.width]
 			if item != null:
 				set_tile(x,y, item, false)
@@ -61,7 +61,7 @@ func set_tile(x,y,item : TileItem, save := true):
 	selected_tile.place(item.texture, true, item.mining_time, item.mining_tier)
 	
 	var spawn_item = func():
-		PickupFactory.Instance.spawn_pickup(item, selected_tile.position+Vector2(4,4))
+		PickupFactory.Instance.spawn_pickup(item, selected_tile.position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
 	selected_tile.broke.connect(spawn_item)
 	
 	if save:
@@ -70,7 +70,7 @@ func set_tile(x,y,item : TileItem, save := true):
 
 func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
 	var multiblock = multiblock_item.prefab.instantiate() as Multiblock
-	multiblock.position = Vector2(x*8, y*8)
+	multiblock.position = Vector2(x*GlobalReferences.TILE_SIZE, y*GlobalReferences.TILE_SIZE)
 	add_child(multiblock)
 	
 	for a in multiblock_item.size.x:
@@ -81,11 +81,11 @@ func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
 			multiblock.composite_tiles.append(t)
 	
 	var spawn_item = func():
-		PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * 4))
+		PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * GlobalReferences.TILE_SIZE/2))
 	multiblock.destroyed.connect(spawn_item)
 
 func global_to_tile_coordinates(global_coords : Vector2):
-	return (global_coords - global_position)/8
+	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
 
 func save_game():
 	ResourceSaver.save(gameSave, "res://game saves/game_save_resource.tres")

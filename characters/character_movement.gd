@@ -67,7 +67,7 @@ func _physics_process(delta):
 		var up = tile.position/8 + Vector2(0,-1)
 		var up2 = tile.position/8 + Vector2(0,-2)
 		if !GameWorld.instance.get_tile(up.x, up.y).collision_enabled and !GameWorld.instance.get_tile(up2.x, up2.y).collision_enabled:
-			var character_tile_gap = global_position.y - 8*floor(tile.position.y/8)
+			var character_tile_gap = global_position.y - 8*floor(tile.position.y/GlobalReferences.TILE_SIZE)
 			velocity.y = 0
 			position = position + Vector2(0,-character_tile_gap-0.8)
 			var tween = get_tree().create_tween()

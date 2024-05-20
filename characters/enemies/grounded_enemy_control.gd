@@ -17,7 +17,7 @@ func _process(delta):
 	var jump = false
 	if obstacle_detector.is_floor_detected() and floor_detector.is_floor_detected():
 		pass#jump = true
-	elif !floor_detector.is_floor_detected() and (!diff.y>5):
+	elif !floor_detector.is_floor_detected() and (!diff.y>GlobalReferences.TILE_SIZE/2.0):
 		jump = true
 		
 	if jump and character_movement.velocity.y >= 0:

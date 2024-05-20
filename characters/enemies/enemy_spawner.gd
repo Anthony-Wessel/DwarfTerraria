@@ -31,7 +31,7 @@ func attempt_spawn():
 		if drop_height > 20:
 			return
 	
-	pos.y += drop_height*8
+	pos.y += drop_height*GlobalReferences.TILE_SIZE
 	var camera_rect : Rect2 = cam_reference.get_canvas_transform().affine_inverse()*get_viewport().get_visible_rect()
 	if camera_rect.has_point(pos):
 		return
@@ -45,7 +45,7 @@ func attempt_spawn():
 	
 	#print(pos, ", ", tile_coords, ", ", drop_height)
 	var spawned_enemy = enemy_scene.instantiate()
-	spawned_enemy.position = (tile_coords + Vector2i(0,-1)) * 8
+	spawned_enemy.position = (tile_coords + Vector2i(0.5,-1)) * GlobalReferences.TILE_SIZE
 	add_child(spawned_enemy)
 	
 func generate_spawn_position():

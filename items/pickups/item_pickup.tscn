@@ -12,6 +12,7 @@ size = Vector2(4, 4)
 [node name="item_pickup" type="RigidBody2D"]
 collision_layer = 8
 max_contacts_reported = 3
+can_sleep = false
 lock_rotation = true
 script = ExtResource("1_bypjb")
 

@@ -10,8 +10,8 @@ func update_texture(texture : Texture2D):
 	for sprite in sprites:
 		sprite.texture = null
 	
-	for x in texture.get_width()/8:
-		for y in texture.get_height()/8:
+	for x in texture.get_width()/GlobalReferences.TILE_SIZE:
+		for y in texture.get_height()/GlobalReferences.TILE_SIZE:
 			sprites[x + y*3].texture = texture
 
 func update_intersections(intersections : Array[bool]):

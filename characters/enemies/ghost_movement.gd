@@ -17,10 +17,10 @@ func set_attack_state():
 	
 func set_circle_state():
 	state = 1
-	$Timer.timeout.connect(set_attack_state)
 	$Timer.start(4)
 
 func _ready():
+	$Timer.timeout.connect(set_attack_state)
 	set_circle_state()
 
 func _process(delta):
@@ -28,20 +28,20 @@ func _process(delta):
 		player = Player.instance
 		return
 
-	var diff : Vector2 = (player.global_position + Vector2(0,-10))- global_position
+	var diff : Vector2 = (player.global_position + Vector2(0,-GlobalReferences.TILE_SIZE*1.5))- global_position
 	var movement : Vector2
 	
 	if state == 1: # circle player
 		var perp = Vector2(diff.y, -diff.x).normalized()
-		if diff.length() - circle_distance > 5:
+		if diff.length() - circle_distance > GlobalReferences.TILE_SIZE/2.0:
 			movement = (perp + diff.normalized()).normalized() * circle_speed
-		elif diff.length() - circle_distance < -5:
+		elif diff.length() - circle_distance < -GlobalReferences.TILE_SIZE/2.0:
 			movement = (perp + -diff.normalized()).normalized() * circle_speed
 		else:
 			movement = perp * circle_speed
 	elif state == 2: # chase player
 		movement = diff.normalized() * chase_speed
-		if diff.length() < 5:
+		if diff.length() < GlobalReferences.TILE_SIZE/2.0:
 			set_circle_state()
 	elif state == 3: # run away from player
 		movement = -diff.normalized() * chase_speed

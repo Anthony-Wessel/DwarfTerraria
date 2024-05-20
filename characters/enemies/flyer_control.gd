@@ -20,7 +20,7 @@ func _process(delta):
 	if current_state == State.FLAPPING:
 		pass
 	elif current_state == State.DIVING:
-		var dir = (player.global_position+Vector2(0,-10))-movement.global_position
+		var dir = (player.global_position+Vector2(0,-GlobalReferences.TILE_SIZE*1.5))-movement.global_position
 		dir.y = dir.y * 2
 		dir = dir.normalized()
 		movement.update_velocity(dir*speed*2)

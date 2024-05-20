@@ -46,7 +46,7 @@ func _process(delta):
 
 func handle_tile_usage(tile : TileItem, delta):
 	# Determine what tile the mouse is hovering over
-	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
+	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 	if tile_pos != prev_pos:
 		update_preview_sprite(tile_pos)
 		
@@ -64,7 +64,7 @@ func handle_tile_usage(tile : TileItem, delta):
 
 func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 	# Determine what tile the mouse is hovering over
-	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
+	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 	if tile_pos != prev_pos:
 		update_preview_sprite(tile_pos)
 	
@@ -83,9 +83,9 @@ func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
 		held_prefab.use("use_tool", tool.mining_speed)
-		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
-		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*8)
-		if distance_to_player.length() <= 5*8:
+		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
+		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
+		if distance_to_player.length() <= 5*GlobalReferences.TILE_SIZE:
 			tile_grid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
 
 func handle_weapon_usage(weapon : WeaponItem, delta):
@@ -101,11 +101,11 @@ func update_preview_sprite(new_pos : Vector2i):
 	if held_item == null:
 		return
 	preview_sprite.update_texture(held_item.texture)
-	preview_sprite.global_position = tile_grid.global_position+Vector2(new_pos)*8
+	preview_sprite.global_position = tile_grid.global_position+Vector2(new_pos)*GlobalReferences.TILE_SIZE
 	
 	# Don't place a tile if it is out of reach
-	var distance_to_player = global_position - (tile_grid.global_position+Vector2(new_pos)*8)
-	if distance_to_player.length() > 5*8:
+	var distance_to_player = global_position - (tile_grid.global_position+Vector2(new_pos)*GlobalReferences.TILE_SIZE)
+	if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:
 		for i in preview_intersections.size():
 			preview_intersections[i] = true
 	else:
