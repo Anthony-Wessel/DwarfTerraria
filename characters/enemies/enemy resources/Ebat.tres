@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyResource" load_steps=3 format=3 uid="uid://ls5lgfinfae7"]
+
+[ext_resource type="PackedScene" uid="uid://d3c5b5278odna" path="res://characters/enemies/flying_enemy.tscn" id="1_3sgvd"]
+[ext_resource type="Script" path="res://characters/enemies/enemy resources/enemy_resource.gd" id="1_k36y2"]
+
+[resource]
+script = ExtResource("1_k36y2")
+prefab = ExtResource("1_3sgvd")
+space_required = Vector2i(1, 1)
+require_ground = false
+spawn_chance = 0.5

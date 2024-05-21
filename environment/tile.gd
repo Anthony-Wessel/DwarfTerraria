@@ -26,6 +26,7 @@ func destroy():
 	$Sprite2D.texture = null
 	$CollisionShape2D.disabled = true
 	empty = true
+	collision_enabled = false
 	$MiningAnimation.frame = 0
 	broke.emit()
 

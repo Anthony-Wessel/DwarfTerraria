@@ -1,6 +1,6 @@
 extends Node
 
-@export var enemy_scene : PackedScene
+@export var enemies : Array[EnemyResource]
 @export var attempt_frequency := 1
 
 var last_attempt := 0.0
@@ -16,35 +16,49 @@ func _process(_delta):
 		attempt_spawn()
 		last_attempt = Time.get_ticks_msec()
 	
-var empty_tiles_relative = [Vector2i(0,-2), Vector2i(-1,-2), Vector2i(1,-2), Vector2i(0,-1), Vector2i(-1,-1), Vector2i(1,-1)]
+
+func choose_random_enemy():
+	var rng = RandomNumberGenerator.new()
+	var enemy_index = rng.randi_range(0, enemies.size()-1)
+	return enemies[enemy_index]
+
 func attempt_spawn():
+	var enemy_to_spawn = choose_random_enemy()
+	var rng = RandomNumberGenerator.new()
+	var num = rng.randf()
+	if num > enemy_to_spawn.spawn_chance:
+		return
+	
 	var pos = generate_spawn_position()
 	
 	var tile_coords : Vector2i  = GameWorld.instance.global_to_tile_coordinates(pos)
 	
 	var floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
-	var drop_height = 0
-	while (floor_tile == null or floor_tile.empty):
-		tile_coords.y += 1
-		floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
-		drop_height += 1
-		if drop_height > 20:
-			return
+	if enemy_to_spawn.require_ground:
+		var drop_height = 0
+		while (floor_tile == null or floor_tile.empty):
+			tile_coords.y += 1
+			floor_tile = GameWorld.instance.get_tile(tile_coords.x, tile_coords.y)
+			drop_height += 1
+			if drop_height > 20:
+				return
+		pos.y += drop_height*GlobalReferences.TILE_SIZE
 	
-	pos.y += drop_height*GlobalReferences.TILE_SIZE
 	var camera_rect : Rect2 = cam_reference.get_canvas_transform().affine_inverse()*get_viewport().get_visible_rect()
 	if camera_rect.has_point(pos):
 		return
 	
-	for offset in empty_tiles_relative:
-		var coords = tile_coords+offset
-		var tile = GameWorld.instance.get_tile(coords.x, coords.y)
-		if tile != null and !tile.empty:
-			return
+	var offset = Vector2i(-floor(enemy_to_spawn.space_required.x/2), -1)
+	for x in enemy_to_spawn.space_required.x:
+		for y in enemy_to_spawn.space_required.y:
+			var coords = tile_coords+offset + Vector2i(x,-y)
+			var tile = GameWorld.instance.get_tile(coords.x, coords.y)
+			if tile != null and !tile.empty:
+				return
 	
 	
 	#print(pos, ", ", tile_coords, ", ", drop_height)
-	var spawned_enemy = enemy_scene.instantiate()
+	var spawned_enemy = enemy_to_spawn.prefab.instantiate()
 	spawned_enemy.position = (tile_coords + Vector2i(0.5,-1)) * GlobalReferences.TILE_SIZE
 	add_child(spawned_enemy)
 	

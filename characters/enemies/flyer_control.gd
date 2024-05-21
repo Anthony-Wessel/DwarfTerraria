@@ -33,7 +33,7 @@ func _process(delta):
 	
 func swap_states():
 	current_state = State.DIVING
-
+	get_tree().create_timer(4).timeout.connect(on_hit_player)
 
 func on_hit_player():
 	current_state = State.RECOVERING
