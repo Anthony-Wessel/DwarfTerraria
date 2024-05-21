@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://4yjppfwxcxhu"]
+[gd_scene load_steps=13 format=3 uid="uid://4yjppfwxcxhu"]
 
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_gmpjo"]
 [ext_resource type="Texture2D" uid="uid://bnelh7vm78ga5" path="res://art/enemies/zombie_spritesheet.png" id="2_bllf8"]
 [ext_resource type="Script" path="res://characters/enemies/grounded_enemy_control.gd" id="2_eyuho"]
 [ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="2_s0e6e"]
 [ext_resource type="Script" path="res://characters/hurtbox.gd" id="5_3bscv"]
-[ext_resource type="Script" path="res://characters/enemies/enemy_health.gd" id="6_y8kay"]
+[ext_resource type="Script" path="res://characters/health.gd" id="6_y8kay"]
+[ext_resource type="Script" path="res://characters/enemies/destroy_on_death.gd" id="7_k5m8t"]
 
 [sub_resource type="Animation" id="Animation_f3hrk"]
 resource_name = "idle"
@@ -103,7 +104,12 @@ shape = SubResource("RectangleShape2D_wb628")
 [node name="EnemyHealth" type="Node" parent="." index="5"]
 script = ExtResource("6_y8kay")
 
+[node name="DestoryOnDeath" type="Node" parent="EnemyHealth" index="0" node_paths=PackedStringArray("root_node")]
+script = ExtResource("7_k5m8t")
+root_node = NodePath("../..")
+
 [connection signal="body_entered" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_detected"]
 [connection signal="body_exited" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_lost"]
 [connection signal="hit" from="SpriteHolder/Hitbox" to="EnemyHealth" method="handle_hit"]
 [connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]
+[connection signal="dead" from="EnemyHealth" to="EnemyHealth/DestoryOnDeath" method="destroy"]

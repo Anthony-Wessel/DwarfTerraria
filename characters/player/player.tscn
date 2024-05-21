@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=16 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -10,6 +10,8 @@
 [ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="8_c54jc"]
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="9_s4rys"]
 [ext_resource type="Resource" uid="uid://b0gkvnqghddws" path="res://items/multiblocks/Ichest.tres" id="10_neh63"]
+[ext_resource type="Script" path="res://characters/health.gd" id="11_1svu7"]
+[ext_resource type="Script" path="res://characters/player/respawn_on_death.gd" id="12_5fget"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -92,4 +94,14 @@ script = ExtResource("3_g1w5g")
 default_items = Array[Resource("res://items/item.gd")]([ExtResource("8_c54jc"), ExtResource("9_s4rys"), ExtResource("10_neh63")])
 default_items_count = Array[int]([1, 1, 1])
 
+[node name="Health" type="Node" parent="." index="6"]
+script = ExtResource("11_1svu7")
+max_health = 5
+
+[node name="RespawnOnDeath" type="Node" parent="Health" index="0" node_paths=PackedStringArray("root_node")]
+script = ExtResource("12_5fget")
+root_node = NodePath("../..")
+
 [connection signal="collision_detected" from="SpriteHolder/ItemUser/HeldPrefabBase" to="SpriteHolder/ItemUser" method="handle_hit"]
+[connection signal="hit" from="SpriteHolder/Hitbox" to="Health" method="handle_hit"]
+[connection signal="dead" from="Health" to="Health/RespawnOnDeath" method="respawn"]

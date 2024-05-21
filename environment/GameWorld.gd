@@ -39,7 +39,10 @@ func load_game():
 	# Load player info from game save
 	player.global_position = global_position + gameSave.player_spawn
 	# Load flags from game save
-	
+
+func get_player_spawn():
+	return gameSave.player_spawn
+
 func get_tile(x, y):
 	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
 		return null
