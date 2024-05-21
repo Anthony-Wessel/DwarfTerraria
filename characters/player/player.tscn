@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=17 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://b0gkvnqghddws" path="res://items/multiblocks/Ichest.tres" id="10_neh63"]
 [ext_resource type="Script" path="res://characters/health.gd" id="11_1svu7"]
 [ext_resource type="Script" path="res://characters/player/respawn_on_death.gd" id="12_5fget"]
+[ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="13_jjvcd"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -80,6 +81,10 @@ preview_sprite = NodePath("../../PreviewSprite")
 [node name="Hitbox" parent="SpriteHolder" index="3"]
 collision_layer = 2
 immunity_length = 1.0
+
+[node name="Healthbar" parent="SpriteHolder" index="4" node_paths=PackedStringArray("health_node") instance=ExtResource("13_jjvcd")]
+position = Vector2(0, -16)
+health_node = NodePath("../../Health")
 
 [node name="PreviewSprite" parent="." index="3" instance=ExtResource("5_ynaqn")]
 position = Vector2(2, -9)

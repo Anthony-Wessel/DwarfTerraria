@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://4yjppfwxcxhu"]
+[gd_scene load_steps=14 format=3 uid="uid://4yjppfwxcxhu"]
 
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_gmpjo"]
 [ext_resource type="Texture2D" uid="uid://bnelh7vm78ga5" path="res://art/enemies/zombie_spritesheet.png" id="2_bllf8"]
 [ext_resource type="Script" path="res://characters/enemies/grounded_enemy_control.gd" id="2_eyuho"]
 [ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="2_s0e6e"]
+[ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="4_c6ja0"]
 [ext_resource type="Script" path="res://characters/hurtbox.gd" id="5_3bscv"]
 [ext_resource type="Script" path="res://characters/health.gd" id="6_y8kay"]
 [ext_resource type="Script" path="res://characters/enemies/destroy_on_death.gd" id="7_k5m8t"]
@@ -85,6 +86,10 @@ shape = SubResource("CircleShape2D_gpn3t")
 
 [node name="Hitbox" parent="SpriteHolder" index="3"]
 collision_layer = 4
+
+[node name="Healthbar" parent="SpriteHolder" index="4" node_paths=PackedStringArray("health_node") instance=ExtResource("4_c6ja0")]
+position = Vector2(0, -16)
+health_node = NodePath("../../EnemyHealth")
 
 [node name="EnemyControl" type="Node2D" parent="." index="3" node_paths=PackedStringArray("character_movement", "floor_detector", "obstacle_detector")]
 script = ExtResource("2_eyuho")

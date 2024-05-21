@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlvy4hxs6qu1a"]
+[gd_scene load_steps=11 format=3 uid="uid://dlvy4hxs6qu1a"]
 
 [ext_resource type="Script" path="res://characters/enemies/ghost_movement.gd" id="1_3trwk"]
 [ext_resource type="Texture2D" uid="uid://cll7vcxj4ma07" path="res://art/enemies/blob.png" id="2_wde6r"]
 [ext_resource type="Script" path="res://characters/hitbox.gd" id="3_6mn4n"]
 [ext_resource type="Script" path="res://characters/hurtbox.gd" id="4_ja4xu"]
+[ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="5_n51kr"]
 [ext_resource type="Script" path="res://characters/health.gd" id="5_s10rb"]
 [ext_resource type="Script" path="res://characters/enemies/destroy_on_death.gd" id="6_g81rl"]
 
@@ -57,6 +58,10 @@ script = ExtResource("4_ja4xu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/Hurtbox"]
 shape = SubResource("CircleShape2D_ri12q")
+
+[node name="Healthbar" parent="SpriteHolder" node_paths=PackedStringArray("health_node") instance=ExtResource("5_n51kr")]
+position = Vector2(0, -5)
+health_node = NodePath("../../Health")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "fluctuate"
