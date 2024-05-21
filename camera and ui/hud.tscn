@@ -1,18 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvjhsqiap8w8s"]
+[gd_scene load_steps=6 format=3 uid="uid://dvjhsqiap8w8s"]
 
 [ext_resource type="Script" path="res://camera and ui/hud.gd" id="1_buxde"]
+[ext_resource type="Script" path="res://camera and ui/ui_scale.gd" id="2_cq62e"]
 [ext_resource type="PackedScene" uid="uid://sxdl3dgmqtsw" path="res://camera and ui/inventory_hand.tscn" id="3_26st4"]
 [ext_resource type="PackedScene" uid="uid://be07yo7k73wdo" path="res://camera and ui/storage_panel.tscn" id="4_i78tg"]
 [ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://camera and ui/hotbar.tscn" id="7_jj5i1"]
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("hotbar", "hand", "storage")]
 script = ExtResource("1_buxde")
-hotbar = NodePath("Hotbar")
-hand = NodePath("InventoryHand")
-storage = NodePath("StoragePanel")
+hotbar = NodePath("Scale/Hotbar")
+hand = NodePath("Scale/InventoryHand")
+storage = NodePath("Scale/StoragePanel")
 
-[node name="Hotbar" parent="." instance=ExtResource("7_jj5i1")]
+[node name="Scale" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_cq62e")
+target_resolution = Vector2i(1280, 720)
 
-[node name="StoragePanel" parent="." instance=ExtResource("4_i78tg")]
+[node name="Hotbar" parent="Scale" instance=ExtResource("7_jj5i1")]
 
-[node name="InventoryHand" parent="." instance=ExtResource("3_26st4")]
+[node name="StoragePanel" parent="Scale" instance=ExtResource("4_i78tg")]
+layout_mode = 1
+offset_left = 1280.0
+offset_right = 1280.0
+
+[node name="InventoryHand" parent="Scale" instance=ExtResource("3_26st4")]

@@ -1,9 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq1evu1pajf06"]
+[gd_scene load_steps=3 format=3 uid="uid://bq1evu1pajf06"]
 
 [ext_resource type="Script" path="res://camera and ui/follow_player.gd" id="1_26k0p"]
+[ext_resource type="Script" path="res://camera and ui/camera_resolution.gd" id="2_a2531"]
 
 [node name="Camera" type="Node2D"]
 script = ExtResource("1_26k0p")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+script = ExtResource("2_a2531")
+target_resolution = Vector2i(640, 360)
