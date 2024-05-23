@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c5i5qisst4xt2" path="res://environment/prefabs/multiblocks/multiblock.tscn" id="1_gacab"]
 [ext_resource type="Texture2D" uid="uid://d0vlihnprynhe" path="res://art/multiblocks/workbench.png" id="2_lr2fu"]
-[ext_resource type="Script" path="res://crafting_opener.gd" id="3_vbouf"]
+[ext_resource type="Script" path="res://environment/prefabs/multiblocks/crafting_opener.gd" id="3_vbouf"]
 
 [node name="Crafter" instance=ExtResource("1_gacab")]
 

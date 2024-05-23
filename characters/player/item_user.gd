@@ -86,7 +86,7 @@ func handle_tool_usage(tool : ToolItem, delta):
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
 		if distance_to_player.length() <= 5*GlobalReferences.TILE_SIZE:
-			tile_grid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta)
+			tile_grid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
 
 func handle_weapon_usage(weapon : WeaponItem, delta):
 	if Input.is_action_just_pressed("mb_left"):
@@ -121,7 +121,11 @@ func update_preview_sprite(new_pos : Vector2i):
 					else:
 						preview_intersections[a+b*3] = false
 		else: # If the hovered tile is not empty, don't allow placement
-			var t = tile_grid.get_tile(new_pos.x ,new_pos.y)
+			var t
+			if (held_item as TileItem).is_wall:
+				t = tile_grid.get_wall(new_pos.x ,new_pos.y)
+			else:
+				t = tile_grid.get_tile(new_pos.x ,new_pos.y)
 			if t != null and !t.empty:
 				preview_intersections[0] = true
 			else:

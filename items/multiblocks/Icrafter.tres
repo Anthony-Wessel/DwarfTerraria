@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="MultiblockItem" load_steps=4 format=3 uid="uid://cs1hm1slslke5"]
 
 [ext_resource type="Texture2D" uid="uid://d0vlihnprynhe" path="res://art/multiblocks/workbench.png" id="1_losv7"]
-[ext_resource type="PackedScene" uid="uid://coj2y2qovakov" path="res://multiblock_crafter.tscn" id="2_somqg"]
+[ext_resource type="PackedScene" uid="uid://coj2y2qovakov" path="res://environment/prefabs/multiblocks/multiblock_crafter.tscn" id="2_somqg"]
 [ext_resource type="Script" path="res://items/multiblock_item.gd" id="3_4xcyb"]
 
 [resource]

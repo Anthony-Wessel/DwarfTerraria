@@ -13,9 +13,15 @@
 
 [node name="HUD" parent="." instance=ExtResource("1_l83f0")]
 
-[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player")]
+[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player", "walls_root", "tiles_root")]
 script = ExtResource("2_k6kdb")
 player = NodePath("../Player")
+walls_root = NodePath("Walls")
+tiles_root = NodePath("Tiles")
+
+[node name="Walls" type="Node2D" parent="GameWorld"]
+
+[node name="Tiles" type="Node2D" parent="GameWorld"]
 
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)

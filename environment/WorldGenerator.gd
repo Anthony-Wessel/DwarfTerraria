@@ -8,6 +8,8 @@ static func GenerateWorld(worldResource : GameSave):
 	var grass = preload("res://items/tiles/Igrass.tres")
 	var stone = preload("res://items/tiles/Istone.tres")
 	
+	var dirt_wall = preload("res://items/walls/Wdirt.tres")
+	
 	var rng := RandomNumberGenerator.new()
 	
 	# Determine surface height for each column
@@ -56,3 +58,7 @@ static func GenerateWorld(worldResource : GameSave):
 	for y in worldResource.height:
 		for x in worldResource.width:
 			worldResource.tiles.append(columns[x][y])
+			if columns[x][y] == dirt:
+				worldResource.walls.append(dirt_wall)
+			else:
+				worldResource.walls.append(null)

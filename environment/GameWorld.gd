@@ -7,6 +7,9 @@ static var instance : GameWorld
 var gameSave : GameSave
 @export var player : CharacterMovement
 
+@export var walls_root : Node2D
+@export var tiles_root : Node2D
+
 func _init():
 	instance = self
 
@@ -23,11 +26,20 @@ func load_game():
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
-	# Load tiles from game save
+	# Load walls and tiles
 	for y in gameSave.height:
 		for x in gameSave.width:
+			# load wall
+			var newWall = tile_scene.instantiate()
+			walls_root.add_child(newWall)
+			newWall.position = Vector2i(x*GlobalReferences.TILE_SIZE,y*GlobalReferences.TILE_SIZE)
+			var wallItem = gameSave.walls[x+y*gameSave.width]
+			if wallItem != null:
+				set_tile(x,y, wallItem, false)
+			
+			# load tile
 			var newTile = tile_scene.instantiate()
-			add_child(newTile)
+			tiles_root.add_child(newTile)
 			newTile.position = Vector2i(x*GlobalReferences.TILE_SIZE,y*GlobalReferences.TILE_SIZE)
 			var item = gameSave.tiles[x+y*gameSave.width]
 			if item != null:
@@ -46,10 +58,20 @@ func get_player_spawn():
 func get_tile(x, y):
 	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
 		return null
-	return (get_child((x+y*gameSave.width)) as Tile)
+	return (tiles_root.get_child((x+y*gameSave.width)) as Tile)
 
-func mine_tile(x, y, mining_tier, amount):
-	var tile = get_tile(x,y)
+func get_wall(x, y):
+	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
+		return null
+	return (walls_root.get_child((x+y*gameSave.width)) as Tile)
+
+func mine_tile(x, y, mining_tier, amount, wall : bool):
+	var tile
+	if wall:
+		tile = get_wall(x,y)
+	else:
+		tile = get_tile(x,y)
+	
 	if tile == null or tile.empty:
 		return
 	if tile.mine(mining_tier, amount):
@@ -60,8 +82,13 @@ func set_tile(x,y,item : TileItem, save := true):
 	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
 		return
 	
-	var selected_tile = get_tile(x,y)
-	selected_tile.place(item.texture, true, item.mining_time, item.mining_tier)
+	var selected_tile
+	if item.is_wall:
+		selected_tile = get_wall(x,y)
+	else:
+		selected_tile = get_tile(x,y)
+	
+	selected_tile.place(item.texture, !item.is_wall, item.mining_time, item.mining_tier)
 	
 	var spawn_item = func():
 		PickupFactory.Instance.spawn_pickup(item, selected_tile.position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
