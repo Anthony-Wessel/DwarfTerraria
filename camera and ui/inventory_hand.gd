@@ -4,13 +4,13 @@ extends Control
 var hovered_inventory : Inventory
 var hovered_index : int
 
-var held_stack : Inventory.ItemStack
+var held_stack : ItemStack
 
 var player_inventory : Inventory
 var other_inventory : Inventory
 
 func _init():
-	held_stack = Inventory.ItemStack.new()
+	held_stack = ItemStack.new()
 
 func _ready():
 	player_inventory = Player.instance.inventory

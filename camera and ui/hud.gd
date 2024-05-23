@@ -6,6 +6,7 @@ static var instance
 @export var hotbar : Hotbar
 @export var hand : InventoryHand
 @export var storage : Control
+@export var crafting : Control
 
 func _init():
 	instance = self
@@ -15,3 +16,6 @@ func _input(event):
 
 func open_storage(inventory : Inventory):
 	storage.open_inventory(inventory)
+
+func open_crafting():
+	crafting.open()

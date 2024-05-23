@@ -1,0 +1,247 @@
+[gd_scene load_steps=12 format=3 uid="uid://bkcyhj82o36tl"]
+
+[ext_resource type="Texture2D" uid="uid://dctmjapn8cu1y" path="res://art/tiles/t_stoneBrick.png" id="1_rk3su"]
+[ext_resource type="Script" path="res://camera and ui/crafting_panel.gd" id="1_sidac"]
+[ext_resource type="PackedScene" uid="uid://djs46hkqd16kl" path="res://camera and ui/recipe_button.tscn" id="3_cr3r8"]
+
+[sub_resource type="Gradient" id="Gradient_f33yt"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.156863, 0.156863, 0.156863, 0.501961)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c1tf1"]
+gradient = SubResource("Gradient_f33yt")
+
+[sub_resource type="Gradient" id="Gradient_64sio"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.0784314, 0.0784314, 0.0784314, 0.501961)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u3t10"]
+gradient = SubResource("Gradient_64sio")
+
+[sub_resource type="Gradient" id="Gradient_csw8r"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_171ro"]
+gradient = SubResource("Gradient_csw8r")
+width = 24
+
+[sub_resource type="Gradient" id="Gradient_c64nw"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_csgxx"]
+gradient = SubResource("Gradient_c64nw")
+width = 32
+
+[node name="CraftingPanel" type="Control" node_paths=PackedStringArray("recipe_button_parent", "selected_recipe_texture", "selected_recipe_label", "selected_recipe_reagents")]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+script = ExtResource("1_sidac")
+recipe_button_prefab = ExtResource("3_cr3r8")
+recipe_button_parent = NodePath("TextureRect/VSplitContainer/MarginContainer2/GridContainer")
+selected_recipe_texture = NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer/TextureRect")
+selected_recipe_label = NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer/Label")
+selected_recipe_reagents = [NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect2"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect3"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect4"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect5")]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 600.0
+grow_horizontal = 0
+texture = SubResource("GradientTexture1D_c1tf1")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 150
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/VSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture1D_u3t10")
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("1_rk3su")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Stone Brick"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+text = "Craft"
+icon = SubResource("GradientTexture1D_171ro")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect2"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect3" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect3"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect4" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect4"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect5" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect5"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="TextureRect/VSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="TextureRect/VSplitContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 5
+
+[connection signal="pressed" from="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/Button" to="." method="craft"]

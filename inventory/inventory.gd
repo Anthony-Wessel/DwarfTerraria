@@ -86,11 +86,3 @@ func has_items(item : Item, minimum_count : int) -> bool :
 				return true
 	
 	return false
-
-class ItemStack:
-	var item : Item
-	var count : int
-	
-	func _init():
-		item = null
-		count = 0

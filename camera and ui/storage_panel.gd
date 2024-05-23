@@ -32,6 +32,6 @@ func close():
 		current_inventory = null
 	$TextureRect.visible = false
 
-func update_display(new_contents : Array[Inventory.ItemStack]):
+func update_display(new_contents : Array[ItemStack]):
 	for i in range(min(display_slots.size(), new_contents.size())):
 		display_slots[i].update(new_contents[i])

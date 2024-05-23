@@ -37,7 +37,7 @@ func _ready():
 		display_slots[i].mouse_entered.connect(lambda)
 
 
-func update_display(new_contents : Array[Inventory.ItemStack]):
+func update_display(new_contents : Array[ItemStack]):
 	selected_item_changed()
 	for i in range(min(display_slots.size(), new_contents.size())):
 		display_slots[i].update(new_contents[i])

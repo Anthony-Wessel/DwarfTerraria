@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://djs46hkqd16kl"]
+
+[ext_resource type="Texture2D" uid="uid://dctmjapn8cu1y" path="res://art/tiles/t_stoneBrick.png" id="1_u7dw5"]
+
+[node name="RecipeButton" type="Button"]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
+flat = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_u7dw5")

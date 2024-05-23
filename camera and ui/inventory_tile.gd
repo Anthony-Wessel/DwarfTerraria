@@ -4,7 +4,7 @@ extends TextureRect
 @export var item_sprite : TextureRect
 @export var count_text : Label
 
-func update(stack : Inventory.ItemStack):
+func update(stack : ItemStack):
 	if stack.item == null:
 		item_sprite.texture = null
 		count_text.text = ""
