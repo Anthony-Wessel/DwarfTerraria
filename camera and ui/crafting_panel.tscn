@@ -30,13 +30,14 @@ width = 24
 gradient = SubResource("Gradient_c64nw")
 width = 32
 
-[node name="CraftingPanel" type="Control" node_paths=PackedStringArray("recipe_button_parent", "selected_recipe_texture", "selected_recipe_label", "selected_recipe_reagents")]
+[node name="CraftingPanel" type="Control" node_paths=PackedStringArray("root_node", "recipe_button_parent", "selected_recipe_texture", "selected_recipe_label", "selected_recipe_reagents")]
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
 script = ExtResource("1_sidac")
+root_node = NodePath("TextureRect")
 recipe_button_prefab = ExtResource("3_cr3r8")
 recipe_button_parent = NodePath("TextureRect/VSplitContainer/MarginContainer2/GridContainer")
 selected_recipe_texture = NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer/TextureRect")
@@ -44,6 +45,7 @@ selected_recipe_label = NodePath("TextureRect/VSplitContainer/MarginContainer/Te
 selected_recipe_reagents = [NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect2"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect3"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect4"), NodePath("TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect5")]
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -118,6 +120,7 @@ text = "Craft"
 icon = SubResource("GradientTexture1D_171ro")
 
 [node name="TextureRect" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("GradientTexture1D_csgxx")
@@ -141,6 +144,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect2" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("GradientTexture1D_csgxx")
@@ -164,6 +168,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect3" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("GradientTexture1D_csgxx")
@@ -187,6 +192,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect4" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("GradientTexture1D_csgxx")
@@ -210,6 +216,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect5" type="TextureRect" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer2"]
+visible = false
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = SubResource("GradientTexture1D_csgxx")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=21 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -9,9 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://b6yvvsx2s2pue" path="res://characters/player/preview_sprite.tscn" id="5_ynaqn"]
 [ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="8_c54jc"]
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="9_s4rys"]
-[ext_resource type="Resource" uid="uid://b0gkvnqghddws" path="res://items/multiblocks/Ichest.tres" id="10_neh63"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="10_ermnx"]
 [ext_resource type="Script" path="res://characters/health.gd" id="11_1svu7"]
 [ext_resource type="Script" path="res://characters/player/respawn_on_death.gd" id="12_5fget"]
+[ext_resource type="Resource" uid="uid://cs1hm1slslke5" path="res://items/multiblocks/Icrafter.tres" id="12_5omx2"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="13_jjvcd"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
@@ -53,6 +54,21 @@ _data = {
 "idle": SubResource("Animation_mr461"),
 "run": SubResource("Animation_1vyll")
 }
+
+[sub_resource type="Resource" id="Resource_b1o2d"]
+script = ExtResource("10_ermnx")
+item = ExtResource("8_c54jc")
+count = 1
+
+[sub_resource type="Resource" id="Resource_kxvnu"]
+script = ExtResource("10_ermnx")
+item = ExtResource("9_s4rys")
+count = 1
+
+[sub_resource type="Resource" id="Resource_b3l8r"]
+script = ExtResource("10_ermnx")
+item = ExtResource("12_5omx2")
+count = 1
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
@@ -96,8 +112,7 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
-default_items = Array[Resource("res://items/item.gd")]([ExtResource("8_c54jc"), ExtResource("9_s4rys"), ExtResource("10_neh63")])
-default_items_count = Array[int]([1, 1, 1])
+default_items = Array[ExtResource("10_ermnx")]([SubResource("Resource_b1o2d"), SubResource("Resource_kxvnu"), SubResource("Resource_b3l8r")])
 
 [node name="Health" type="Node" parent="." index="6"]
 script = ExtResource("11_1svu7")

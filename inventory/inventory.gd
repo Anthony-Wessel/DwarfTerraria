@@ -3,8 +3,7 @@ extends Node
 
 
 @export var size := 60
-@export var default_items : Array[Item]
-@export var default_items_count : Array[int]
+@export var default_items : Array[ItemStack]
 
 var contents : Array[ItemStack]
 signal inventory_updated(updated_contents : Array[ItemStack])
@@ -14,8 +13,8 @@ func _ready():
 		contents.append(ItemStack.new())
 	
 	# Add the default items
-	for i in range(default_items.size()):
-		add_items(default_items[i], default_items_count[i])
+	for stack in default_items:
+		add_items(stack.item, stack.count)
 
 func add_item(item : Item):
 	add_items(item, 1)

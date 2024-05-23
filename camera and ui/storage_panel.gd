@@ -21,7 +21,6 @@ func open_inventory(inventory : Inventory):
 	current_inventory = inventory
 	$TextureRect.visible = true
 	
-	HUD.instance.hotbar.inventory_root.visible = true
 	HUD.instance.hand.other_inventory = inventory
 	inventory.inventory_updated.connect(update_display)
 	update_display(inventory.contents)

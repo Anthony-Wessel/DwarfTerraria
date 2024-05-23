@@ -16,6 +16,8 @@ func _input(event):
 
 func open_storage(inventory : Inventory):
 	storage.open_inventory(inventory)
+	hotbar.inventory_root.visible = true
 
 func open_crafting():
 	crafting.open()
+	hotbar.inventory_root.visible = true
