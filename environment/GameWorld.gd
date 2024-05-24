@@ -10,6 +10,8 @@ var gameSave : GameSave
 @export var walls_root : Node2D
 @export var tiles_root : Node2D
 
+signal world_finished_loading
+
 func _init():
 	instance = self
 
@@ -51,6 +53,8 @@ func load_game():
 	# Load player info from game save
 	player.global_position = global_position + gameSave.player_spawn
 	# Load flags from game save
+	
+	world_finished_loading.emit()
 
 func get_player_spawn():
 	return gameSave.player_spawn

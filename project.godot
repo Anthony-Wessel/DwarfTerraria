@@ -60,6 +60,7 @@ Jump={
 2d_physics/layer_4="pickups"
 2d_physics/layer_5="Player Attacks"
 2d_physics/layer_6="Enemy Attacks"
+2d_physics/layer_7="Layer 7"
 
 [rendering]
 

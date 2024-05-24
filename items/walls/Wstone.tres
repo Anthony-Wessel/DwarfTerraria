@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=3 format=3 uid="uid://bymfb7m21hft0"]
+
+[ext_resource type="Texture2D" uid="uid://dv7tl1kbjqx0o" path="res://art/walls/wall_stone.png" id="1_uadrd"]
+[ext_resource type="Script" path="res://items/tile_item.gd" id="2_nbcsq"]
+
+[resource]
+script = ExtResource("2_nbcsq")
+mining_tier = 0
+mining_time = 1.0
+is_wall = true
+name = "dirt"
+texture = ExtResource("1_uadrd")
+held_texture = ExtResource("1_uadrd")

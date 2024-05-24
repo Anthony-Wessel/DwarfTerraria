@@ -9,6 +9,7 @@ static func GenerateWorld(worldResource : GameSave):
 	var stone = preload("res://items/tiles/Istone.tres")
 	
 	var dirt_wall = preload("res://items/walls/Wdirt.tres")
+	var stone_wall = preload("res://items/walls/Wstone.tres")
 	
 	var rng := RandomNumberGenerator.new()
 	
@@ -58,7 +59,10 @@ static func GenerateWorld(worldResource : GameSave):
 	for y in worldResource.height:
 		for x in worldResource.width:
 			worldResource.tiles.append(columns[x][y])
+			
 			if columns[x][y] == dirt:
 				worldResource.walls.append(dirt_wall)
+			elif columns[x][y] == stone:
+				worldResource.walls.append(stone_wall)
 			else:
 				worldResource.walls.append(null)

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpxr74e0dbb2w"]
+
+[ext_resource type="Script" path="res://environment/border.gd" id="1_tac5r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w61do"]
+size = Vector2(10, 10)
+
+[node name="Border" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource("1_tac5r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_w61do")
+debug_color = Color(0, 0.6, 0.701961, 0.721569)

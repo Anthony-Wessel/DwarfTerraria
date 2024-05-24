@@ -1,12 +1,13 @@
 [gd_resource type="Resource" script_class="TileItem" load_steps=3 format=3 uid="uid://crsauq3fnbdtl"]
 
-[ext_resource type="Texture2D" uid="uid://vscwpqmigl8w" path="res://art/tiles/t_stone.png" id="1_8sqme"]
+[ext_resource type="Texture2D" uid="uid://dkbupbpoohvej" path="res://art/tiles/t_stone_new.png" id="1_emiik"]
 [ext_resource type="Script" path="res://items/tile_item.gd" id="1_kptc5"]
 
 [resource]
 script = ExtResource("1_kptc5")
 mining_tier = 1
 mining_time = 1.0
+is_wall = false
 name = "stone"
-texture = ExtResource("1_8sqme")
-held_texture = ExtResource("1_8sqme")
+texture = ExtResource("1_emiik")
+held_texture = ExtResource("1_emiik")
