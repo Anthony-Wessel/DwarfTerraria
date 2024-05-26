@@ -48,5 +48,5 @@ pickup_scene = ExtResource("7_ko0fq")
 script = ExtResource("8_0g71x")
 
 [connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
-[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]
 [connection signal="world_finished_loading" from="GameWorld" to="GameWorld/LightManager" method="initialize"]
+[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]

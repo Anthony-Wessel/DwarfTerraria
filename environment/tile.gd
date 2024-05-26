@@ -6,12 +6,16 @@ signal placed
 
 var empty := true
 var collision_enabled := false
+var coordinates : Vector2
 
 var tier : int
 var max_health : float
 var remaining_health : float
 
 var light_level := 0
+var light_source := 0
+
+var item_drop : Item
 
 func mine(mining_tier : int, amount : float) -> bool :
 	if mining_tier < tier:
@@ -31,6 +35,8 @@ func destroy():
 	empty = true
 	collision_enabled = false
 	$MiningAnimation.frame = 0
+	PickupFactory.Instance.spawn_pickup(item_drop, position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
+	item_drop = null
 	broke.emit()
 
 func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int):
@@ -46,5 +52,9 @@ func place(texture : Texture2D, collision_enabled : bool, health : float, mining
 
 func set_light_level(level : int):
 	light_level = level
-	$Sprite2D.modulate = Color(1.0,1.0,1.0)*light_level/15
+	$Sprite2D.modulate = Color(1.0,1.0,1.0)*level/15
 	$Sprite2D.modulate.a = 1.0
+
+func set_coordinates(coords : Vector2):
+	coordinates = coords
+	position = coords*GlobalReferences.TILE_SIZE

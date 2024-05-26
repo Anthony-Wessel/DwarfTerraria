@@ -19,7 +19,7 @@ static func GenerateWorld(worldResource : GameSave):
 	var remaining_tiles = 0
 	for i in worldResource.width:
 		if i == 0:
-			heights.append(70)
+			heights.append(worldResource.height*0.7)
 			continue
 		if remaining_tiles == 0:
 			# start a new stretch
@@ -34,7 +34,7 @@ static func GenerateWorld(worldResource : GameSave):
 		remaining_tiles -= 1
 	
 	var midpoint = worldResource.width / 2
-	worldResource.player_spawn = GlobalReferences.TILE_SIZE*Vector2(midpoint, 100-heights[midpoint])
+	worldResource.player_spawn = GlobalReferences.TILE_SIZE*Vector2(midpoint, worldResource.height-heights[midpoint])
 	
 	var columns = []
 	for h in heights:
@@ -48,7 +48,7 @@ static func GenerateWorld(worldResource : GameSave):
 		for i in rng.randi_range(2,4):
 			col.append(dirt)
 		
-		while col.size() < 100:
+		while col.size() < worldResource.height:
 			col.append(stone)
 		
 		columns.append(col)

@@ -24,7 +24,6 @@ func load_game():
 	gameSave.width = 100
 	gameSave.height = 100
 	WorldGenerator.GenerateWorld(gameSave)
-	
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
@@ -34,7 +33,7 @@ func load_game():
 			# load wall
 			var newWall = tile_scene.instantiate()
 			walls_root.add_child(newWall)
-			newWall.position = Vector2i(x*GlobalReferences.TILE_SIZE,y*GlobalReferences.TILE_SIZE)
+			newWall.set_coordinates(Vector2(x,y))
 			var wallItem = gameSave.walls[x+y*gameSave.width]
 			if wallItem != null:
 				set_tile(x,y, wallItem, false)
@@ -42,7 +41,7 @@ func load_game():
 			# load tile
 			var newTile = tile_scene.instantiate()
 			tiles_root.add_child(newTile)
-			newTile.position = Vector2i(x*GlobalReferences.TILE_SIZE,y*GlobalReferences.TILE_SIZE)
+			newTile.set_coordinates(Vector2(x,y))
 			var item = gameSave.tiles[x+y*gameSave.width]
 			if item != null:
 				set_tile(x,y, item, false)
@@ -94,9 +93,7 @@ func set_tile(x,y,item : TileItem, save := true):
 	
 	selected_tile.place(item.texture, !item.is_wall, item.mining_time, item.mining_tier)
 	
-	var spawn_item = func():
-		PickupFactory.Instance.spawn_pickup(item, selected_tile.position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
-	selected_tile.broke.connect(spawn_item)
+	selected_tile.item_drop = item
 	
 	if save:
 		gameSave.tiles[x+y*gameSave.width] = item
