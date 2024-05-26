@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=12 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
 [ext_resource type="Script" path="res://create_border.gd" id="3_kujvg"]
 [ext_resource type="PackedScene" uid="uid://bpxr74e0dbb2w" path="res://environment/border.tscn" id="4_v15sp"]
+[ext_resource type="Script" path="res://environment/light_manager.gd" id="5_025bf"]
 [ext_resource type="PackedScene" uid="uid://cyc1pjxxak635" path="res://items/pickups/pickup_factory.tscn" id="6_vd6l4"]
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
 [ext_resource type="Script" path="res://crafting/recipe_handler.gd" id="8_0g71x"]
@@ -29,6 +30,9 @@ tiles_root = NodePath("Tiles")
 script = ExtResource("3_kujvg")
 border_prefab = ExtResource("4_v15sp")
 
+[node name="LightManager" type="Node" parent="GameWorld"]
+script = ExtResource("5_025bf")
+
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)
 
@@ -43,5 +47,6 @@ pickup_scene = ExtResource("7_ko0fq")
 [node name="RecipeHandler" type="Node" parent="."]
 script = ExtResource("8_0g71x")
 
-[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]
 [connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
+[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]
+[connection signal="world_finished_loading" from="GameWorld" to="GameWorld/LightManager" method="initialize"]

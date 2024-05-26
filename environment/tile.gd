@@ -2,6 +2,7 @@ class_name Tile
 extends Node2D
 
 signal broke
+signal placed
 
 var empty := true
 var collision_enabled := false
@@ -9,6 +10,8 @@ var collision_enabled := false
 var tier : int
 var max_health : float
 var remaining_health : float
+
+var light_level := 0
 
 func mine(mining_tier : int, amount : float) -> bool :
 	if mining_tier < tier:
@@ -39,3 +42,9 @@ func place(texture : Texture2D, collision_enabled : bool, health : float, mining
 	$MiningAnimation.frame = 0
 	empty = false
 	tier = mining_tier
+	placed.emit()
+
+func set_light_level(level : int):
+	light_level = level
+	$Sprite2D.modulate = Color(1.0,1.0,1.0)*light_level/15
+	$Sprite2D.modulate.a = 1.0
