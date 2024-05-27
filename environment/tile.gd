@@ -14,6 +14,7 @@ var remaining_health : float
 
 var light_level := 0
 var light_source := 0
+var light_parent := Vector2(0,0)
 
 var item_drop : Item
 
