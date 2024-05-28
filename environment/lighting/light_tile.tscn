@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cv34l06kwtv4o"]
 
-[ext_resource type="Script" path="res://light_tile.gd" id="1_1uea2"]
+[ext_resource type="Script" path="res://environment/lighting/light_tile.gd" id="1_1uea2"]
 
 [sub_resource type="Gradient" id="Gradient_ulvw0"]
 offsets = PackedFloat32Array(1)
