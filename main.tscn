@@ -1,18 +1,37 @@
-[gd_scene load_steps=12 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=16 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
 [ext_resource type="Script" path="res://create_border.gd" id="3_kujvg"]
 [ext_resource type="PackedScene" uid="uid://bpxr74e0dbb2w" path="res://environment/border.tscn" id="4_v15sp"]
 [ext_resource type="Script" path="res://environment/light_manager.gd" id="5_025bf"]
+[ext_resource type="PackedScene" uid="uid://cv34l06kwtv4o" path="res://light_tile.tscn" id="6_twsbs"]
 [ext_resource type="PackedScene" uid="uid://cyc1pjxxak635" path="res://items/pickups/pickup_factory.tscn" id="6_vd6l4"]
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
 [ext_resource type="Script" path="res://crafting/recipe_handler.gd" id="8_0g71x"]
 [ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
 [ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
+[ext_resource type="Script" path="res://test.gd" id="13_vscfr"]
+[ext_resource type="Shader" path="res://lighting.gdshader" id="14_ctkix"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yunaf"]
+shader = ExtResource("14_ctkix")
+shader_parameter/dist = 0.01
 
 [node name="Main" type="Node2D"]
+
+[node name="PostProcess" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="PostProcess" node_paths=PackedStringArray("vport")]
+material = SubResource("ShaderMaterial_yunaf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_vscfr")
+vport = NodePath("../../LightingViewport")
 
 [node name="HUD" parent="." instance=ExtResource("1_l83f0")]
 
@@ -30,9 +49,6 @@ tiles_root = NodePath("Tiles")
 script = ExtResource("3_kujvg")
 border_prefab = ExtResource("4_v15sp")
 
-[node name="LightManager" type="Node" parent="GameWorld"]
-script = ExtResource("5_025bf")
-
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)
 
@@ -47,6 +63,17 @@ pickup_scene = ExtResource("7_ko0fq")
 [node name="RecipeHandler" type="Node" parent="."]
 script = ExtResource("8_0g71x")
 
+[node name="LightingViewport" type="SubViewport" parent="."]
+size = Vector2i(720, 360)
+
+[node name="Camera2" parent="LightingViewport" node_paths=PackedStringArray("player") instance=ExtResource("9_rwkjp")]
+player = NodePath("../../Player")
+
+[node name="LightManager" type="Node2D" parent="LightingViewport"]
+script = ExtResource("5_025bf")
+light_tile_prefab = ExtResource("6_twsbs")
+
 [connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
-[connection signal="world_finished_loading" from="GameWorld" to="GameWorld/LightManager" method="initialize"]
 [connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]
+[connection signal="world_finished_loading" from="GameWorld" to="LightingViewport/Camera2" method="set_bounds"]
+[connection signal="world_finished_loading" from="GameWorld" to="LightingViewport/LightManager" method="initialize"]

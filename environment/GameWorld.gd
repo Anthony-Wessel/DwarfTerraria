@@ -10,6 +10,9 @@ var gameSave : GameSave
 @export var walls_root : Node2D
 @export var tiles_root : Node2D
 
+var tiles : Dictionary
+var walls : Dictionary
+
 signal world_finished_loading
 
 func _init():
@@ -30,9 +33,11 @@ func load_game():
 	# Load walls and tiles
 	for y in gameSave.height:
 		for x in gameSave.width:
+			var coordinates := Vector2(x,y)
 			# load wall
 			var newWall = tile_scene.instantiate()
 			walls_root.add_child(newWall)
+			walls[coordinates] = newWall
 			newWall.set_coordinates(Vector2(x,y))
 			var wallItem = gameSave.walls[x+y*gameSave.width]
 			if wallItem != null:
@@ -41,6 +46,7 @@ func load_game():
 			# load tile
 			var newTile = tile_scene.instantiate()
 			tiles_root.add_child(newTile)
+			tiles[coordinates] = newTile
 			newTile.set_coordinates(Vector2(x,y))
 			var item = gameSave.tiles[x+y*gameSave.width]
 			if item != null:
@@ -58,22 +64,24 @@ func load_game():
 func get_player_spawn():
 	return gameSave.player_spawn
 
-func get_tile(x, y):
-	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
+func get_tile(coords : Vector2) -> Tile:
+	if tiles.has(coords):
+		return tiles[coords] as Tile
+	else:
 		return null
-	return (tiles_root.get_child((x+y*gameSave.width)) as Tile)
 
-func get_wall(x, y):
-	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
+func get_wall(coords : Vector2) -> Tile:
+	if walls.has(coords):
+		return walls[coords] as Tile
+	else:
 		return null
-	return (walls_root.get_child((x+y*gameSave.width)) as Tile)
 
 func mine_tile(x, y, mining_tier, amount, wall : bool):
 	var tile
 	if wall:
-		tile = get_wall(x,y)
+		tile = get_wall(Vector2(x,y))
 	else:
-		tile = get_tile(x,y)
+		tile = get_tile(Vector2(x,y))
 	
 	if tile == null or tile.empty:
 		return
@@ -87,9 +95,9 @@ func set_tile(x,y,item : TileItem, save := true):
 	
 	var selected_tile
 	if item.is_wall:
-		selected_tile = get_wall(x,y)
+		selected_tile = get_wall(Vector2(x,y))
 	else:
-		selected_tile = get_tile(x,y)
+		selected_tile = get_tile(Vector2(x,y))
 	
 	selected_tile.place(item.texture, !item.is_wall, item.mining_time, item.mining_tier)
 	
@@ -106,7 +114,7 @@ func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
 	
 	for a in multiblock_item.size.x:
 		for b in multiblock_item.size.y:
-			var t = get_tile(x+a, y+b)
+			var t = get_tile(Vector2(x+a, y+b))
 			t.place(null, false, 1, 0)
 			t.broke.connect(multiblock.on_broken)
 			multiblock.composite_tiles.append(t)

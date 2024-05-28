@@ -15,6 +15,7 @@ var remaining_health : float
 var light_level := 0
 var light_source := 0
 var light_parent := Vector2(0,0)
+signal light_changed(int)
 
 var item_drop : Item
 
@@ -53,8 +54,7 @@ func place(texture : Texture2D, collision_enabled : bool, health : float, mining
 
 func set_light_level(level : int):
 	light_level = level
-	$Sprite2D.modulate = Color(1.0,1.0,1.0)*level/15
-	$Sprite2D.modulate.a = 1.0
+	light_changed.emit(level)
 
 func set_coordinates(coords : Vector2):
 	coordinates = coords

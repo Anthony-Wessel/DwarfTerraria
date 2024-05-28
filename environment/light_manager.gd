@@ -1,4 +1,6 @@
-extends Node
+extends Node2D
+
+@export var light_tile_prefab : PackedScene
 
 var game_world : GameWorld
 
@@ -13,8 +15,11 @@ func initialize():
 	world_size = Vector2(game_world.gameSave.width, game_world.gameSave.height)
 	for x in world_size.x:
 		for y in world_size.y:
-			var t = game_world.get_tile(x,y)
-			var w = game_world.get_wall(x,y)
+			
+			var coords = Vector2(x,y)
+			var t = game_world.get_tile(coords)
+			var w = game_world.get_wall(coords)
+			
 			# connect signals
 			var lambda_broke = func():
 				update(t, false)
@@ -24,6 +29,12 @@ func initialize():
 			t.placed.connect(lambda_placed)
 			w.broke.connect(lambda_broke)
 			w.placed.connect(lambda_placed)
+			
+			# Create light tile
+			var l = light_tile_prefab.instantiate()
+			add_child(l)
+			l.global_position = t.global_position
+			t.light_changed.connect(l.update_light)
 
 	# complete an initial lighting pass
 	for y in world_size.y:
@@ -46,7 +57,7 @@ func propagate_light(tile : Tile):
 			continue
 		for offset in adjacents:
 			var adjacent_coords = coords + offset
-			var adjacent_tile = game_world.get_tile(adjacent_coords.x, adjacent_coords.y)
+			var adjacent_tile = game_world.get_tile(adjacent_coords)
 			tiles.append(adjacent_tile)
 		
 
@@ -57,7 +68,7 @@ func recalculate_dependents(tile : Tile):
 		var t = unchecked_tiles[0]
 		for offset in adjacents:
 			var adjacent_coords = t.coordinates + offset
-			var adjacent_tile = game_world.get_tile(adjacent_coords.x, adjacent_coords.y)
+			var adjacent_tile = game_world.get_tile(adjacent_coords)
 			if adjacent_tile.light_parent == -offset:
 				unchecked_tiles.append(adjacent_tile)
 		
@@ -69,9 +80,9 @@ func recalculate_dependents(tile : Tile):
 		propagate_light(t)
 
 func calculate_light_level(coords : Vector2) -> bool:
-	var t = game_world.get_tile(coords.x,coords.y)
+	var t = game_world.get_tile(coords)
 	var new_light_level = t.light_level
-	if game_world.get_wall(coords.x,coords.y).empty:
+	if game_world.get_wall(coords).empty:
 		new_light_level = sky_light_level
 		t.light_parent = Vector2(0,0)
 	else:
@@ -80,7 +91,7 @@ func calculate_light_level(coords : Vector2) -> bool:
 			reduction = 1
 		
 		for offset in adjacents:
-			var adjacent_tile = game_world.get_tile(coords.x+offset.x, coords.y+offset.y)
+			var adjacent_tile = game_world.get_tile(coords + offset)
 			if adjacent_tile == null:
 				continue
 			if adjacent_tile.light_level-reduction > new_light_level:
@@ -89,6 +100,6 @@ func calculate_light_level(coords : Vector2) -> bool:
 
 	var updated = new_light_level != t.light_level	
 	t.set_light_level(new_light_level)
-	game_world.get_wall(coords.x,coords.y).set_light_level(new_light_level)
+	game_world.get_wall(coords).set_light_level(new_light_level)
 	
 	return updated

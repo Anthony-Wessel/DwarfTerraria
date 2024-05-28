@@ -115,7 +115,7 @@ func update_preview_sprite(new_pos : Vector2i):
 		if multiblock:
 			for a in multiblock.size.x:
 				for b in multiblock.size.y:
-					var t = tile_grid.get_tile(new_pos.x+a ,new_pos.y+b)
+					var t = tile_grid.get_tile(new_pos + Vector2i(a,b))
 					if t != null and !t.empty:
 						preview_intersections[a+b*3] = true
 					else:
@@ -123,9 +123,9 @@ func update_preview_sprite(new_pos : Vector2i):
 		else: # If the hovered tile is not empty, don't allow placement
 			var t
 			if (held_item as TileItem).is_wall:
-				t = tile_grid.get_wall(new_pos.x ,new_pos.y)
+				t = tile_grid.get_wall(new_pos)
 			else:
-				t = tile_grid.get_tile(new_pos.x ,new_pos.y)
+				t = tile_grid.get_tile(new_pos)
 			if t != null and !t.empty:
 				preview_intersections[0] = true
 			else:
