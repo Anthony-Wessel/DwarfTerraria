@@ -17,13 +17,14 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yunaf"]
 shader = ExtResource("14_ctkix")
-shader_parameter/dist = 0.01
+shader_parameter/screen_resolution = Vector2(640, 360)
+shader_parameter/radius = 3.0
 
 [node name="Main" type="Node2D"]
 
-[node name="PostProcess" type="CanvasLayer" parent="."]
+[node name="LightPostProcess" type="CanvasLayer" parent="."]
 
-[node name="TextureRect" type="TextureRect" parent="PostProcess" node_paths=PackedStringArray("vport")]
+[node name="TextureRect" type="TextureRect" parent="LightPostProcess" node_paths=PackedStringArray("vport")]
 material = SubResource("ShaderMaterial_yunaf")
 anchors_preset = 15
 anchor_right = 1.0
