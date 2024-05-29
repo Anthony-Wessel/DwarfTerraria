@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=3 format=3 uid="uid://dmy1lqsg5klk5"]
+
+[ext_resource type="Script" path="res://items/tile_item.gd" id="1_sdqfa"]
+[ext_resource type="Texture2D" uid="uid://birbfvp3uo6gc" path="res://art/tiles/torch.png" id="1_vktu4"]
+
+[resource]
+script = ExtResource("1_sdqfa")
+mining_tier = 0
+mining_time = 0.1
+is_wall = false
+light_source = 30.0
+collision_enabled = false
+name = "Torch"
+texture = ExtResource("1_vktu4")
+held_texture = ExtResource("1_vktu4")

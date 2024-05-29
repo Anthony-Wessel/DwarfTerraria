@@ -99,7 +99,7 @@ func set_tile(x,y,item : TileItem, save := true):
 	else:
 		selected_tile = get_tile(Vector2(x,y))
 	
-	selected_tile.place(item.texture, !item.is_wall, item.mining_time, item.mining_tier)
+	selected_tile.place(item.texture, item.collision_enabled, item.mining_time, item.mining_tier, item.light_source)
 	
 	selected_tile.item_drop = item
 	
@@ -115,7 +115,7 @@ func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
 	for a in multiblock_item.size.x:
 		for b in multiblock_item.size.y:
 			var t = get_tile(Vector2(x+a, y+b))
-			t.place(null, false, 1, 0)
+			t.place(null, false, 1, 0, 0)
 			t.broke.connect(multiblock.on_broken)
 			multiblock.composite_tiles.append(t)
 	

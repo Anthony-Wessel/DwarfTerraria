@@ -39,9 +39,10 @@ func destroy():
 	$MiningAnimation.frame = 0
 	PickupFactory.Instance.spawn_pickup(item_drop, position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
 	item_drop = null
+	light_source = 0
 	broke.emit()
 
-func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int):
+func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int, light : int):
 	$Sprite2D.texture = texture
 	$CollisionShape2D.disabled = !collision_enabled
 	self.collision_enabled = collision_enabled
@@ -50,6 +51,7 @@ func place(texture : Texture2D, collision_enabled : bool, health : float, mining
 	$MiningAnimation.frame = 0
 	empty = false
 	tier = mining_tier
+	light_source = light
 	placed.emit()
 
 func set_light_level(level : int):

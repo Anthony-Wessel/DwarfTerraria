@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=25 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://cs1hm1slslke5" path="res://items/multiblocks/Icrafter.tres" id="12_5omx2"]
 [ext_resource type="Resource" uid="uid://70ysduy78lea" path="res://items/tools/Ihammer.tres" id="13_2q70j"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="13_jjvcd"]
+[ext_resource type="Resource" uid="uid://dmy1lqsg5klk5" path="res://items/tiles/Itorch.tres" id="14_2bgvx"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -76,6 +77,11 @@ script = ExtResource("10_ermnx")
 item = ExtResource("13_2q70j")
 count = 1
 
+[sub_resource type="Resource" id="Resource_cal0f"]
+script = ExtResource("10_ermnx")
+item = ExtResource("14_2bgvx")
+count = 10
+
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
 [node name="AnimationPlayer" parent="." index="1"]
@@ -118,7 +124,7 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
-default_items = Array[ExtResource("10_ermnx")]([SubResource("Resource_b1o2d"), SubResource("Resource_kxvnu"), SubResource("Resource_b3l8r"), SubResource("Resource_t6t40")])
+default_items = Array[ExtResource("10_ermnx")]([SubResource("Resource_b1o2d"), SubResource("Resource_kxvnu"), SubResource("Resource_b3l8r"), SubResource("Resource_t6t40"), SubResource("Resource_cal0f")])
 
 [node name="Health" type="Node" parent="." index="6"]
 script = ExtResource("11_1svu7")

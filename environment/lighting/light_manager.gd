@@ -6,7 +6,7 @@ var game_world : GameWorld
 
 var world_size : Vector2
 
-var sky_light_level := 15
+var sky_light_level := 30
 
 var adjacents = [Vector2(0,1), Vector2(0,-1), Vector2(1,0), Vector2(-1,0)]
 
@@ -85,8 +85,11 @@ func calculate_light_level(coords : Vector2) -> bool:
 	if game_world.get_wall(coords).empty:
 		new_light_level = sky_light_level
 		t.light_parent = Vector2(0,0)
+	elif t.light_source > 0 and t.light_source >= new_light_level:
+		new_light_level = t.light_source
+		t.light_parent = Vector2(0,0)
 	else:
-		var reduction = 2
+		var reduction = 4
 		if t.empty:
 			reduction = 1
 		
