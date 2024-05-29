@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://76i0rmsk2qyg"]
 
 [ext_resource type="Script" path="res://camera and ui/hotbar.gd" id="1_4svr7"]
-[ext_resource type="Texture2D" uid="uid://cfy811qh3w2y" path="res://art/SquareHighlight.png" id="2_jmjjt"]
+[ext_resource type="Texture2D" uid="uid://cfy811qh3w2y" path="res://art/ui/SquareHighlight.png" id="2_jmjjt"]
 [ext_resource type="PackedScene" uid="uid://07hqf0hubxah" path="res://camera and ui/inventory_tile.tscn" id="5_eay3n"]
 
 [sub_resource type="Gradient" id="Gradient_2h5e7"]

@@ -7,12 +7,12 @@ uniform float radius;
 void fragment() {
 	vec4 color = vec4(0.0, 0.0, 0.0, 0.0);
 	vec2 pixel_size = vec2(1.0/screen_resolution.x, 1.0/screen_resolution.y);
-	for (float x = -radius; x <= radius; x++)
+	for (float x = -radius; x <= radius; x += 2.0)
 	{
-		for (float y = -radius; y <= radius; y++)
+		for (float y = -radius; y <= radius; y += 2.0)
 		{
 			vec2 uv = UV + vec2(pixel_size.x * x, pixel_size.y * y);
-			color += texture(TEXTURE, uv) * (1.0/pow(2.0*radius+1.0, 2));
+			color += texture(TEXTURE, uv) * (1.0/pow(radius+1.0, 2));
 		}
 	}
 	color.a = 1.0;

@@ -43,6 +43,7 @@ animations = [{
 }]
 
 [node name="Tile" type="StaticBody2D"]
+collision_mask = 0
 script = ExtResource("1_h2ntn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -55,5 +56,6 @@ shape = SubResource("RectangleShape2D_axcy1")
 disabled = true
 
 [node name="MiningAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_4k35f")

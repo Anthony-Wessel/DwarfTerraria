@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=27 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -6,7 +6,9 @@
 [ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
 [ext_resource type="PackedScene" uid="uid://b6wwd40v3y18t" path="res://items/held prefabs/held_prefab_base.tscn" id="3_lkeaf"]
 [ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
+[ext_resource type="Texture2D" uid="uid://dfsch3yx6dyqd" path="res://art/ui/SmallSquare.png" id="5_uccx5"]
 [ext_resource type="PackedScene" uid="uid://b6yvvsx2s2pue" path="res://characters/player/preview_sprite.tscn" id="5_ynaqn"]
+[ext_resource type="Script" path="res://characters/player/area_miner_ui.gd" id="6_kcnxb"]
 [ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="8_c54jc"]
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="9_s4rys"]
 [ext_resource type="Script" path="res://inventory/item_stack.gd" id="10_ermnx"]
@@ -105,6 +107,11 @@ held_prefab = NodePath("HeldPrefabBase")
 preview_sprite = NodePath("../../PreviewSprite")
 
 [node name="HeldPrefabBase" parent="SpriteHolder/ItemUser" index="0" instance=ExtResource("3_lkeaf")]
+
+[node name="AreaMinerUI" type="Sprite2D" parent="SpriteHolder/ItemUser" index="1" node_paths=PackedStringArray("item_user")]
+texture = ExtResource("5_uccx5")
+script = ExtResource("6_kcnxb")
+item_user = NodePath("..")
 
 [node name="Hitbox" parent="SpriteHolder" index="3"]
 collision_layer = 2

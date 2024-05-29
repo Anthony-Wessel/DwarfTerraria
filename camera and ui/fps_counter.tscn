@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4ql5xmwf0x1y"]
+
+[ext_resource type="Script" path="res://camera and ui/fps_counter.gd" id="1_6mjbs"]
+
+[node name="FPS Counter" type="Label"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+text = "10"
+script = ExtResource("1_6mjbs")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="update_label"]

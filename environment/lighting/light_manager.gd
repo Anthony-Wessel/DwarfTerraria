@@ -58,7 +58,8 @@ func propagate_light(tile : Tile):
 		for offset in adjacents:
 			var adjacent_coords = coords + offset
 			var adjacent_tile = game_world.get_tile(adjacent_coords)
-			tiles.append(adjacent_tile)
+			if adjacent_tile != null:
+				tiles.append(adjacent_tile)
 		
 
 func recalculate_dependents(tile : Tile):

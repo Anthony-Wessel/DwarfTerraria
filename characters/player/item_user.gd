@@ -80,13 +80,27 @@ func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 		
 		update_preview_sprite(tile_pos)
 
+var corner_offsets = [Vector2(-3,-3), Vector2(3,-3), Vector2(3,3), Vector2(-3,3)]
 func handle_tool_usage(tool : ToolItem, delta):
 	if Input.is_action_pressed("mb_left"):
 		held_prefab.use("use_tool", tool.mining_speed)
-		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
-		var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
-		if distance_to_player.length() <= 5*GlobalReferences.TILE_SIZE:
-			tile_grid.mine_tile(tile_pos.x ,tile_pos.y, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
+		var targeted_tiles : Array[Vector2i]
+		
+		if Input.is_key_pressed(KEY_SHIFT):
+			for offset in corner_offsets:
+				var corner = Vector2i((tile_grid.get_local_mouse_position() + offset)/GlobalReferences.TILE_SIZE)
+				if !targeted_tiles.has(corner):
+					targeted_tiles.append(corner)
+		else:
+			targeted_tiles = [Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)]
+		
+		for tile_pos in targeted_tiles:
+			var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
+			if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:
+				targeted_tiles.erase(tile_pos)
+		
+		tile_grid.mine_tile(targeted_tiles, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
+				
 
 func handle_weapon_usage(weapon : WeaponItem, delta):
 	if Input.is_action_just_pressed("mb_left"):

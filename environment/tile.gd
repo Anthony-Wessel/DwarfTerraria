@@ -28,15 +28,18 @@ func mine(mining_tier : int, amount : float) -> bool :
 		return true
 	
 	var percent_mined = 1-remaining_health/max_health
+	$MiningAnimation.visible = true
 	$MiningAnimation.frame = int(percent_mined*4)
 	return false
 
 func destroy():
 	$Sprite2D.texture = null
+	$Sprite2D.visible = false
 	$CollisionShape2D.disabled = true
 	empty = true
 	collision_enabled = false
 	$MiningAnimation.frame = 0
+	$MiningAnimation.visible = false
 	PickupFactory.Instance.spawn_pickup(item_drop, position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
 	item_drop = null
 	light_source = 0
@@ -44,6 +47,7 @@ func destroy():
 
 func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int, light : int):
 	$Sprite2D.texture = texture
+	$Sprite2D.visible = true
 	$CollisionShape2D.disabled = !collision_enabled
 	self.collision_enabled = collision_enabled
 	remaining_health = health

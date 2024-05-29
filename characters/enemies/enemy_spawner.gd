@@ -65,10 +65,11 @@ func attempt_spawn():
 func generate_spawn_position():
 	# get world coordinates of viewport
 	var rect : Rect2 = cam_reference.get_canvas_transform().affine_inverse()*get_viewport().get_visible_rect()
-	
+	var x_max = GameWorld.instance.gameSave.width
+	var y_max= GameWorld.instance.gameSave.height
 	# get random offset
 	var rng = RandomNumberGenerator.new()
-	var x = rng.randf_range(rect.position.x-100,rect.position.x+rect.size.x+100)
-	var y = rng.randf_range(rect.position.y-100, rect.position.y+rect.size.y+100)
+	var x = rng.randf_range(max(0, rect.position.x-100), min(x_max, rect.position.x+rect.size.x+100))
+	var y = rng.randf_range(max(0, rect.position.y-100), min(y_max, rect.position.y+rect.size.y+100))
 	
 	return Vector2(x,y)

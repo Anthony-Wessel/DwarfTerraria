@@ -76,17 +76,25 @@ func get_wall(coords : Vector2) -> Tile:
 	else:
 		return null
 
-func mine_tile(x, y, mining_tier, amount, wall : bool):
-	var tile
-	if wall:
-		tile = get_wall(Vector2(x,y))
-	else:
-		tile = get_tile(Vector2(x,y))
+func mine_tile(coords_list : Array[Vector2i], mining_tier, amount : float, wall : bool):
+	var tiles = []
+	for coords in coords_list:
+		if wall:
+			var w = get_wall(coords)
+			if w != null and !w.empty:
+				tiles.append(w)
+		else:
+			var t = get_tile(coords)
+			if t != null and !t.empty:
+				tiles.append(t)
 	
-	if tile == null or tile.empty:
-		return
-	if tile.mine(mining_tier, amount):
-		gameSave.tiles[x+y+gameSave.width] = null
+	var changed := false
+	for tile in tiles:
+		if tile.mine(mining_tier, amount/tiles.size()):
+			gameSave.tiles[tile.coordinates.x + tile.coordinates.y*gameSave.width] = null
+			changed = true
+	
+	if changed:
 		save_game()
 
 func set_tile(x,y,item : TileItem, save := true):
