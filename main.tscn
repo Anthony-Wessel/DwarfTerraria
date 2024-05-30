@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=17 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
 [ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bpxr74e0dbb2w" path="res://environment/border.tscn" id="4_v15sp"]
 [ext_resource type="Script" path="res://environment/lighting/light_manager.gd" id="5_025bf"]
 [ext_resource type="PackedScene" uid="uid://cv34l06kwtv4o" path="res://environment/lighting/light_tile.tscn" id="6_twsbs"]
+[ext_resource type="Script" path="res://environment/lighting/dynamic_lights_manager.gd" id="6_u1a86"]
 [ext_resource type="PackedScene" uid="uid://cyc1pjxxak635" path="res://items/pickups/pickup_factory.tscn" id="6_vd6l4"]
 [ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
 [ext_resource type="Script" path="res://crafting/recipe_handler.gd" id="8_0g71x"]
@@ -43,6 +44,9 @@ player = NodePath("../../../Player")
 [node name="LightManager" type="Node2D" parent="LightPostProcess/LightingViewport"]
 script = ExtResource("5_025bf")
 light_tile_prefab = ExtResource("6_twsbs")
+
+[node name="DynamicLights" type="Node2D" parent="LightPostProcess/LightingViewport"]
+script = ExtResource("6_u1a86")
 
 [node name="HUD" parent="." instance=ExtResource("1_l83f0")]
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dlvy4hxs6qu1a"]
+[gd_scene load_steps=12 format=3 uid="uid://dlvy4hxs6qu1a"]
 
 [ext_resource type="Script" path="res://characters/enemies/ghost_movement.gd" id="1_3trwk"]
+[ext_resource type="PackedScene" uid="uid://bb4ahv6r6dxq6" path="res://environment/lighting/dynamic_light.tscn" id="2_mcieq"]
 [ext_resource type="Texture2D" uid="uid://cll7vcxj4ma07" path="res://art/enemies/blob.png" id="2_wde6r"]
 [ext_resource type="Script" path="res://characters/hitbox.gd" id="3_6mn4n"]
 [ext_resource type="Script" path="res://characters/hurtbox.gd" id="4_ja4xu"]
@@ -38,6 +39,9 @@ _data = {
 script = ExtResource("1_3trwk")
 
 [node name="SpriteHolder" type="Node2D" parent="."]
+
+[node name="DynamicLight" parent="SpriteHolder" instance=ExtResource("2_mcieq")]
+scale = Vector2(0.1, 0.1)
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
 texture = ExtResource("2_wde6r")

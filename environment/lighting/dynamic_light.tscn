@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb4ahv6r6dxq6"]
+
+[ext_resource type="Texture2D" uid="uid://rjckhjok60ro" path="res://art/light_mask.png" id="1_ldp11"]
+[ext_resource type="Script" path="res://environment/lighting/dynamic_light.gd" id="2_hlbqd"]
+
+[node name="DynamicLight" type="Sprite2D"]
+modulate = Color(0, 0.666667, 1, 1)
+texture = ExtResource("1_ldp11")
+script = ExtResource("2_hlbqd")
