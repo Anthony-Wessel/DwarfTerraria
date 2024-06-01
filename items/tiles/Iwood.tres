@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=3 format=3 uid="uid://ci33gi01paqjh"]
+
+[ext_resource type="Texture2D" uid="uid://d1iby3dbyo77c" path="res://art/tiles/t_wood.png" id="1_fhdk6"]
+[ext_resource type="Script" path="res://items/tile_item.gd" id="2_o3abp"]
+
+[resource]
+script = ExtResource("2_o3abp")
+mining_tier = 0
+mining_time = 1.0
+is_wall = false
+light_source = 0.0
+collision_enabled = true
+required_support = Vector2(0, 0)
+name = "wood"
+texture = ExtResource("1_fhdk6")
+held_texture = ExtResource("1_fhdk6")

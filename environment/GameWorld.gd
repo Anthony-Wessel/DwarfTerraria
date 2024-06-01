@@ -30,7 +30,7 @@ func load_game():
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
-	# Load walls and tiles
+	# instantiate tiles
 	for y in gameSave.height:
 		for x in gameSave.width:
 			var coordinates := Vector2(x,y)
@@ -39,19 +39,26 @@ func load_game():
 			walls_root.add_child(newWall)
 			walls[coordinates] = newWall
 			newWall.set_coordinates(Vector2(x,y))
-			var wallItem = gameSave.walls[x+y*gameSave.width]
-			if wallItem != null:
-				set_tile(x,y, wallItem, false)
 			
 			# load tile
 			var newTile = tile_scene.instantiate()
 			tiles_root.add_child(newTile)
 			tiles[coordinates] = newTile
 			newTile.set_coordinates(Vector2(x,y))
+
+	
+	# load tiles
+	for y in gameSave.height:
+		for x in gameSave.width:
+			
+			var wallItem = gameSave.walls[x+y*gameSave.width]
+			if wallItem != null:
+				set_tile(x,y, wallItem, false)
+			
 			var item = gameSave.tiles[x+y*gameSave.width]
 			if item != null:
 				set_tile(x,y, item, false)
-	
+			
 	# Load multiblocks
 	
 	# Load entities from game save
@@ -109,7 +116,21 @@ func set_tile(x,y,item : TileItem, save := true):
 	
 	selected_tile.place(item.texture, item.collision_enabled, item.mining_time, item.mining_tier, item.light_source)
 	
-	selected_tile.item_drop = item
+	if item.dropped_item != null:
+		selected_tile.item_drop = item.dropped_item
+	else:
+		selected_tile.item_drop = item
+	
+	if item.required_support != Vector2.ZERO:
+		var t : Tile
+		var support_coords = Vector2(x,y) + item.required_support
+		#print(support_coords, ", ", Vector2(x,y))
+		if item.is_wall:
+			t = get_wall(support_coords)
+		else:
+			t = get_tile(support_coords)
+		t.add_dependent(selected_tile)
+		
 	
 	if save:
 		gameSave.tiles[x+y*gameSave.width] = item

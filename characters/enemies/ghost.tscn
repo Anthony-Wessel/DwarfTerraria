@@ -41,7 +41,9 @@ script = ExtResource("1_3trwk")
 [node name="SpriteHolder" type="Node2D" parent="."]
 
 [node name="DynamicLight" parent="SpriteHolder" instance=ExtResource("2_mcieq")]
-scale = Vector2(0.1, 0.1)
+modulate = Color(0, 1, 1, 1)
+position = Vector2(-3.57628e-07, 2.38419e-07)
+scale = Vector2(0.3, 0.3)
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
 texture = ExtResource("2_wde6r")

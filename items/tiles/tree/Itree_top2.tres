@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=4 format=3 uid="uid://crjflg2g4uvgo"]
+
+[ext_resource type="Resource" uid="uid://ci33gi01paqjh" path="res://items/tiles/Iwood.tres" id="1_tpvw1"]
+[ext_resource type="Texture2D" uid="uid://cfayfq8a1oucq" path="res://art/tree/tree_top_2.png" id="2_qqici"]
+[ext_resource type="Script" path="res://items/tile_item.gd" id="3_tf7ei"]
+
+[resource]
+script = ExtResource("3_tf7ei")
+mining_tier = 0
+mining_time = 1.0
+is_wall = true
+light_source = 0.0
+collision_enabled = false
+required_support = Vector2(0, 1)
+dropped_item = ExtResource("1_tpvw1")
+name = "tree_top2"
+texture = ExtResource("2_qqici")
+held_texture = ExtResource("2_qqici")

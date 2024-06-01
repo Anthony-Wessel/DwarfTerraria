@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=4 format=3 uid="uid://c4ai4wa3vd3dx"]
+
+[ext_resource type="Resource" uid="uid://ci33gi01paqjh" path="res://items/tiles/Iwood.tres" id="1_tk22n"]
+[ext_resource type="Texture2D" uid="uid://cep5dum2q7r0x" path="res://art/tree/tree_trunk.png" id="2_bwjuj"]
+[ext_resource type="Script" path="res://items/tile_item.gd" id="3_hq6xc"]
+
+[resource]
+script = ExtResource("3_hq6xc")
+mining_tier = 0
+mining_time = 1.0
+is_wall = true
+light_source = 0.0
+collision_enabled = false
+required_support = Vector2(0, 1)
+dropped_item = ExtResource("1_tk22n")
+name = "tree_trunk"
+texture = ExtResource("2_bwjuj")
+held_texture = ExtResource("2_bwjuj")

@@ -19,6 +19,8 @@ signal light_changed(int)
 
 var item_drop : Item
 
+var dependents : Array[Tile]
+
 func mine(mining_tier : int, amount : float) -> bool :
 	if mining_tier < tier:
 		return false
@@ -35,27 +37,42 @@ func mine(mining_tier : int, amount : float) -> bool :
 func destroy():
 	$Sprite2D.texture = null
 	$Sprite2D.visible = false
-	$CollisionShape2D.disabled = true
-	empty = true
-	collision_enabled = false
+	
 	$MiningAnimation.frame = 0
 	$MiningAnimation.visible = false
-	PickupFactory.Instance.spawn_pickup(item_drop, position+Vector2(GlobalReferences.TILE_SIZE/2,GlobalReferences.TILE_SIZE/2))
-	item_drop = null
+	
+	$CollisionShape2D.disabled = true
+	collision_enabled = false
+	empty = true
+	
 	light_source = 0
+	
+	PickupFactory.Instance.spawn_pickup(item_drop, position + Vector2(0.5, 0.5)*GlobalReferences.TILE_SIZE)
+	item_drop = null
+	
+	for dependent in dependents:
+		if !dependent.empty: # will destroy newly placed tile, need to remove dependent when it is destroyed early
+			dependent.destroy()
+	dependents.clear()
+	
 	broke.emit()
 
 func place(texture : Texture2D, collision_enabled : bool, health : float, mining_tier : int, light : int):
 	$Sprite2D.texture = texture
 	$Sprite2D.visible = true
+	$MiningAnimation.frame = 0
+	
 	$CollisionShape2D.disabled = !collision_enabled
 	self.collision_enabled = collision_enabled
+	empty = false
+	
 	remaining_health = health
 	max_health = health
-	$MiningAnimation.frame = 0
-	empty = false
+	
 	tier = mining_tier
+	
 	light_source = light
+	
 	placed.emit()
 
 func set_light_level(level : int):
@@ -65,3 +82,6 @@ func set_light_level(level : int):
 func set_coordinates(coords : Vector2):
 	coordinates = coords
 	position = coords*GlobalReferences.TILE_SIZE
+
+func add_dependent(tile : Tile):
+	dependents.append(tile)
