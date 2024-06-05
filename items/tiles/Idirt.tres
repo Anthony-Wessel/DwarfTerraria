@@ -5,12 +5,7 @@
 
 [resource]
 script = ExtResource("1_piaaj")
-mining_tier = 0
-mining_time = 1.0
-is_wall = false
-light_source = 0.0
-collision_enabled = true
-required_support = Vector2(0, 0)
+tile_id = 1
 name = "dirt"
 texture = ExtResource("1_mtt2i")
 held_texture = ExtResource("1_mtt2i")

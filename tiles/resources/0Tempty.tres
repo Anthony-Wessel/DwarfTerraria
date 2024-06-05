@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=2 format=3 uid="uid://cq685q7gtywev"]
+
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_g7xli"]
+
+[resource]
+script = ExtResource("1_g7xli")
+id = 0
+name = "empty tile"
+hardness = 0
+health = 0.0
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 1

@@ -82,7 +82,7 @@ func on_inventory_panel_closed():
 	if held_stack.item != null:
 		var successfully_added = player_inventory.add_items(held_stack.item, held_stack.count)
 		if !successfully_added:
-			PickupFactory.Instance.spawn_pickup(held_stack.item, Player.instance.position)
+			PickupFactory.spawn_pickup(held_stack.item, Player.instance.position)
 			pass
 	
 		held_stack.item = null

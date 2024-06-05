@@ -1,18 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://coj2y2qovakov"]
+[gd_scene load_steps=3 format=3 uid="uid://coj2y2qovakov"]
 
 [ext_resource type="PackedScene" uid="uid://c5i5qisst4xt2" path="res://environment/prefabs/multiblocks/multiblock.tscn" id="1_gacab"]
-[ext_resource type="Texture2D" uid="uid://d0vlihnprynhe" path="res://art/multiblocks/workbench.png" id="2_lr2fu"]
 [ext_resource type="Script" path="res://environment/prefabs/multiblocks/crafting_opener.gd" id="3_vbouf"]
 
 [node name="Crafter" instance=ExtResource("1_gacab")]
 
-[node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("2_lr2fu")
-
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 position = Vector2(8, 4.5)
 
-[node name="OpenCrafting" type="Node" parent="." index="2"]
+[node name="OpenCrafting" type="Node" parent="." index="1"]
 script = ExtResource("3_vbouf")
 
 [connection signal="interacted" from="Area2D" to="OpenCrafting" method="on_interacted"]

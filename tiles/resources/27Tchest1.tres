@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://ft8ix3yp6v1t"]
+
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_nd16i"]
+[ext_resource type="Resource" uid="uid://b0gkvnqghddws" path="res://items/multiblocks/Ichest.tres" id="1_tt75a"]
+
+[resource]
+script = ExtResource("1_nd16i")
+id = 27
+name = "chest 1"
+hardness = 0
+health = 0.0
+dropped_item = ExtResource("1_tt75a")
+potential_supports = Array[Vector2]([Vector2(1, 0)])
+light_source = 0
+wall = false
+opacity = 2

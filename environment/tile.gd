@@ -47,7 +47,7 @@ func destroy():
 	
 	light_source = 0
 	
-	PickupFactory.Instance.spawn_pickup(item_drop, position + Vector2(0.5, 0.5)*GlobalReferences.TILE_SIZE)
+	PickupFactory.instance.spawn_pickup(item_drop, position + Vector2(0.5, 0.5)*GlobalReferences.TILE_SIZE)
 	item_drop = null
 	
 	for dependent in dependents:

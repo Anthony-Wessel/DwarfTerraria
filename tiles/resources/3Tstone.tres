@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://bs5mw3ucu3bxf"]
+
+[ext_resource type="Resource" uid="uid://crsauq3fnbdtl" path="res://items/tiles/Istone.tres" id="1_caju2"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_joma6"]
+
+[resource]
+script = ExtResource("2_joma6")
+id = 3
+name = "stone"
+hardness = 0
+health = 1.5
+dropped_item = ExtResource("1_caju2")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

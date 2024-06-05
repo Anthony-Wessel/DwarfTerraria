@@ -5,9 +5,7 @@
 
 [resource]
 script = ExtResource("1_20wtf")
-mining_tier = 1
-mining_time = 1.5
-is_wall = false
+tile_id = 4
 name = "stone brick"
 texture = ExtResource("1_31iow")
 held_texture = ExtResource("1_31iow")

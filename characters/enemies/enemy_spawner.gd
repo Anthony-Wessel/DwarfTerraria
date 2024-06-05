@@ -33,12 +33,12 @@ func attempt_spawn():
 	
 	var tile_coords : Vector2i  = GameWorld.instance.global_to_tile_coordinates(pos)
 	
-	var floor_tile = GameWorld.instance.get_tile(tile_coords)
+	var is_floor = !GameWorld.instance.is_tile_empty(tile_coords)
 	if enemy_to_spawn.require_ground:
 		var drop_height = 0
-		while (floor_tile == null or floor_tile.empty):
+		while (!is_floor):
 			tile_coords.y += 1
-			floor_tile = GameWorld.instance.get_tile(tile_coords)
+			is_floor = !GameWorld.instance.is_tile_empty(tile_coords)
 			drop_height += 1
 			if drop_height > 20:
 				return
@@ -52,8 +52,7 @@ func attempt_spawn():
 	for x in enemy_to_spawn.space_required.x:
 		for y in enemy_to_spawn.space_required.y:
 			var coords = tile_coords+offset + Vector2i(x,-y)
-			var tile = GameWorld.instance.get_tile(coords)
-			if tile != null and !tile.empty:
+			if GameWorld.instance.is_tile_empty(coords):
 				return
 	
 	

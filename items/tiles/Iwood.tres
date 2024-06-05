@@ -5,12 +5,7 @@
 
 [resource]
 script = ExtResource("2_o3abp")
-mining_tier = 0
-mining_time = 1.0
-is_wall = false
-light_source = 0.0
-collision_enabled = true
-required_support = Vector2(0, 0)
+tile_id = 5
 name = "wood"
 texture = ExtResource("1_fhdk6")
 held_texture = ExtResource("1_fhdk6")

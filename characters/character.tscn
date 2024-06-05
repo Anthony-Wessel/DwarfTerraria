@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bbk30r003xeiw"]
+[gd_scene load_steps=11 format=3 uid="uid://bbk30r003xeiw"]
 
 [ext_resource type="Script" path="res://characters/character_movement.gd" id="1_umt8s"]
 [ext_resource type="Script" path="res://characters/character_animation.gd" id="2_ddfxg"]
@@ -14,14 +14,18 @@ size = Vector2(10, 15)
 [sub_resource type="CircleShape2D" id="CircleShape2D_r0ycf"]
 radius = 2.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cbesr"]
+size = Vector2(3, 6)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pgmhl"]
 size = Vector2(10, 15)
 
-[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder", "obstacle_detector")]
+[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder", "step_detector", "obstacle_space_detector")]
 collision_layer = 2
 script = ExtResource("1_umt8s")
 sprite_holder = NodePath("SpriteHolder")
-obstacle_detector = NodePath("SpriteHolder/ObstacleDetector")
+step_detector = NodePath("SpriteHolder/StepDetector")
+obstacle_space_detector = NodePath("SpriteHolder/StepSpaceDetector")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7.5)
@@ -44,13 +48,21 @@ hframes = 14
 vframes = 12
 frame = 154
 
-[node name="ObstacleDetector" type="Area2D" parent="SpriteHolder"]
+[node name="StepDetector" type="Area2D" parent="SpriteHolder"]
 collision_layer = 0
 script = ExtResource("4_uutov")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/ObstacleDetector"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/StepDetector"]
 position = Vector2(5, -3)
 shape = SubResource("CircleShape2D_r0ycf")
+
+[node name="StepSpaceDetector" type="Area2D" parent="SpriteHolder"]
+collision_layer = 0
+script = ExtResource("4_uutov")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteHolder/StepSpaceDetector"]
+position = Vector2(4.5, -13)
+shape = SubResource("RectangleShape2D_cbesr")
 
 [node name="Hitbox" type="Area2D" parent="SpriteHolder" node_paths=PackedStringArray("sprite")]
 collision_layer = 0
@@ -62,6 +74,8 @@ sprite = NodePath("../Sprite2D")
 position = Vector2(0, -7.5)
 shape = SubResource("RectangleShape2D_pgmhl")
 
-[connection signal="body_entered" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_detected"]
-[connection signal="body_exited" from="SpriteHolder/ObstacleDetector" to="SpriteHolder/ObstacleDetector" method="_on_tile_lost"]
+[connection signal="body_entered" from="SpriteHolder/StepDetector" to="SpriteHolder/StepDetector" method="_on_tile_detected"]
+[connection signal="body_exited" from="SpriteHolder/StepDetector" to="SpriteHolder/StepDetector" method="_on_tile_lost"]
+[connection signal="body_entered" from="SpriteHolder/StepSpaceDetector" to="SpriteHolder/StepSpaceDetector" method="_on_tile_detected"]
+[connection signal="body_exited" from="SpriteHolder/StepSpaceDetector" to="SpriteHolder/StepSpaceDetector" method="_on_tile_lost"]
 [connection signal="hit" from="SpriteHolder/Hitbox" to="." method="handle_hit"]

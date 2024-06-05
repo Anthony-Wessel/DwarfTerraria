@@ -5,11 +5,7 @@
 
 [resource]
 script = ExtResource("1_sdqfa")
-mining_tier = 0
-mining_time = 0.1
-is_wall = false
-light_source = 30.0
-collision_enabled = false
+tile_id = 6
 name = "Torch"
 texture = ExtResource("1_vktu4")
 held_texture = ExtResource("1_vktu4")

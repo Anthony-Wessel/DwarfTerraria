@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://dg3kdu0evag67"]
+
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="1_tvxcx"]
+[ext_resource type="Resource" uid="uid://brk5xr24xok5y" path="res://items/tiles/Istone_brick.tres" id="1_vcybo"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_pfjtd"]
+[ext_resource type="Resource" uid="uid://c0m41xbqamnu1" path="res://items/walls/Wstone_brick.tres" id="3_4kfwv"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_pfjtd")
+item = ExtResource("1_vcybo")
+count = 1
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_pfjtd")
+item = ExtResource("3_4kfwv")
+count = 2
+
+[resource]
+script = ExtResource("1_tvxcx")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_pfjtd")]([SubResource("Resource_lkl4f")])

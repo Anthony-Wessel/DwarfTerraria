@@ -113,13 +113,13 @@ texture = ExtResource("5_uccx5")
 script = ExtResource("6_kcnxb")
 item_user = NodePath("..")
 
-[node name="Hitbox" parent="SpriteHolder" index="3"]
-collision_layer = 2
-immunity_length = 1.0
-
 [node name="Healthbar" parent="SpriteHolder" index="4" node_paths=PackedStringArray("health_node") instance=ExtResource("13_jjvcd")]
 position = Vector2(0, -16)
 health_node = NodePath("../../Health")
+
+[node name="Hitbox" parent="SpriteHolder" index="5"]
+collision_layer = 2
+immunity_length = 1.0
 
 [node name="PreviewSprite" parent="." index="3" instance=ExtResource("5_ynaqn")]
 position = Vector2(2, -9)

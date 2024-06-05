@@ -4,25 +4,27 @@ extends Node
 static func GenerateWorld(worldResource : GameSave):
 	worldResource.tiles.clear()
 	
-	var dirt = preload("res://items/tiles/Idirt.tres")
-	var grass = preload("res://items/tiles/Igrass.tres")
-	var stone = preload("res://items/tiles/Istone.tres")
+	var empty = 0
+	var dirt = 1
+	var grass = 2
+	var stone = 3
 	
-	var dirt_wall = preload("res://items/walls/Wdirt.tres")
-	var stone_wall = preload("res://items/walls/Wstone.tres")
+	var empty_wall = 8
+	var dirt_wall = 9
+	var stone_wall = 10
 	
-	var tree_base = preload("res://items/tiles/tree/Itree_base.tres")
-	var tree_trunk = preload("res://items/tiles/tree/Itree_trunk.tres")
-	var tree_trunk_left = preload("res://items/tiles/tree/Itree_trunk_left.tres")
-	var tree_trunk_right = preload("res://items/tiles/tree/Itree_trunk_right.tres")
-	var tree_branch_left = preload("res://items/tiles/tree/Itree_branch_left.tres")
-	var tree_branch_right = preload("res://items/tiles/tree/Itree_branch_right.tres")
-	var tree_top1 = preload("res://items/tiles/tree/Itree_top1.tres")
-	var tree_top2 = preload("res://items/tiles/tree/Itree_top2.tres")
-	var tree_top3 = preload("res://items/tiles/tree/Itree_top3.tres")
-	var tree_top4 = preload("res://items/tiles/tree/Itree_top4.tres")
-	var tree_top5 = preload("res://items/tiles/tree/Itree_top5.tres")
-	var tree_top6 = preload("res://items/tiles/tree/Itree_top6.tres")
+	var tree_base = 13
+	var tree_trunk = 14
+	var tree_trunk_left = 15
+	var tree_trunk_right = 16
+	var tree_branch_left = 17
+	var tree_branch_right = 18
+	var tree_top1 = 19
+	var tree_top2 = 20
+	var tree_top3 = 21
+	var tree_top4 = 22
+	var tree_top5 = 23
+	var tree_top6 = 24
 	
 	
 	var rng := RandomNumberGenerator.new()
@@ -55,7 +57,7 @@ static func GenerateWorld(worldResource : GameSave):
 		var col = []
 		
 		for i in worldResource.height - h:
-			col.append(null)
+			col.append(empty)
 		
 		col.append(grass)
 		
@@ -79,7 +81,7 @@ static func GenerateWorld(worldResource : GameSave):
 			elif columns[x][y] == stone:
 				worldResource.walls.append(stone_wall)
 			else:
-				worldResource.walls.append(null)
+				worldResource.walls.append(empty_wall)
 	
 	var just_placed = false
 	for x in range(1, worldResource.width-1):
@@ -92,7 +94,7 @@ static func GenerateWorld(worldResource : GameSave):
 		# find the highest solid tile
 		var tile = worldResource.tiles[x]
 		var y = 0
-		while tile == null:
+		while tile == empty:
 			y += 1
 			tile = worldResource.tiles[x+ y*worldResource.width]
 			
@@ -103,10 +105,10 @@ static func GenerateWorld(worldResource : GameSave):
 		for i in rng.randi_range(3,10):
 			y2 -= 1 
 			var r = rng.randf()
-			if r < 0.1 and worldResource.tiles[x-1 + y2*worldResource.width] == null:
+			if r < 0.1 and worldResource.tiles[x-1 + y2*worldResource.width] == empty:
 				worldResource.tiles[x + y2*worldResource.width] = tree_trunk_left
 				worldResource.tiles[x-1 + y2*worldResource.width] = tree_branch_left
-			elif r > 0.9 and worldResource.tiles[x+1 + y2*worldResource.width] == null:
+			elif r > 0.9 and worldResource.tiles[x+1 + y2*worldResource.width] == empty:
 				worldResource.tiles[x + y2*worldResource.width] = tree_trunk_right
 				worldResource.tiles[x+1 + y2*worldResource.width] = tree_branch_right
 			else:

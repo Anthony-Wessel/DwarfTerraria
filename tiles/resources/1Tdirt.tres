@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://c71awhydimtys"]
+
+[ext_resource type="Resource" uid="uid://brm30g40d2uih" path="res://items/tiles/Idirt.tres" id="1_rufdg"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_xcqey"]
+
+[resource]
+script = ExtResource("2_xcqey")
+id = 1
+name = "dirt"
+hardness = 0
+health = 1.0
+dropped_item = ExtResource("1_rufdg")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

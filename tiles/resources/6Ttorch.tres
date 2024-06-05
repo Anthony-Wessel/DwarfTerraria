@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://dsvx6ndo2hm05"]
+
+[ext_resource type="Resource" uid="uid://dmy1lqsg5klk5" path="res://items/tiles/Itorch.tres" id="1_c1krl"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_b6ho7"]
+
+[resource]
+script = ExtResource("2_b6ho7")
+id = 6
+name = "torch"
+hardness = 0
+health = 0.0
+dropped_item = ExtResource("1_c1krl")
+potential_supports = Array[Vector2]([])
+light_source = 30
+wall = false
+opacity = 1

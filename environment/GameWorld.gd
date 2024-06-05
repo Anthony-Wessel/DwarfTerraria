@@ -7,11 +7,11 @@ static var instance : GameWorld
 var gameSave : GameSave
 @export var player : CharacterMovement
 
-@export var walls_root : Node2D
-@export var tiles_root : Node2D
+@export var tiles_tilemap : TileMap
+var tile_dict : Dictionary
 
-var tiles : Dictionary
-var walls : Dictionary
+var tile_list = []
+var walls_list = []
 
 signal world_finished_loading
 
@@ -19,7 +19,22 @@ func _init():
 	instance = self
 
 func _ready():
+	generate_tile_dict()
 	load_game()
+
+func generate_tile_dict():
+	var tile_set = tiles_tilemap.tile_set
+	for source_index in tile_set.get_source_count():
+		var source_id = tile_set.get_source_id(source_index)
+		var source : TileSetAtlasSource = tile_set.get_source(source_id)
+		if source == null:
+			continue
+		
+		for tile_index in source.get_tiles_count():
+			var coords := source.get_tile_id(tile_index)
+			var tile_data = source.get_tile_data(coords, 0)
+			var name = tile_data.get_custom_data_by_layer_id(0)
+			tile_dict[name] = [source_id, coords]
 
 func load_game():
 	# Create new game save
@@ -27,130 +42,164 @@ func load_game():
 	gameSave.width = 100
 	gameSave.height = 100
 	WorldGenerator.GenerateWorld(gameSave)
+	
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
-	# instantiate tiles
-	for y in gameSave.height:
-		for x in gameSave.width:
-			var coordinates := Vector2(x,y)
-			# load wall
-			var newWall = tile_scene.instantiate()
-			walls_root.add_child(newWall)
-			walls[coordinates] = newWall
-			newWall.set_coordinates(Vector2(x,y))
+	tile_list = []
+	walls_list = []
+	for x in gameSave.width:
+		var tile_col = []
+		var wall_col = []
+		for y in gameSave.height:
+			tile_col.append(gameSave.tiles[x + y*gameSave.width])
+			wall_col.append(gameSave.walls[x + y*gameSave.width])
 			
-			# load tile
-			var newTile = tile_scene.instantiate()
-			tiles_root.add_child(newTile)
-			tiles[coordinates] = newTile
-			newTile.set_coordinates(Vector2(x,y))
+			var tile_resource = TileHandler.tiles[gameSave.tiles[x + y*gameSave.width]]
+			tiles_tilemap.set_cell(0, Vector2i(x,y), tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
+			
+			var wall_resource = TileHandler.tiles[gameSave.walls[x + y*gameSave.width]]
+			tiles_tilemap.set_cell(1, Vector2i(x,y), tile_dict[wall_resource.name][0], tile_dict[wall_resource.name][1])
+			
+		tile_list.append(tile_col)
+		walls_list.append(wall_col)
+	
 
-	
-	# load tiles
-	for y in gameSave.height:
-		for x in gameSave.width:
-			
-			var wallItem = gameSave.walls[x+y*gameSave.width]
-			if wallItem != null:
-				set_tile(x,y, wallItem, false)
-			
-			var item = gameSave.tiles[x+y*gameSave.width]
-			if item != null:
-				set_tile(x,y, item, false)
-			
-	# Load multiblocks
-	
-	# Load entities from game save
-	# Load player info from game save
 	player.global_position = global_position + gameSave.player_spawn
-	# Load flags from game save
 	
 	world_finished_loading.emit()
+
+func is_tile_empty(coords : Vector2) -> bool:
+	return tile_list[coords.x][coords.y] == 0
+
+func is_wall_empty(coords : Vector2) -> bool:
+	return walls_list[coords.x][coords.y] == 8
 
 func get_player_spawn():
 	return gameSave.player_spawn
 
-func get_tile(coords : Vector2) -> Tile:
-	if tiles.has(coords):
-		return tiles[coords] as Tile
-	else:
-		return null
+func get_tile(coords : Vector2) -> TileResource:
+	return TileHandler.tiles[ tile_list[coords.x][coords.y] ]
 
-func get_wall(coords : Vector2) -> Tile:
-	if walls.has(coords):
-		return walls[coords] as Tile
-	else:
-		return null
+func get_wall(coords : Vector2) -> TileResource:
+	return TileHandler.tiles[ walls_list[coords.x][coords.y] ]
 
+
+var previously_mined_tiles : Dictionary
+var previous_tool_wall := false
 func mine_tile(coords_list : Array[Vector2i], mining_tier, amount : float, wall : bool):
-	var tiles = []
-	for coords in coords_list:
-		if wall:
-			var w = get_wall(coords)
-			if w != null and !w.empty:
-				tiles.append(w)
-		else:
-			var t = get_tile(coords)
-			if t != null and !t.empty:
-				tiles.append(t)
-	
 	var changed := false
-	for tile in tiles:
-		if tile.mine(mining_tier, amount/tiles.size()):
-			gameSave.tiles[tile.coordinates.x + tile.coordinates.y*gameSave.width] = null
+	
+	# detect tool swap
+	if previous_tool_wall != wall:
+		previously_mined_tiles.clear()
+		previous_tool_wall = wall
+	
+	# remove old tiles
+	for coords in previously_mined_tiles.keys():
+		if !coords_list.has(coords):
+			previously_mined_tiles.erase(coords)
+	
+	# add new tiles
+	for coords in coords_list:
+		if !previously_mined_tiles.has(coords):
+			previously_mined_tiles[coords] = 0
+	
+	for coords in previously_mined_tiles.keys():
+		if wall and is_wall_empty(coords) or !wall and is_tile_empty(coords):
+			previously_mined_tiles[coords] = -1
+		else:
+			previously_mined_tiles[coords] += amount/previously_mined_tiles.size()
+		
+		var tile_resource
+		if wall: tile_resource = get_wall(coords)
+		else : tile_resource = get_tile(coords)
+		
+		# tile destroyed
+		if previously_mined_tiles[coords] >= tile_resource.health:
+			break_tile(coords, wall)
+
+
+func break_tile(coords : Vector2, wall : bool):
+	var tile_resource
+	if wall:
+		tile_resource = get_wall(coords)
+		set_wall(coords, TileHandler.EMPTY_WALL, true)
+	else:
+		tile_resource = get_tile(coords)
+		set_tile(coords, TileHandler.EMPTY_TILE, true)
+	
+	if tile_resource.dropped_item != null:
+		PickupFactory.spawn_pickup(tile_resource.dropped_item, coords * GlobalReferences.TILE_SIZE + Vector2(4,4))
+	
+	update_neighbors(coords, wall)
+
+var neighbor_offsets = [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]
+func update_neighbors(coords : Vector2i, wall : bool):
+	for offset in neighbor_offsets:
+		update(coords+offset, wall)
+
+func update(coords : Vector2, wall : bool):
+	var changed := false
+	
+	var tile_resource : TileResource
+	if wall : tile_resource = get_wall(coords)
+	else: tile_resource = get_tile(coords)
+	
+	if tile_resource.potential_supports.size() > 0:
+		var support_found := false
+		for support in tile_resource.potential_supports:
+			if wall and !is_wall_empty(coords+support) or !wall and !is_tile_empty(coords+support):
+				support_found = true
+				break
+		if !support_found:
+			break_tile(coords, wall)
 			changed = true
 	
-	if changed:
-		save_game()
+	#if changed:
+		#update_neighbors(coords, wall)
 
-func set_tile(x,y,item : TileItem, save := true):
-	if x < 0 or y < 0 or x >= gameSave.width or y >= gameSave.height:
-		return
+func set_tile(coords : Vector2, tile_resource : TileResource, save : bool):
+	tile_list[coords.x][coords.y] = tile_resource.id
+	tiles_tilemap.set_cell(0, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
-	var selected_tile
-	if item.is_wall:
-		selected_tile = get_wall(Vector2(x,y))
-	else:
-		selected_tile = get_tile(Vector2(x,y))
-	
-	selected_tile.place(item.texture, item.collision_enabled, item.mining_time, item.mining_tier, item.light_source)
-	
-	if item.dropped_item != null:
-		selected_tile.item_drop = item.dropped_item
-	else:
-		selected_tile.item_drop = item
-	
-	if item.required_support != Vector2.ZERO:
-		var t : Tile
-		var support_coords = Vector2(x,y) + item.required_support
-		#print(support_coords, ", ", Vector2(x,y))
-		if item.is_wall:
-			t = get_wall(support_coords)
-		else:
-			t = get_tile(support_coords)
-		t.add_dependent(selected_tile)
-		
+	LightManager.update(coords)
 	
 	if save:
-		gameSave.tiles[x+y*gameSave.width] = item
+		gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
 		save_game()
 
-func set_multiblock(x,y, multiblock_item : MultiblockItem, save := true):
-	var multiblock = multiblock_item.prefab.instantiate() as Multiblock
-	multiblock.position = Vector2(x*GlobalReferences.TILE_SIZE, y*GlobalReferences.TILE_SIZE)
-	add_child(multiblock)
+func set_wall(coords : Vector2, tile_resource : TileResource, save : bool):
+	walls_list[coords.x][coords.y] = tile_resource.id
+	tiles_tilemap.set_cell(1, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
-	for a in multiblock_item.size.x:
-		for b in multiblock_item.size.y:
-			var t = get_tile(Vector2(x+a, y+b))
-			t.place(null, false, 1, 0, 0)
-			t.broke.connect(multiblock.on_broken)
-			multiblock.composite_tiles.append(t)
+	LightManager.update(coords)
 	
-	var spawn_item = func():
-		PickupFactory.Instance.spawn_pickup(multiblock_item, multiblock.position + (multiblock_item.size * GlobalReferences.TILE_SIZE/2))
-	multiblock.destroyed.connect(spawn_item)
+	if save:
+		gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
+		save_game()
+
+func place_tile(coords : Vector2, item : TileItem, save := true):
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+		push_error("Trying to place tile out of bounds: ", item.name, " : ", coords)
+		return
+	
+	var tile_resource = TileHandler.tiles[item.tile_id]
+	
+	if tile_resource.wall:
+		set_wall(coords, tile_resource, save)
+	else:
+		set_tile(coords, tile_resource, save)
+
+func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem, save := true):
+	#var multiblock = multiblock_item.prefab.instantiate() as Multiblock
+	#multiblock.position = coords * GlobalReferences.TILE_SIZE
+	#add_child(multiblock)
+	
+	for i in multiblock_item.tile_ids.size():
+		var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
+		var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
+		set_tile(coords + offset, tile_resource, save)
 
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://c06cqu1ij7l6t"]
+
+[ext_resource type="Resource" uid="uid://brk5xr24xok5y" path="res://items/tiles/Istone_brick.tres" id="1_fpdfv"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_vum8v"]
+
+[resource]
+script = ExtResource("2_vum8v")
+id = 4
+name = "stone brick"
+hardness = 0
+health = 2.0
+dropped_item = ExtResource("1_fpdfv")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

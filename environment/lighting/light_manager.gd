@@ -1,79 +1,93 @@
+class_name LightManager
 extends Node2D
 
-@export var light_tile_prefab : PackedScene
+static var instance : LightManager
 
 var game_world : GameWorld
-
 var world_size : Vector2
-
 var sky_light_level := 30
-
 var adjacents = [Vector2(0,1), Vector2(0,-1), Vector2(1,0), Vector2(-1,0)]
+
+@export var multimesh : MultiMeshInstance2D
+var light_dict : Dictionary
+
+class LightInfo:
+	var index := 0
+	var value := 0
+	var sky_value := 0
+	var parent := Vector2.ZERO
+	var sky_parent := Vector2.ZERO
+	
+	func _init(multimesh_index : int):
+		index = multimesh_index
+		value = -1
+	
+	func update(v : int, p : Vector2, s : int, sp : Vector2):
+		value = v
+		parent = p
+		sky_value = s
+		sky_parent = sp
+		
+		var color = Color.WHITE * max(value, sky_value)/30.0
+		color.a = 1
+		LightManager.update_mesh(index, color)
+	
+	func reset():
+		value = 0
+		sky_value = 0
+		parent = Vector2.ZERO
+		sky_parent = Vector2.ZERO
+
+func _init():
+	instance = self
+
+static func update_mesh(index : int, color : Color):
+	instance.multimesh.multimesh.set_instance_color(index, color)
+
+static func update(coords : Vector2):
+	instance.propagate_light(coords)
 
 func initialize():
 	game_world = GameWorld.instance
 	world_size = Vector2(game_world.gameSave.width, game_world.gameSave.height)
-	for x in world_size.x:
-		for y in world_size.y:
-			
+	var index = 0
+	for x in game_world.gameSave.width:
+		for y in game_world.gameSave.height:
 			var coords = Vector2(x,y)
-			var t = game_world.get_tile(coords)
-			var w = game_world.get_wall(coords)
+			light_dict[coords] = LightInfo.new(index)
 			
-			# connect signals
-			var lambda_broke = func():
-				update(t, false)
-			var lambda_placed = func():
-				update(t, true)
-			t.broke.connect(lambda_broke)
-			t.placed.connect(lambda_placed)
-			w.broke.connect(lambda_broke)
-			w.placed.connect(lambda_placed)
+			calculate_light_level(coords)
 			
-			# Create light tile
-			var l = light_tile_prefab.instantiate()
-			add_child(l)
-			l.global_position = t.global_position
-			t.light_changed.connect(l.update_light)
-
-	# complete an initial lighting pass
-	for y in world_size.y:
-		for x in world_size.x:
-			calculate_light_level(Vector2(x,y))
-
-func update(tile : Tile, placed : bool):
-	if placed and tile.light_source == 0:
-		recalculate_dependents(tile)
-	else:
-		propagate_light(tile)
+			var tform = Transform2D(0, coords*8)
+			multimesh.multimesh.set_instance_transform_2d(index, tform)
+			
+			index += 1
 	
-	
-func propagate_light(tile : Tile):
-	var tiles = [tile]
+func propagate_light(coords : Vector2):
+	var tiles = [coords]
 	while tiles.size() > 0:
-		var coords = tiles[0].coordinates
+		var current_coords = tiles[0]
 		tiles.remove_at(0)
-		if !calculate_light_level(coords):
+		if !calculate_light_level(current_coords):
 			continue
 		for offset in adjacents:
-			var adjacent_coords = coords + offset
-			var adjacent_tile = game_world.get_tile(adjacent_coords)
-			if adjacent_tile != null:
-				tiles.append(adjacent_tile)
+			var adjacent_coords = current_coords + offset
+			if light_dict.has(adjacent_coords):
+				tiles.append(adjacent_coords)
 		
 
-func recalculate_dependents(tile : Tile):
+func recalculate_dependents(coords : Vector2):
 	var tiles = []
-	var unchecked_tiles = [tile]
+	var unchecked_tiles = [coords]
 	while unchecked_tiles.size() > 0:
 		var t = unchecked_tiles[0]
 		for offset in adjacents:
 			var adjacent_coords = t.coordinates + offset
-			var adjacent_tile = game_world.get_tile(adjacent_coords)
-			if adjacent_tile.light_parent == -offset:
-				unchecked_tiles.append(adjacent_tile)
+			if light_dict.has(adjacent_coords):
+				if light_dict[adjacent_coords].parent == -offset or light_dict[adjacent_coords.sky_parent] == -offset:
+					unchecked_tiles.append(adjacent_coords)
 		
-		t.set_light_level(0)
+		light_dict[t].reset()
 		unchecked_tiles.erase(t)
 		tiles.append(t)
 	
@@ -81,29 +95,38 @@ func recalculate_dependents(tile : Tile):
 		propagate_light(t)
 
 func calculate_light_level(coords : Vector2) -> bool:
-	var t = game_world.get_tile(coords)
-	var new_light_level = t.light_level
-	if game_world.get_wall(coords).empty:
-		new_light_level = sky_light_level
-		t.light_parent = Vector2(0,0)
-	elif t.light_source > 0 and t.light_source >= new_light_level:
-		new_light_level = t.light_source
-		t.light_parent = Vector2(0,0)
-	else:
-		var reduction = 4
-		if t.empty:
-			reduction = 1
+	var light_parent = Vector2.ZERO
+	var sky_parent = Vector2.ZERO
+	
+	# light emitted by this tile
+	var tile_resource = game_world.get_tile(coords)
+	var tile_value = tile_resource.light_source
+	
+	# sky light in this tile
+	var sky_value = 0
+	if game_world.is_tile_empty(coords):
+		var wall_resource = game_world.get_wall(coords)
+		if wall_resource.opacity == 0:
+			sky_value = sky_light_level
+	
+	# check light from neighbors
+	for offset in adjacents:
+		if !light_dict.has(coords+offset):
+			continue
 		
-		for offset in adjacents:
-			var adjacent_tile = game_world.get_tile(coords + offset)
-			if adjacent_tile == null:
-				continue
-			if adjacent_tile.light_level-reduction > new_light_level:
-				new_light_level = adjacent_tile.light_level-reduction
-				t.light_parent = offset
-
-	var updated = new_light_level != t.light_level	
-	t.set_light_level(new_light_level)
-	game_world.get_wall(coords).set_light_level(new_light_level)
+		var light_info = light_dict[coords+offset]
+		if light_info.sky_value - tile_resource.opacity > sky_value:
+			sky_value = light_info.sky_value - tile_resource.opacity
+			sky_parent = offset
+		if light_info.value - tile_resource.opacity > tile_value:
+			tile_value = light_info.value - tile_resource.opacity
+			light_parent = offset
+	
+	# compare to old value and return
+	var old_light_info = light_dict[coords]
+	var updated = old_light_info.value != tile_value or old_light_info.sky_value != sky_value
+	
+	if updated:
+		old_light_info.update(tile_value, light_parent, sky_value, sky_parent)
 	
 	return updated

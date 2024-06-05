@@ -57,7 +57,7 @@ func handle_tile_usage(tile : TileItem, delta):
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected tile item
-		tile_grid.set_tile(tile_pos.x, tile_pos.y, tile)
+		tile_grid.place_tile(tile_pos, tile, true)
 		inventory.remove_item(tile)
 		
 		update_preview_sprite(tile_pos)
@@ -75,7 +75,7 @@ func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected multiblock item
-		tile_grid.set_multiblock(tile_pos.x, tile_pos.y, multiblock)
+		tile_grid.place_multiblock(tile_pos, multiblock, true)
 		inventory.remove_item(multiblock)
 		
 		update_preview_sprite(tile_pos)
@@ -95,7 +95,7 @@ func handle_tool_usage(tool : ToolItem, delta):
 			targeted_tiles = [Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)]
 		
 		for tile_pos in targeted_tiles:
-			var distance_to_player = global_position - (tile_grid.global_position+Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
+			var distance_to_player = global_position - (Vector2(tile_pos)*GlobalReferences.TILE_SIZE)
 			if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:
 				targeted_tiles.erase(tile_pos)
 		
@@ -118,7 +118,7 @@ func update_preview_sprite(new_pos : Vector2i):
 	preview_sprite.global_position = tile_grid.global_position+Vector2(new_pos)*GlobalReferences.TILE_SIZE
 	
 	# Don't place a tile if it is out of reach
-	var distance_to_player = global_position - (tile_grid.global_position+Vector2(new_pos)*GlobalReferences.TILE_SIZE)
+	var distance_to_player = global_position - (Vector2(new_pos)*GlobalReferences.TILE_SIZE)
 	if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:
 		for i in preview_intersections.size():
 			preview_intersections[i] = true
@@ -126,21 +126,23 @@ func update_preview_sprite(new_pos : Vector2i):
 		for i in preview_intersections.size():
 			preview_intersections[i] = false
 		var multiblock = held_item as MultiblockItem
+		# placing multiblock
 		if multiblock:
 			for a in multiblock.size.x:
 				for b in multiblock.size.y:
-					var t = tile_grid.get_tile(new_pos + Vector2i(a,b))
-					if t != null and !t.empty:
+					if !tile_grid.is_tile_empty(new_pos + Vector2i(a,b)):
 						preview_intersections[a+b*3] = true
 					else:
 						preview_intersections[a+b*3] = false
-		else: # If the hovered tile is not empty, don't allow placement
-			var t
-			if (held_item as TileItem).is_wall:
-				t = tile_grid.get_wall(new_pos)
+		# placing single tile
+		else:
+			var is_empty
+			var tile_resource = TileHandler.tiles[held_item.tile_id]
+			if tile_resource.wall:
+				is_empty = tile_grid.is_wall_empty(new_pos)
 			else:
-				t = tile_grid.get_tile(new_pos)
-			if t != null and !t.empty:
+				is_empty = tile_grid.is_tile_empty(new_pos)
+			if !is_empty:
 				preview_intersections[0] = true
 			else:
 				preview_intersections[0] = false

@@ -1,0 +1,218 @@
+[gd_scene load_steps=19 format=3 uid="uid://cuq6v60t1om6v"]
+
+[ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
+[ext_resource type="Script" path="res://environment/GameWorld.gd" id="2_k6kdb"]
+[ext_resource type="Script" path="res://environment/create_border.gd" id="3_kujvg"]
+[ext_resource type="PackedScene" uid="uid://bpxr74e0dbb2w" path="res://environment/border.tscn" id="4_v15sp"]
+[ext_resource type="PackedScene" uid="uid://cyc1pjxxak635" path="res://items/pickups/pickup_factory.tscn" id="6_vd6l4"]
+[ext_resource type="PackedScene" uid="uid://dsl7qb62ync4g" path="res://items/pickups/item_pickup.tscn" id="7_ko0fq"]
+[ext_resource type="Script" path="res://crafting/recipe_handler.gd" id="8_0g71x"]
+[ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
+[ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
+[ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
+[ext_resource type="Texture2D" uid="uid://dynro4ny3vyvu" path="res://art/misc_tiles.png" id="9_snchn"]
+[ext_resource type="Texture2D" uid="uid://e3la58k66bn3" path="res://art/misc_walls.png" id="10_u1hrx"]
+[ext_resource type="Texture2D" uid="uid://cod0b6eovd4rd" path="res://art/tree_full.png" id="11_uual4"]
+[ext_resource type="Script" path="res://tiles/tile_handler.gd" id="16_0a2ww"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u10hx"]
+resource_name = "tiles"
+texture = ExtResource("9_snchn")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+0:0/0/custom_data_0 = "dirt"
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+1:0/0/custom_data_0 = "grass"
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+2:0/0/custom_data_0 = "stone"
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+3:0/0/custom_data_0 = "stone brick"
+4:0/0 = 0
+4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+4:0/0/physics_layer_0/angular_velocity = 0.0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+4:0/0/custom_data_0 = "wood"
+5:0/0 = 0
+5:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+5:0/0/physics_layer_0/angular_velocity = 0.0
+5:0/0/custom_data_0 = "torch"
+6:0/0 = 0
+6:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+6:0/0/physics_layer_0/angular_velocity = 0.0
+6:0/0/custom_data_0 = "chest 1"
+7:0/0 = 0
+7:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+7:0/0/physics_layer_0/angular_velocity = 0.0
+7:0/0/custom_data_0 = "chest 2"
+8:0/0 = 0
+8:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+8:0/0/physics_layer_0/angular_velocity = 0.0
+8:0/0/custom_data_0 = "workbench 1"
+9:0/0 = 0
+9:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+9:0/0/physics_layer_0/angular_velocity = 0.0
+9:0/0/custom_data_0 = "workbench 2"
+10:0/0 = 0
+10:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+10:0/0/physics_layer_0/angular_velocity = 0.0
+10:0/0/custom_data_0 = "furnace 1"
+10:1/0 = 0
+10:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+10:1/0/physics_layer_0/angular_velocity = 0.0
+10:1/0/custom_data_0 = "furnace 3"
+11:1/0 = 0
+11:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+11:1/0/physics_layer_0/angular_velocity = 0.0
+11:1/0/custom_data_0 = "furnace 4"
+11:0/0 = 0
+11:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+11:0/0/physics_layer_0/angular_velocity = 0.0
+11:0/0/custom_data_0 = "furnace 2"
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/custom_data_0 = "empty tile"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jq3m8"]
+texture = ExtResource("10_u1hrx")
+texture_region_size = Vector2i(12, 12)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/custom_data_0 = "stone brick wall"
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/custom_data_0 = "dirt wall"
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/custom_data_0 = "stone wall"
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+3:0/0/custom_data_0 = "wood wall"
+4:0/0 = 0
+4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+4:0/0/physics_layer_0/angular_velocity = 0.0
+4:0/0/custom_data_0 = "empty wall"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j0hxh"]
+texture = ExtResource("11_uual4")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/custom_data_0 = "tree top 1"
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/custom_data_0 = "tree top 2"
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/custom_data_0 = "tree top 3"
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/custom_data_0 = "tree top 4"
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/custom_data_0 = "tree top 5"
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0/custom_data_0 = "tree top 6"
+1:2/0 = 0
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0/custom_data_0 = "tree trunk right"
+2:2/0 = 0
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0/custom_data_0 = "tree branch right"
+0:3/0 = 0
+0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:3/0/physics_layer_0/angular_velocity = 0.0
+0:3/0/custom_data_0 = "tree branch left"
+1:3/0 = 0
+1:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:3/0/physics_layer_0/angular_velocity = 0.0
+1:3/0/custom_data_0 = "tree trunk left"
+1:4/0 = 0
+1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:4/0/physics_layer_0/angular_velocity = 0.0
+1:4/0/custom_data_0 = "tree trunk"
+1:5/0 = 0
+1:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:5/0/physics_layer_0/angular_velocity = 0.0
+1:5/0/custom_data_0 = "tree base"
+
+[sub_resource type="TileSet" id="TileSet_ydjl8"]
+tile_size = Vector2i(8, 8)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+custom_data_layer_0/name = "name"
+custom_data_layer_0/type = 4
+sources/3 = SubResource("TileSetAtlasSource_u10hx")
+sources/4 = SubResource("TileSetAtlasSource_jq3m8")
+sources/6 = SubResource("TileSetAtlasSource_j0hxh")
+
+[node name="Main" type="Node2D"]
+
+[node name="HUD" parent="." instance=ExtResource("1_l83f0")]
+
+[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player", "tiles_tilemap")]
+script = ExtResource("2_k6kdb")
+player = NodePath("../Player")
+tiles_tilemap = NodePath("Tiles")
+
+[node name="Tiles" type="TileMap" parent="GameWorld"]
+tile_set = SubResource("TileSet_ydjl8")
+format = 2
+layer_0/name = "tiles"
+layer_1/name = "walls"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = -1
+layer_1/tile_data = PackedInt32Array()
+
+[node name="Border" type="Node2D" parent="GameWorld"]
+script = ExtResource("3_kujvg")
+border_prefab = ExtResource("4_v15sp")
+
+[node name="Player" parent="." instance=ExtResource("8_2mjqa")]
+position = Vector2(28, -25)
+
+[node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("9_rwkjp")]
+player = NodePath("../Player")
+
+[node name="pickup_factory" parent="." instance=ExtResource("6_vd6l4")]
+pickup_scene = ExtResource("7_ko0fq")
+
+[node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
+attempt_frequency = 1
+
+[node name="RecipeHandler" type="Node" parent="."]
+script = ExtResource("8_0g71x")
+
+[node name="TileHandler" type="Node" parent="."]
+script = ExtResource("16_0a2ww")
+
+[connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
+[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]

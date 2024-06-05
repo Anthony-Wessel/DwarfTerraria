@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://cjbiwjrxuaj5v"]
+
+[ext_resource type="Resource" uid="uid://bymfb7m21hft0" path="res://items/walls/Wstone.tres" id="1_1pgj6"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_vhrt1"]
+
+[resource]
+script = ExtResource("2_vhrt1")
+id = 10
+name = "stone wall"
+hardness = 0
+health = 1.0
+dropped_item = ExtResource("1_1pgj6")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = true
+opacity = 3

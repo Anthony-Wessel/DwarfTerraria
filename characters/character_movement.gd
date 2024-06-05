@@ -2,7 +2,8 @@ class_name CharacterMovement
 extends CharacterBody2D
 
 @export var sprite_holder : Node2D
-@export var obstacle_detector : TileDetector
+@export var step_detector : TileDetector
+@export var obstacle_space_detector : TileDetector
 
 var gravity = 200
 @export var jump_force = -70
@@ -62,18 +63,22 @@ func _physics_process(delta):
 	else:
 		velocity.y += gravity*delta
 	
-	if obstacle_detector.is_floor_detected() and is_on_wall() and horizontal != 0:
-		var tile = obstacle_detector.detected_tiles[0] as Tile
-		if tile != null:
-			var up = tile.position/8 + Vector2(0,-1)
-			var up2 = tile.position/8 + Vector2(0,-2)
-			if !GameWorld.instance.get_tile(up).collision_enabled and !GameWorld.instance.get_tile(up2).collision_enabled:
-				var character_tile_gap = global_position.y - 8*floor(tile.position.y/GlobalReferences.TILE_SIZE)
-				velocity.y = 0
-				position = position + Vector2(0,-character_tile_gap-0.8)
-				var tween = get_tree().create_tween()
-				$SpriteHolder.position = Vector2(0,character_tile_gap)
-				tween.tween_property($SpriteHolder, "position", Vector2.ZERO, 0.1)
+	
+	if step_detector.is_floor_detected() and is_on_wall() and is_on_floor() and horizontal != 0:
+		if !obstacle_space_detector.is_floor_detected():
+			velocity.y = 0
+			position = position + Vector2(0, -8.1)
+			var tween = get_tree().create_tween()
+			$SpriteHolder.position = Vector2(0,8)
+			tween.tween_property($SpriteHolder, "position", Vector2.ZERO, 0.1)
+
+
+				#var character_tile_gap = global_position.y - 8*floor(tile.position.y/GlobalReferences.TILE_SIZE)
+				#velocity.y = 0
+				#position = position + Vector2(0,-character_tile_gap-0.8)
+				#var tween = get_tree().create_tween()
+				#$SpriteHolder.position = Vector2(0,character_tile_gap)
+				#tween.tween_property($SpriteHolder, "position", Vector2.ZERO, 0.1)
 	
 	
 	move_and_slide()

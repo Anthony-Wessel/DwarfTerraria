@@ -5,9 +5,7 @@
 
 [resource]
 script = ExtResource("1_m6ocs")
-mining_tier = 0
-mining_time = 1.1
-is_wall = false
+tile_id = 2
 name = "grass"
 texture = ExtResource("1_ta612")
 held_texture = ExtResource("1_ta612")

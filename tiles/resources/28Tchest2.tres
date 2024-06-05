@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=2 format=3 uid="uid://chbreqqr88hjs"]
+
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_qc1ny"]
+
+[resource]
+script = ExtResource("1_qc1ny")
+id = 28
+name = "furnace 1"
+hardness = 0
+health = 0.0
+potential_supports = Array[Vector2]([Vector2(-1, 0)])
+light_source = 0
+wall = false
+opacity = 2
