@@ -3,3 +3,4 @@ extends Item
 
 @export var size : Vector2i
 @export var tile_ids : Array[int]
+@export var prefab : PackedScene

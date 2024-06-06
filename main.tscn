@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=23 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="Shader" path="res://environment/lighting/lighting.gdshader" id="1_gcpuu"]
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
@@ -16,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://bp4qkuukddqqv" path="res://characters/player/player.tscn" id="8_2mjqa"]
 [ext_resource type="PackedScene" uid="uid://q5n4ldqm0wh3" path="res://characters/enemies/enemy_spawner.tscn" id="8_38sfi"]
 [ext_resource type="PackedScene" uid="uid://bq1evu1pajf06" path="res://camera and ui/camera.tscn" id="9_rwkjp"]
+[ext_resource type="Script" path="res://environment/miner.gd" id="11_n0bt7"]
+[ext_resource type="Texture2D" uid="uid://bi30i5t2jevl4" path="res://art/tiles/tileBreakAnimation.png" id="11_vim8l"]
 [ext_resource type="Script" path="res://tiles/tile_handler.gd" id="16_0a2ww"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hy40h"]
@@ -49,6 +51,7 @@ script = ExtResource("1_uies6")
 vport = NodePath("LightingViewport")
 
 [node name="LightingViewport" type="SubViewport" parent="Post Processing/Lighting/TextureRect"]
+transparent_bg = true
 size = Vector2i(640, 360)
 
 [node name="LightingCamera" type="Camera2D" parent="Post Processing/Lighting/TextureRect/LightingViewport" node_paths=PackedStringArray("player")]
@@ -67,10 +70,13 @@ script = ExtResource("5_0u0hv")
 
 [node name="HUD" parent="." instance=ExtResource("1_l83f0")]
 
-[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player", "tiles_tilemap")]
+[node name="GameWorld" type="Node2D" parent="." node_paths=PackedStringArray("player", "multiblocks_root", "tiles_tilemap")]
 script = ExtResource("2_k6kdb")
 player = NodePath("../Player")
+multiblocks_root = NodePath("Multiblocks")
 tiles_tilemap = NodePath("Tiles")
+
+[node name="Multiblocks" type="Node2D" parent="GameWorld"]
 
 [node name="Tiles" type="TileMap" parent="GameWorld"]
 tile_set = ExtResource("5_svhtl")
@@ -87,6 +93,29 @@ layer_1/tile_data = PackedInt32Array()
 [node name="Border" type="Node2D" parent="GameWorld"]
 script = ExtResource("3_kujvg")
 border_prefab = ExtResource("4_v15sp")
+
+[node name="Miner" type="Node2D" parent="."]
+script = ExtResource("11_n0bt7")
+
+[node name="TileBreak1" type="Sprite2D" parent="Miner"]
+texture = ExtResource("11_vim8l")
+centered = false
+hframes = 4
+
+[node name="TileBreak2" type="Sprite2D" parent="Miner"]
+texture = ExtResource("11_vim8l")
+centered = false
+hframes = 4
+
+[node name="TileBreak3" type="Sprite2D" parent="Miner"]
+texture = ExtResource("11_vim8l")
+centered = false
+hframes = 4
+
+[node name="TileBreak4" type="Sprite2D" parent="Miner"]
+texture = ExtResource("11_vim8l")
+centered = false
+hframes = 4
 
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)
@@ -106,7 +135,7 @@ script = ExtResource("8_0g71x")
 [node name="TileHandler" type="Node" parent="."]
 script = ExtResource("16_0a2ww")
 
-[connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
-[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]
 [connection signal="world_finished_loading" from="GameWorld" to="Post Processing/Lighting/TextureRect/LightingViewport/LightingCamera" method="set_bounds"]
 [connection signal="world_finished_loading" from="GameWorld" to="Post Processing/Lighting/TextureRect/LightingViewport/LightManager" method="initialize"]
+[connection signal="world_finished_loading" from="GameWorld" to="GameWorld/Border" method="create_border"]
+[connection signal="world_finished_loading" from="GameWorld" to="Camera" method="set_bounds"]

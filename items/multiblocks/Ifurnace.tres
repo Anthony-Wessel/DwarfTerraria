@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="MultiblockItem" load_steps=3 format=3 uid="uid://bwd3v5xwl7v8n"]
+[gd_resource type="Resource" script_class="MultiblockItem" load_steps=4 format=3 uid="uid://bwd3v5xwl7v8n"]
 
 [ext_resource type="Texture2D" uid="uid://c7hbh3rlgcygr" path="res://art/multiblocks/furnace.png" id="1_l8ndd"]
 [ext_resource type="Script" path="res://items/multiblock_item.gd" id="1_v6kiy"]
+[ext_resource type="PackedScene" uid="uid://dg1pdvovspval" path="res://environment/multiblocks/prefabs/furnace.tscn" id="2_vxi5k"]
 
 [resource]
 script = ExtResource("1_v6kiy")
 size = Vector2i(2, 2)
 tile_ids = Array[int]([29, 30, 31, 32])
+prefab = ExtResource("2_vxi5k")
 name = "Furnace"
 texture = ExtResource("1_l8ndd")
 held_texture = ExtResource("1_l8ndd")

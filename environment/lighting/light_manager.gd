@@ -17,19 +17,25 @@ class LightInfo:
 	var sky_value := 0
 	var parent := Vector2.ZERO
 	var sky_parent := Vector2.ZERO
+	var current_daylight := 30.0
 	
 	func _init(multimesh_index : int):
 		index = multimesh_index
 		value = -1
 	
-	func update(v : int, p : Vector2, s : int, sp : Vector2):
+	func set_values(v : int, p : Vector2, s : int, sp : Vector2):
 		value = v
 		parent = p
 		sky_value = s
 		sky_parent = sp
 		
-		var color = Color.WHITE * max(value, sky_value)/30.0
-		color.a = 1
+		update(current_daylight)
+	
+	func update(daylight : float):
+		current_daylight = daylight
+		
+		var sky_light_lost = 30.0 - sky_value
+		var color = Color.WHITE * (max(min(27.0, value), daylight-sky_light_lost)/27.0)
 		LightManager.update_mesh(index, color)
 	
 	func reset():
@@ -40,6 +46,11 @@ class LightInfo:
 
 func _init():
 	instance = self
+
+static func set_daylight(daylight : float):
+	for x in instance.world_size.x:
+		for y in instance.world_size.y:
+			instance.light_dict[Vector2(x,y)].update(daylight)
 
 static func update_mesh(index : int, color : Color):
 	instance.multimesh.multimesh.set_instance_color(index, color)
@@ -127,6 +138,6 @@ func calculate_light_level(coords : Vector2) -> bool:
 	var updated = old_light_info.value != tile_value or old_light_info.sky_value != sky_value
 	
 	if updated:
-		old_light_info.update(tile_value, light_parent, sky_value, sky_parent)
+		old_light_info.set_values(tile_value, light_parent, sky_value, sky_parent)
 	
 	return updated

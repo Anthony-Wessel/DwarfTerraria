@@ -2,6 +2,7 @@ extends Node2D
 
 var held_item : Item
 var tile_grid : GameWorld
+var miner : Miner
 @export var inventory : Inventory
 
 @export var held_prefab : HeldItem
@@ -15,6 +16,7 @@ func _init():
 
 func _ready():
 	tile_grid = GameWorld.instance
+	miner = Miner.instance
 	for i in 9:
 		preview_intersections.append(false)
 
@@ -99,7 +101,7 @@ func handle_tool_usage(tool : ToolItem, delta):
 			if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:
 				targeted_tiles.erase(tile_pos)
 		
-		tile_grid.mine_tile(targeted_tiles, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
+		miner.instance.mine_tile(targeted_tiles, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
 				
 
 func handle_weapon_usage(weapon : WeaponItem, delta):

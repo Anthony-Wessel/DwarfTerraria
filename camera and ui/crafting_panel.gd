@@ -55,6 +55,8 @@ func select_recipe(recipe : Recipe):
 			selected_recipe_reagents[i].visible = false
 
 func craft():
+	if selected_recipe == null:
+		return
 	var inventory = Player.instance.inventory
 	for reagent in selected_recipe.reagents:
 		if !inventory.has_items(reagent.item, reagent.count):

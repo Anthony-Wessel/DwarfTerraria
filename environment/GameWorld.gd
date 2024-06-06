@@ -7,6 +7,8 @@ static var instance : GameWorld
 var gameSave : GameSave
 @export var player : CharacterMovement
 
+@export var multiblocks_root : Node2D
+
 @export var tiles_tilemap : TileMap
 var tile_dict : Dictionary
 
@@ -15,12 +17,20 @@ var walls_list = []
 
 signal world_finished_loading
 
+var save_frequency = 1 # times per second
+var last_save_time = 0
+
 func _init():
 	instance = self
 
 func _ready():
 	generate_tile_dict()
 	load_game()
+
+func _process(delta):
+	if Time.get_ticks_msec() - last_save_time > save_frequency * 1000:
+		save_game()
+		last_save_time = Time.get_ticks_msec()
 
 func generate_tile_dict():
 	var tile_set = tiles_tilemap.tile_set
@@ -78,46 +88,12 @@ func is_wall_empty(coords : Vector2) -> bool:
 func get_player_spawn():
 	return gameSave.player_spawn
 
+
 func get_tile(coords : Vector2) -> TileResource:
 	return TileHandler.tiles[ tile_list[coords.x][coords.y] ]
 
 func get_wall(coords : Vector2) -> TileResource:
 	return TileHandler.tiles[ walls_list[coords.x][coords.y] ]
-
-
-var previously_mined_tiles : Dictionary
-var previous_tool_wall := false
-func mine_tile(coords_list : Array[Vector2i], mining_tier, amount : float, wall : bool):
-	var changed := false
-	
-	# detect tool swap
-	if previous_tool_wall != wall:
-		previously_mined_tiles.clear()
-		previous_tool_wall = wall
-	
-	# remove old tiles
-	for coords in previously_mined_tiles.keys():
-		if !coords_list.has(coords):
-			previously_mined_tiles.erase(coords)
-	
-	# add new tiles
-	for coords in coords_list:
-		if !previously_mined_tiles.has(coords):
-			previously_mined_tiles[coords] = 0
-	
-	for coords in previously_mined_tiles.keys():
-		if wall and is_wall_empty(coords) or !wall and is_tile_empty(coords):
-			previously_mined_tiles[coords] = -1
-		else:
-			previously_mined_tiles[coords] += amount/previously_mined_tiles.size()
-		
-		var tile_resource
-		if wall: tile_resource = get_wall(coords)
-		else : tile_resource = get_tile(coords)
-		
-		# tile destroyed
-		if previously_mined_tiles[coords] >= tile_resource.health:
-			break_tile(coords, wall)
 
 
 func break_tile(coords : Vector2, wall : bool):
@@ -136,6 +112,7 @@ func break_tile(coords : Vector2, wall : bool):
 
 var neighbor_offsets = [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]
 func update_neighbors(coords : Vector2i, wall : bool):
+	await get_tree().create_timer(0.02).timeout
 	for offset in neighbor_offsets:
 		update(coords+offset, wall)
 
@@ -165,9 +142,7 @@ func set_tile(coords : Vector2, tile_resource : TileResource, save : bool):
 	
 	LightManager.update(coords)
 	
-	if save:
-		gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
-		save_game()
+	gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
 
 func set_wall(coords : Vector2, tile_resource : TileResource, save : bool):
 	walls_list[coords.x][coords.y] = tile_resource.id
@@ -175,9 +150,7 @@ func set_wall(coords : Vector2, tile_resource : TileResource, save : bool):
 	
 	LightManager.update(coords)
 	
-	if save:
-		gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
-		save_game()
+	gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
 
 func place_tile(coords : Vector2, item : TileItem, save := true):
 	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
@@ -192,14 +165,16 @@ func place_tile(coords : Vector2, item : TileItem, save := true):
 		set_tile(coords, tile_resource, save)
 
 func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem, save := true):
-	#var multiblock = multiblock_item.prefab.instantiate() as Multiblock
-	#multiblock.position = coords * GlobalReferences.TILE_SIZE
-	#add_child(multiblock)
+	var multiblock = multiblock_item.prefab.instantiate()
+	multiblock.position = coords * GlobalReferences.TILE_SIZE
+	multiblocks_root.add_child(multiblock)
 	
 	for i in multiblock_item.tile_ids.size():
 		var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
 		var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
 		set_tile(coords + offset, tile_resource, save)
+	
+	multiblock.setup(self, coords)
 
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
