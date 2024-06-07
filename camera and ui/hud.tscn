@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvjhsqiap8w8s"]
+[gd_scene load_steps=9 format=3 uid="uid://dvjhsqiap8w8s"]
 
 [ext_resource type="Script" path="res://camera and ui/hud.gd" id="1_buxde"]
 [ext_resource type="Script" path="res://camera and ui/ui_scale.gd" id="2_cq62e"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bkcyhj82o36tl" path="res://camera and ui/crafting_panel.tscn" id="6_g0on3"]
 [ext_resource type="PackedScene" uid="uid://76i0rmsk2qyg" path="res://camera and ui/hotbar.tscn" id="7_jj5i1"]
 [ext_resource type="PackedScene" uid="uid://b4ql5xmwf0x1y" path="res://camera and ui/fps_counter.tscn" id="7_rt81i"]
+[ext_resource type="Script" path="res://camera and ui/display_time.gd" id="8_cpesm"]
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("hotbar", "hand", "storage", "crafting")]
 script = ExtResource("1_buxde")
@@ -39,5 +40,11 @@ offset_bottom = -720.0
 
 [node name="FPS Counter" parent="Scale" instance=ExtResource("7_rt81i")]
 layout_mode = 1
-offset_top = -26.0
-offset_right = 19.0
+
+[node name="Time" type="Label" parent="Scale"]
+layout_mode = 0
+offset_top = 680.0
+offset_right = 40.0
+offset_bottom = 703.0
+text = "10:00"
+script = ExtResource("8_cpesm")

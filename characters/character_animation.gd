@@ -4,7 +4,9 @@ extends AnimationPlayer
 var anim_locked := false
 
 func _process(delta):
-	if character_movement.velocity.length() > 0:
+	if character_movement.velocity.y != 0:
+		_set_animation("jump")
+	elif character_movement.velocity.x != 0:
 		_set_animation("run")
 	else:
 		_set_animation("idle")

@@ -8,8 +8,6 @@ func _process(delta):
 	if frame_times.size() > 5:
 		frame_times.remove_at(0)
 
-	
-
 func update_label():
 	var sum = 0.0
 	for x in frame_times:

@@ -17,7 +17,6 @@ class LightInfo:
 	var sky_value := 0
 	var parent := Vector2.ZERO
 	var sky_parent := Vector2.ZERO
-	var current_daylight := 30.0
 	
 	func _init(multimesh_index : int):
 		index = multimesh_index
@@ -29,13 +28,11 @@ class LightInfo:
 		sky_value = s
 		sky_parent = sp
 		
-		update(current_daylight)
+		update()
 	
-	func update(daylight : float):
-		current_daylight = daylight
-		
+	func update():
 		var sky_light_lost = 30.0 - sky_value
-		var color = Color.WHITE * (max(min(27.0, value), daylight-sky_light_lost)/27.0)
+		var color = Color(value, sky_light_lost, 0)
 		LightManager.update_mesh(index, color)
 	
 	func reset():
@@ -47,10 +44,15 @@ class LightInfo:
 func _init():
 	instance = self
 
+func _process(delta):
+	if DayNightCycle.instance.is_shifting():
+		set_daylight(DayNightCycle.instance.get_daylight())
+
 static func set_daylight(daylight : float):
-	for x in instance.world_size.x:
-		for y in instance.world_size.y:
-			instance.light_dict[Vector2(x,y)].update(daylight)
+	instance.multimesh.material.set_shader_parameter("daylight", daylight)
+	#for x in instance.world_size.x:
+	#	for y in instance.world_size.y:
+	#		instance.light_dict[Vector2(x,y)].update(daylight)
 
 static func update_mesh(index : int, color : Color):
 	instance.multimesh.multimesh.set_instance_color(index, color)
@@ -73,7 +75,13 @@ func initialize():
 			multimesh.multimesh.set_instance_transform_2d(index, tform)
 			
 			index += 1
-	
+
+
+
+#################################
+###### Handle light changes #####
+#################################
+
 func propagate_light(coords : Vector2):
 	var tiles = [coords]
 	while tiles.size() > 0:
