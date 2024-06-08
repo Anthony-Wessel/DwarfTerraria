@@ -58,5 +58,5 @@ func _process(delta):
 func _on_attack_collision():
 	set_circle_state()
 
-func on_hit(damage, collision_position):
+func on_hit(_damage, _collision_position):
 	set_circle_state()

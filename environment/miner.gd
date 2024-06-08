@@ -16,9 +16,7 @@ func _ready():
 
 var previously_mined_tiles : Dictionary
 var previous_tool_wall := false
-func mine_tile(coords_list : Array[Vector2i], mining_tier, amount : float, wall : bool):
-	var changed := false
-	
+func mine_tile(coords_list : Array[Vector2i], _mining_tier, amount : float, wall : bool):
 	# detect tool swap
 	if previous_tool_wall != wall:
 		previously_mined_tiles.clear()

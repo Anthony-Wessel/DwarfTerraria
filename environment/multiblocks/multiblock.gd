@@ -29,6 +29,6 @@ func setup(game_world : GameWorld, coords : Vector2):
 	world = game_world
 	tile = world.get_tile(coords)
 
-func _process(delta):
+func _process(_delta):
 	if world.get_tile(tile_coords) != tile:
 		queue_free()

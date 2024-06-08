@@ -75,7 +75,7 @@ func _input(event):
 	else:
 		$TextureRect.texture = held_stack.item.texture
 
-func _process(delta):
+func _process(_delta):
 	$TextureRect.position = get_local_mouse_position() - Vector2(32,32)
 
 func on_inventory_panel_closed():

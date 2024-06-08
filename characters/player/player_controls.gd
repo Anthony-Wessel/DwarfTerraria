@@ -9,7 +9,7 @@ static var instance
 func _init():
 	instance = self
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_pressed("Right"):
 		character_movement.set_horizontal_movement(1)
 	elif Input.is_action_pressed("Left"):

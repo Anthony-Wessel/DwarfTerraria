@@ -1,7 +1,6 @@
 class_name GameWorld
 extends Node2D
 
-static var tile_scene = preload("res://environment/tile.tscn")
 static var instance : GameWorld
 
 var gameSave : GameSave
@@ -27,7 +26,7 @@ func _ready():
 	generate_tile_dict()
 	load_game()
 
-func _process(delta):
+func _process(_delta):
 	if Time.get_ticks_msec() - last_save_time > save_frequency * 1000:
 		save_game()
 		last_save_time = Time.get_ticks_msec()
@@ -43,8 +42,9 @@ func generate_tile_dict():
 		for tile_index in source.get_tiles_count():
 			var coords := source.get_tile_id(tile_index)
 			var tile_data = source.get_tile_data(coords, 0)
-			var name = tile_data.get_custom_data_by_layer_id(0)
-			tile_dict[name] = [source_id, coords]
+			var tile_name = tile_data.get_custom_data_by_layer_id(0)
+			var tile_texture = source
+			tile_dict[tile_name] = [source_id, coords]
 
 func load_game():
 	# Create new game save
@@ -100,10 +100,10 @@ func break_tile(coords : Vector2, wall : bool):
 	var tile_resource
 	if wall:
 		tile_resource = get_wall(coords)
-		set_wall(coords, TileHandler.EMPTY_WALL, true)
+		set_wall(coords, TileHandler.EMPTY_WALL)
 	else:
 		tile_resource = get_tile(coords)
-		set_tile(coords, TileHandler.EMPTY_TILE, true)
+		set_tile(coords, TileHandler.EMPTY_TILE)
 	
 	if tile_resource.dropped_item != null:
 		PickupFactory.spawn_pickup(tile_resource.dropped_item, coords * GlobalReferences.TILE_SIZE + Vector2(4,4))
@@ -117,7 +117,7 @@ func update_neighbors(coords : Vector2i, wall : bool):
 		update(coords+offset, wall)
 
 func update(coords : Vector2, wall : bool):
-	var changed := false
+	#var changed := false
 	
 	var tile_resource : TileResource
 	if wall : tile_resource = get_wall(coords)
@@ -131,12 +131,12 @@ func update(coords : Vector2, wall : bool):
 				break
 		if !support_found:
 			break_tile(coords, wall)
-			changed = true
+			#changed = true
 	
 	#if changed:
 		#update_neighbors(coords, wall)
 
-func set_tile(coords : Vector2, tile_resource : TileResource, save : bool):
+func set_tile(coords : Vector2, tile_resource : TileResource):
 	tile_list[coords.x][coords.y] = tile_resource.id
 	tiles_tilemap.set_cell(0, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
@@ -144,7 +144,7 @@ func set_tile(coords : Vector2, tile_resource : TileResource, save : bool):
 	
 	gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
 
-func set_wall(coords : Vector2, tile_resource : TileResource, save : bool):
+func set_wall(coords : Vector2, tile_resource : TileResource):
 	walls_list[coords.x][coords.y] = tile_resource.id
 	tiles_tilemap.set_cell(1, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
@@ -152,7 +152,7 @@ func set_wall(coords : Vector2, tile_resource : TileResource, save : bool):
 	
 	gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
 
-func place_tile(coords : Vector2, item : TileItem, save := true):
+func place_tile(coords : Vector2, item : TileItem):
 	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
 		push_error("Trying to place tile out of bounds: ", item.name, " : ", coords)
 		return
@@ -160,19 +160,20 @@ func place_tile(coords : Vector2, item : TileItem, save := true):
 	var tile_resource = TileHandler.tiles[item.tile_id]
 	
 	if tile_resource.wall:
-		set_wall(coords, tile_resource, save)
+		set_wall(coords, tile_resource)
 	else:
-		set_tile(coords, tile_resource, save)
+		set_tile(coords, tile_resource)
 
-func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem, save := true):
+func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem):
 	var multiblock = multiblock_item.prefab.instantiate()
 	multiblock.position = coords * GlobalReferences.TILE_SIZE
 	multiblocks_root.add_child(multiblock)
 	
 	for i in multiblock_item.tile_ids.size():
 		var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
+		@warning_ignore("integer_division")
 		var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
-		set_tile(coords + offset, tile_resource, save)
+		set_tile(coords + offset, tile_resource)
 	
 	multiblock.setup(self, coords)
 

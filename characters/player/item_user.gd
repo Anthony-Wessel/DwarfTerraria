@@ -46,7 +46,7 @@ func _process(delta):
 	elif held_item is WeaponItem:
 		handle_weapon_usage(held_item, delta)
 
-func handle_tile_usage(tile : TileItem, delta):
+func handle_tile_usage(tile : TileItem, _delta):
 	# Determine what tile the mouse is hovering over
 	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 	if tile_pos != prev_pos:
@@ -59,12 +59,12 @@ func handle_tile_usage(tile : TileItem, delta):
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected tile item
-		tile_grid.place_tile(tile_pos, tile, true)
+		tile_grid.place_tile(tile_pos, tile)
 		inventory.remove_item(tile)
 		
 		update_preview_sprite(tile_pos)
 
-func handle_multiblock_usage(multiblock : MultiblockItem, delta):
+func handle_multiblock_usage(multiblock : MultiblockItem, _delta):
 	# Determine what tile the mouse is hovering over
 	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 	if tile_pos != prev_pos:
@@ -77,7 +77,7 @@ func handle_multiblock_usage(multiblock : MultiblockItem, delta):
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected multiblock item
-		tile_grid.place_multiblock(tile_pos, multiblock, true)
+		tile_grid.place_multiblock(tile_pos, multiblock)
 		inventory.remove_item(multiblock)
 		
 		update_preview_sprite(tile_pos)
@@ -104,7 +104,7 @@ func handle_tool_usage(tool : ToolItem, delta):
 		miner.instance.mine_tile(targeted_tiles, tool.mining_tier, tool.mining_speed*delta, tool.mines_walls)
 				
 
-func handle_weapon_usage(weapon : WeaponItem, delta):
+func handle_weapon_usage(weapon : WeaponItem, _delta):
 	if Input.is_action_just_pressed("mb_left"):
 		held_prefab.use("use_weapon", weapon.speed)
 

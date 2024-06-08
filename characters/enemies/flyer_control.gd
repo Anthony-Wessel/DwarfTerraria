@@ -16,7 +16,7 @@ func _ready():
 	player = Player.instance
 	get_tree().create_timer(3).timeout.connect(swap_states)
 
-func _process(delta):
+func _process(_delta):
 	if current_state == State.FLAPPING:
 		pass
 	elif current_state == State.DIVING:
@@ -39,6 +39,6 @@ func on_hit_player():
 	current_state = State.RECOVERING
 	get_tree().create_timer(2).timeout.connect(swap_states)
 
-func on_hit(damage : float, collision_position : Vector2):
+func on_hit(_damage : float, _collision_position : Vector2):
 	current_state = State.RECOVERING
 	get_tree().create_timer(2).timeout.connect(swap_states)

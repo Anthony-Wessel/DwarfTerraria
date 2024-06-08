@@ -5,7 +5,7 @@ var player : Node2D
 @export var floor_detector : TileDetector
 @export var obstacle_detector : TileDetector
 
-func _process(delta):
+func _process(_delta):
 	if player == null:
 		player = Player.instance
 		return

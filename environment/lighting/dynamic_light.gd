@@ -9,7 +9,7 @@ func _ready():
 	
 	DynamicLights.attach_light(self)
 
-func _process(delta):
+func _process(_delta):
 	if node_to_follow == null:
 		queue_free()
 	else:

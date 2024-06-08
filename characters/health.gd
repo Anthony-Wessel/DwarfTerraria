@@ -10,7 +10,7 @@ var health : int
 func _ready():
 	health = max_health
 
-func handle_hit(damage : float, collision_position : Vector2):
+func handle_hit(damage : int, _collision_position : Vector2):
 	health -= damage
 	if health <= 0:
 		dead.emit()

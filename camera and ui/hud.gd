@@ -11,9 +11,6 @@ static var instance
 func _init():
 	instance = self
 
-func _input(event):
-	var key_event = event as InputEventKey
-
 func open_storage(inventory : Inventory):
 	storage.open_inventory(inventory)
 	hotbar.inventory_root.visible = true

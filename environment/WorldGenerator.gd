@@ -49,7 +49,8 @@ static func GenerateWorld(worldResource : GameSave):
 		heights.append(heights[i-1] + increment)
 		remaining_tiles -= 1
 	
-	var midpoint = worldResource.width / 2
+	@warning_ignore("integer_division")
+	var midpoint : int = worldResource.width / 2
 	worldResource.player_spawn = GlobalReferences.TILE_SIZE*Vector2(midpoint, worldResource.height-heights[midpoint])
 	
 	var columns = []

@@ -44,15 +44,12 @@ class LightInfo:
 func _init():
 	instance = self
 
-func _process(delta):
+func _process(_delta):
 	if DayNightCycle.instance.is_shifting():
 		set_daylight(DayNightCycle.instance.get_daylight())
 
-static func set_daylight(daylight : float):
+func set_daylight(daylight : float):
 	instance.multimesh.material.set_shader_parameter("daylight", daylight)
-	#for x in instance.world_size.x:
-	#	for y in instance.world_size.y:
-	#		instance.light_dict[Vector2(x,y)].update(daylight)
 
 static func update_mesh(index : int, color : Color):
 	instance.multimesh.multimesh.set_instance_color(index, color)

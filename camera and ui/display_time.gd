@@ -1,4 +1,4 @@
 extends Label
 
-func _process(delta):
+func _process(_delta):
 	text = DayNightCycle.instance.get_clock_time()

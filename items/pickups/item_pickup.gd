@@ -8,6 +8,6 @@ func enable(item_ : Item, position_ : Vector2):
 	$Sprite2D.texture = item.texture
 	position = position_
 
-func _on_player_entered(body):
+func _on_player_entered(_body):
 	Player.instance.inventory.add_item(item)
 	queue_free()

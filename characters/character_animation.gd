@@ -3,7 +3,7 @@ extends AnimationPlayer
 @export var character_movement : CharacterMovement
 var anim_locked := false
 
-func _process(delta):
+func _process(_delta):
 	if character_movement.velocity.y != 0:
 		_set_animation("jump")
 	elif character_movement.velocity.x != 0:

@@ -4,7 +4,7 @@ extends CharacterBody2D
 func update_velocity(new_velocity : Vector2):
 	velocity = new_velocity
 
-func _process(delta):
+func _process(_delta):
 	if velocity.x < 0:
 		$SpriteHolder.scale.x = -1
 	elif velocity.x > 0:
