@@ -119,6 +119,13 @@ func update_preview_sprite(new_pos : Vector2i):
 	preview_sprite.update_texture(held_item.texture)
 	preview_sprite.global_position = tile_grid.global_position+Vector2(new_pos)*GlobalReferences.TILE_SIZE
 	
+	if preview_sprite.is_overlapping_player():
+		for i in preview_intersections.size():
+			preview_intersections[i] = true
+			
+		preview_sprite.update_intersections(preview_intersections)
+		return
+	
 	# Don't place a tile if it is out of reach
 	var distance_to_player = global_position - (Vector2(new_pos)*GlobalReferences.TILE_SIZE)
 	if distance_to_player.length() > 5*GlobalReferences.TILE_SIZE:

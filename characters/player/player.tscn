@@ -109,6 +109,9 @@ count = 1
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(0.5, -7.5)
+
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
 "": SubResource("AnimationLibrary_akhiq")
@@ -143,6 +146,9 @@ health_node = NodePath("../../Health")
 [node name="Hitbox" parent="SpriteHolder" index="5"]
 collision_layer = 2
 immunity_length = 1.0
+
+[node name="CollisionShape2D" parent="SpriteHolder/Hitbox" index="0"]
+position = Vector2(0.5, -7.5)
 
 [node name="PreviewSprite" parent="." index="3" instance=ExtResource("5_ynaqn")]
 position = Vector2(2, -9)

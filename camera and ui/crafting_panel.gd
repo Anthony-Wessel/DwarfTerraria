@@ -66,3 +66,4 @@ func craft():
 		inventory.remove_items(reagent.item, reagent.count)
 	
 	inventory.add_items(selected_recipe.result.item, selected_recipe.result.count)
+	open()

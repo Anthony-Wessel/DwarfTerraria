@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6yvvsx2s2pue"]
+[gd_scene load_steps=3 format=3 uid="uid://b6yvvsx2s2pue"]
 
 [ext_resource type="Script" path="res://characters/player/preview_sprite.gd" id="1_umxxr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ii63i"]
+size = Vector2(8, 8)
 
 [node name="PreviewSprite" type="Node2D"]
 script = ExtResource("1_umxxr")
@@ -57,3 +60,10 @@ position = Vector2(16, 16)
 centered = false
 region_enabled = true
 region_rect = Rect2(16, 16, 8, 8)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ii63i")

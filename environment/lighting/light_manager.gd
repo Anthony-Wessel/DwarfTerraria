@@ -68,7 +68,7 @@ func initialize():
 			
 			calculate_light_level(coords)
 			
-			var tform = Transform2D(0, coords*8)
+			var tform = Transform2D(0, (coords+Vector2(0.5,0.5)) * GlobalReferences.TILE_SIZE)
 			multimesh.multimesh.set_instance_transform_2d(index, tform)
 			
 			index += 1
@@ -129,7 +129,7 @@ func calculate_light_level(coords : Vector2) -> bool:
 	for offset in adjacents:
 		if !light_dict.has(coords+offset):
 			continue
-		
+
 		var light_info = light_dict[coords+offset]
 		if light_info.sky_value - tile_resource.opacity > sky_value:
 			sky_value = light_info.sky_value - tile_resource.opacity

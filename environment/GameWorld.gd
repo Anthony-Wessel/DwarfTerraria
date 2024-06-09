@@ -43,7 +43,6 @@ func generate_tile_dict():
 			var coords := source.get_tile_id(tile_index)
 			var tile_data = source.get_tile_data(coords, 0)
 			var tile_name = tile_data.get_custom_data_by_layer_id(0)
-			var tile_texture = source
 			tile_dict[tile_name] = [source_id, coords]
 
 func load_game():
