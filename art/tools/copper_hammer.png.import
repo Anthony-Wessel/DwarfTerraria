@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvptg3ngd7nrp"
-path="res://.godot/imported/sword.png-2ddcecf19ea3c161729a99c017e3a6d6.ctex"
+uid="uid://bpxhpjy3ic8ba"
+path="res://.godot/imported/copper_hammer.png-f28b6c19980b7c149da7f4ccc0d63a15.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/weapons/sword.png"
-dest_files=["res://.godot/imported/sword.png-2ddcecf19ea3c161729a99c017e3a6d6.ctex"]
+source_file="res://art/tools/copper_hammer.png"
+dest_files=["res://.godot/imported/copper_hammer.png-f28b6c19980b7c149da7f4ccc0d63a15.ctex"]
 
 [params]
 

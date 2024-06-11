@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TileItem" load_steps=3 format=3 uid="uid://b146xp77th847"]
+
+[ext_resource type="Texture2D" uid="uid://cvowg8iwo4l8e" path="res://art/tiles/copper_ore.png" id="1_8jly6"]
+[ext_resource type="Script" path="res://items/tile_item.gd" id="2_3womr"]
+
+[resource]
+script = ExtResource("2_3womr")
+tile_id = 33
+name = "copper ore"
+texture = ExtResource("1_8jly6")
+held_texture = ExtResource("1_8jly6")

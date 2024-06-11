@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://bydpqkv33qhgt"]
+
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_uth68"]
+[ext_resource type="Resource" uid="uid://dlrclv76xa16q" path="res://items/tiles/Imithril.tres" id="1_xrcfg"]
+
+[resource]
+script = ExtResource("1_uth68")
+id = 35
+name = "mithril ore"
+hardness = 0
+health = 1.0
+dropped_item = ExtResource("1_xrcfg")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

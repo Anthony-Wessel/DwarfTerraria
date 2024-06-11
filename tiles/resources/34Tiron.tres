@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://c6sc210fdsjkw"]
+
+[ext_resource type="Resource" uid="uid://b146xp77th847" path="res://items/tiles/Iiron.tres" id="1_f0vhy"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_hq6ey"]
+
+[resource]
+script = ExtResource("1_hq6ey")
+id = 34
+name = "iron ore"
+hardness = 0
+health = 1.0
+dropped_item = ExtResource("1_f0vhy")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

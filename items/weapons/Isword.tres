@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="WeaponItem" load_steps=4 format=3 uid="uid://bgeqr0731us2e"]
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=3 format=3 uid="uid://bgeqr0731us2e"]
 
 [ext_resource type="Script" path="res://items/weapon_item.gd" id="1_01w6b"]
-[ext_resource type="Texture2D" uid="uid://c6pk6i103vp63" path="res://art/weapons/sword2.png" id="1_58ww2"]
-[ext_resource type="Texture2D" uid="uid://dvptg3ngd7nrp" path="res://art/weapons/sword.png" id="2_2pl4m"]
+[ext_resource type="Texture2D" uid="uid://ccdy4v2c5pagq" path="res://art/weapons/mithril_sword.png" id="1_jsxmq"]
 
 [resource]
 script = ExtResource("1_01w6b")
@@ -10,5 +9,5 @@ damage = 1.0
 speed = 5.0
 collision_shape = Rect2(0.5, -10, 3, 12)
 name = "sword"
-texture = ExtResource("2_2pl4m")
-held_texture = ExtResource("1_58ww2")
+texture = ExtResource("1_jsxmq")
+held_texture = ExtResource("1_jsxmq")

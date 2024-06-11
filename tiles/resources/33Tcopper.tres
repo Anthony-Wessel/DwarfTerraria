@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://c6wrc7n5pf5o4"]
+
+[ext_resource type="Resource" uid="uid://mxnfrv58g4ye" path="res://items/tiles/Icopper.tres" id="1_heeac"]
+[ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_wqmrn"]
+
+[resource]
+script = ExtResource("1_wqmrn")
+id = 33
+name = "copper ore"
+hardness = 0
+health = 1.0
+dropped_item = ExtResource("1_heeac")
+potential_supports = Array[Vector2]([])
+light_source = 0
+wall = false
+opacity = 3

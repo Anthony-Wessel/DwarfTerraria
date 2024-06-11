@@ -49,10 +49,12 @@ static func GenerateWorld(worldResource : GameSave):
 		heights.append(heights[i-1] + increment)
 		remaining_tiles -= 1
 	
+	# Set player spawn
 	@warning_ignore("integer_division")
 	var midpoint : int = worldResource.width / 2
 	worldResource.player_spawn = GlobalReferences.TILE_SIZE*Vector2(midpoint, worldResource.height-heights[midpoint])
 	
+	# set tiles based on heights
 	var columns = []
 	for h in heights:
 		var col = []
@@ -72,7 +74,7 @@ static func GenerateWorld(worldResource : GameSave):
 		
 	
 	
-	
+	# Place walls
 	for y in worldResource.height:
 		for x in worldResource.width:
 			worldResource.tiles.append(columns[x][y])
@@ -84,6 +86,7 @@ static func GenerateWorld(worldResource : GameSave):
 			else:
 				worldResource.walls.append(empty_wall)
 	
+	# Place trees
 	var just_placed = false
 	for x in range(1, worldResource.width-1):
 		if rng.randf() < 0.8 or just_placed:
