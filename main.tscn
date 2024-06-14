@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=27 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="Shader" path="res://environment/lighting/lighting.gdshader" id="1_gcpuu"]
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://environment/lighting/day_night_cycle.gd" id="11_r7rar"]
 [ext_resource type="Texture2D" uid="uid://bi30i5t2jevl4" path="res://art/tiles/tileBreakAnimation.png" id="11_vim8l"]
 [ext_resource type="Script" path="res://tiles/tile_handler.gd" id="16_0a2ww"]
+[ext_resource type="Script" path="res://test.gd" id="22_6jq0w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hy40h"]
 shader = ExtResource("1_gcpuu")
@@ -45,6 +46,7 @@ buffer = PackedFloat32Array(50.3074, 2.19902e+12, 1.92855e-39, -8.13079e+31, 3.5
 [node name="Post Processing" type="Node" parent="."]
 
 [node name="Lighting" type="CanvasLayer" parent="Post Processing"]
+visible = false
 
 [node name="TextureRect" type="TextureRect" parent="Post Processing/Lighting" node_paths=PackedStringArray("vport")]
 material = SubResource("ShaderMaterial_hy40h")
@@ -144,6 +146,14 @@ script = ExtResource("8_0g71x")
 
 [node name="TileHandler" type="Node" parent="."]
 script = ExtResource("16_0a2ww")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 200.0
+scale = Vector2(2, 2)
+script = ExtResource("22_6jq0w")
 
 [connection signal="world_finished_loading" from="GameWorld" to="Post Processing/Lighting/TextureRect/LightingViewport/LightingCamera" method="set_bounds"]
 [connection signal="world_finished_loading" from="GameWorld" to="Post Processing/Lighting/TextureRect/LightingViewport/LightManager" method="initialize"]

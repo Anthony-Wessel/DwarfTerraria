@@ -1,6 +1,8 @@
 class_name WorldGenerator
 extends Node
 
+static var rng := RandomNumberGenerator.new()
+
 static func GenerateWorld(worldResource : GameSave):
 	worldResource.tiles.clear()
 	
@@ -8,6 +10,10 @@ static func GenerateWorld(worldResource : GameSave):
 	var dirt = 1
 	var grass = 2
 	var stone = 3
+	
+	var copper = 33
+	var iron = 34
+	var mithril = 35
 	
 	var empty_wall = 8
 	var dirt_wall = 9
@@ -25,9 +31,6 @@ static func GenerateWorld(worldResource : GameSave):
 	var tree_top4 = 22
 	var tree_top5 = 23
 	var tree_top6 = 24
-	
-	
-	var rng := RandomNumberGenerator.new()
 	
 	# Determine surface height for each column
 	var heights = []
@@ -74,7 +77,7 @@ static func GenerateWorld(worldResource : GameSave):
 		
 	
 	
-	# Place walls
+	# Place tiles and walls
 	for y in worldResource.height:
 		for x in worldResource.width:
 			worldResource.tiles.append(columns[x][y])
@@ -85,6 +88,28 @@ static func GenerateWorld(worldResource : GameSave):
 				worldResource.walls.append(stone_wall)
 			else:
 				worldResource.walls.append(empty_wall)
+	
+	var cave_tex = await generate_cave_texture(rng.randi(), Vector2.ZERO)
+	var img = cave_tex.get_image()
+	for y in worldResource.height:
+		for x in worldResource.width:
+			if worldResource.tiles[x+ y*worldResource.width] == empty:
+				continue
+			var color : Color = img.get_pixel(x,y)
+			if color.r == color.g and color.r == color.b:
+				if color.r > 0.5:
+					continue
+				else:
+					worldResource.tiles[x+ y*worldResource.width] = empty
+			elif color.r > 0.5:
+				worldResource.tiles[x+ y*worldResource.width] = copper
+			elif color.g > 0.5:
+				worldResource.tiles[x+ y*worldResource.width] = iron
+			elif color.b > 0.5:
+				worldResource.tiles[x+ y*worldResource.width] = mithril
+				
+				
+	
 	
 	# Place trees
 	var just_placed = false
@@ -98,10 +123,11 @@ static func GenerateWorld(worldResource : GameSave):
 		# find the highest solid tile
 		var tile = worldResource.tiles[x]
 		var y = 0
-		while tile == empty:
+		while tile == empty and y < worldResource.height-5:
 			y += 1
 			tile = worldResource.tiles[x+ y*worldResource.width]
-			
+		if y >= worldResource.height - 5:
+			continue
 		
 		# place the tree
 		worldResource.tiles[x + (y-1)*worldResource.width] = tree_base
@@ -125,5 +151,51 @@ static func GenerateWorld(worldResource : GameSave):
 		worldResource.tiles[x-1 + (y2-2)*worldResource.width] = tree_top1
 		worldResource.tiles[x+1 + (y2-2)*worldResource.width] = tree_top3
 		
-		
-		
+static func generate_cave_texture(seed : int, offset : Vector2) -> Texture2D:
+	var cave_tex = await generate_cave_tex(seed, offset)
+	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural_terrain.glsl", [cave_tex], 100, 100)
+	
+	var base_ore_tex = await generate_ore_tex(seed, offset)
+	var final_tex = ShaderComputer.run_shader("res://environment/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], 100, 100)
+	
+	return final_tex
+	
+
+static func generate_cave_tex(seed : int, offset : Vector2):
+	var noise = FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+	noise.frequency = 0.05
+	noise.seed = seed
+	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
+	
+	var noise_tex = NoiseTexture2D.new()
+	noise_tex.height = 100
+	noise_tex.width = 100
+	noise_tex.generate_mipmaps = false
+	noise_tex.noise = noise
+	
+	await noise_tex.changed
+	
+	return noise_tex
+
+static func generate_ore_tex(seed : int, offset : Vector2):
+	var noise = FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
+	noise.cellular_return_type = FastNoiseLite.RETURN_CELL_VALUE
+	noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+	noise.cellular_distance_function = FastNoiseLite.DISTANCE_HYBRID
+	noise.cellular_jitter = 2.0
+	noise.frequency = 0.2
+	noise.seed = seed
+	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
+	
+	var tex = NoiseTexture2D.new()
+	tex.width = 100
+	tex.height = 100
+	tex.generate_mipmaps = false
+	tex.noise = noise
+	
+	await tex.changed
+	
+	return tex

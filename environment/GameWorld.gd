@@ -50,7 +50,7 @@ func load_game():
 	gameSave = GameSave.new()
 	gameSave.width = 100
 	gameSave.height = 100
-	WorldGenerator.GenerateWorld(gameSave)
+	await WorldGenerator.GenerateWorld(gameSave)
 	
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
