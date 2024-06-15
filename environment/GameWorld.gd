@@ -79,9 +79,13 @@ func load_game():
 	world_finished_loading.emit()
 
 func is_tile_empty(coords : Vector2) -> bool:
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+		return true
 	return tile_list[coords.x][coords.y] == 0
 
 func is_wall_empty(coords : Vector2) -> bool:
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+		return true
 	return walls_list[coords.x][coords.y] == 8
 
 func get_player_spawn():
@@ -89,9 +93,13 @@ func get_player_spawn():
 
 
 func get_tile(coords : Vector2) -> TileResource:
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+		return null
 	return TileHandler.tiles[ tile_list[coords.x][coords.y] ]
 
 func get_wall(coords : Vector2) -> TileResource:
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+		return null
 	return TileHandler.tiles[ walls_list[coords.x][coords.y] ]
 
 
@@ -121,6 +129,9 @@ func update(coords : Vector2, wall : bool):
 	var tile_resource : TileResource
 	if wall : tile_resource = get_wall(coords)
 	else: tile_resource = get_tile(coords)
+	
+	if tile_resource == null:
+		return
 	
 	if tile_resource.potential_supports.size() > 0:
 		var support_found := false
