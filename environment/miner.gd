@@ -14,6 +14,13 @@ func _ready():
 	available_sprites = get_children()
 	game_world = GameWorld.instance
 
+func get_mined_tiles_count():
+	var count = 0
+	for coords in previously_mined_tiles:
+		if previously_mined_tiles[coords] != -1:
+			count += 1
+	return count
+
 var previously_mined_tiles : Dictionary
 var previous_tool_wall := false
 func mine_tile(coords_list : Array[Vector2i], _mining_tier, amount : float, wall : bool):
@@ -45,7 +52,7 @@ func mine_tile(coords_list : Array[Vector2i], _mining_tier, amount : float, wall
 				previously_mined_tiles[coords] = -1
 				continue
 		
-		previously_mined_tiles[coords] += amount/previously_mined_tiles.size()
+		previously_mined_tiles[coords] += amount/get_mined_tiles_count()
 		
 		# tile destroyed
 		if previously_mined_tiles[coords] >= tile_resource.health:
