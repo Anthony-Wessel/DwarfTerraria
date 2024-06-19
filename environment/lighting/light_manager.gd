@@ -9,7 +9,9 @@ var sky_light_level := 30
 var adjacents = [Vector2(0,1), Vector2(0,-1), Vector2(1,0), Vector2(-1,0)]
 
 @export var multimesh : MultiMeshInstance2D
-var light_dict : Dictionary
+static var light_dict : Dictionary
+
+static var indices = []
 
 class LightInfo:
 	var index := 0
@@ -33,7 +35,7 @@ class LightInfo:
 	func update():
 		var sky_light_lost = 30.0 - sky_value
 		var color = Color(value, sky_light_lost, 0)
-		LightManager.update_mesh(index, color)
+		LightManager.instance.multimesh.multimesh.set_instance_color(index, color)
 	
 	func reset():
 		value = 0
@@ -44,6 +46,9 @@ class LightInfo:
 func _init():
 	instance = self
 
+func _ready():
+	game_world = GameWorld.instance
+
 func _process(_delta):
 	if DayNightCycle.instance.is_shifting():
 		set_daylight(DayNightCycle.instance.get_daylight())
@@ -51,28 +56,48 @@ func _process(_delta):
 func set_daylight(daylight : float):
 	instance.multimesh.material.set_shader_parameter("daylight", daylight)
 
-static func update_mesh(index : int, color : Color):
-	instance.multimesh.multimesh.set_instance_color(index, color)
-
 static func update(coords : Vector2):
 	instance.propagate_light(coords)
 
-func initialize():
-	game_world = GameWorld.instance
-	world_size = Vector2(game_world.gameSave.width, game_world.gameSave.height)
-	var index = 0
-	for x in game_world.gameSave.width:
-		for y in game_world.gameSave.height:
-			var coords = Vector2(x,y)
-			light_dict[coords] = LightInfo.new(index)
-			
-			calculate_light_level(coords)
+static func claim_first_available_index():
+	for i in indices.size():
+		if !indices[i]:
+			indices[i] = true
+			return i
+
+static func setup_chunk(chunk_coords : Vector2):
+	var index = claim_first_available_index()
+	if index == null:
+		if indices.size() > 0:
+			push_error("all indices used")
+		for i in instance.multimesh.multimesh.instance_count / 10000:
+			indices.append(false)
+		index = claim_first_available_index()
+	var mesh_index = index * 10000
+
+	#var chunk_position = chunk_coords * GlobalReferences.CHUNK_SIZE * GlobalReferences.TILE_SIZE
+	for y in GlobalReferences.CHUNK_SIZE:
+		for x in GlobalReferences.CHUNK_SIZE:
+			#await Engine.get_main_loop().process_frame
+			var coords = chunk_coords * GlobalReferences.CHUNK_SIZE + Vector2(x,y)
+			light_dict[coords] = LightInfo.new(mesh_index)
+			instance.calculate_light_level(coords)
 			
 			var tform = Transform2D(0, (coords+Vector2(0.5,0.5)) * GlobalReferences.TILE_SIZE)
-			multimesh.multimesh.set_instance_transform_2d(index, tform)
+			instance.multimesh.multimesh.set_instance_transform_2d(mesh_index, tform)
 			
-			index += 1
+			mesh_index += 1
+	
+	return index
+	
 
+static func release_chunk(chunk_coords : Vector2, index : int):
+	indices[index] = false
+	
+	for y in GlobalReferences.CHUNK_SIZE:
+		for x in GlobalReferences.CHUNK_SIZE:
+			var coords = chunk_coords * GlobalReferences.CHUNK_SIZE + Vector2(x,y)
+			light_dict.erase(coords)
 
 
 #################################
@@ -90,7 +115,6 @@ func propagate_light(coords : Vector2):
 			var adjacent_coords = current_coords + offset
 			if light_dict.has(adjacent_coords):
 				tiles.append(adjacent_coords)
-		
 
 func recalculate_dependents(coords : Vector2):
 	var tiles = []
@@ -114,7 +138,7 @@ func calculate_light_level(coords : Vector2) -> bool:
 	var light_parent = Vector2.ZERO
 	var sky_parent = Vector2.ZERO
 	
-	# light emitted by this tile
+	# light emitted by this tile)
 	var tile_resource = game_world.get_tile(coords)
 	var tile_value = tile_resource.light_source
 	

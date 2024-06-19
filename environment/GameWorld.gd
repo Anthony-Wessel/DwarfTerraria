@@ -8,13 +8,15 @@ var gameSave : GameSave
 
 @export var multiblocks_root : Node2D
 
-@export var tiles_tilemap : TileMap
+@export var tile_set : TileSet
+@export var chunk_prefab : PackedScene
+
 var tile_dict : Dictionary
 
-var tile_list = []
-var walls_list = []
+var loaded_chunks = {}
 
 signal world_finished_loading
+var loading_world = true
 
 var save_frequency = 1 # times per second
 var last_save_time = 0
@@ -32,7 +34,6 @@ func _process(_delta):
 		last_save_time = Time.get_ticks_msec()
 
 func generate_tile_dict():
-	var tile_set = tiles_tilemap.tile_set
 	for source_index in tile_set.get_source_count():
 		var source_id = tile_set.get_source_id(source_index)
 		var source : TileSetAtlasSource = tile_set.get_source(source_id)
@@ -48,59 +49,99 @@ func generate_tile_dict():
 func load_game():
 	# Create new game save
 	gameSave = GameSave.new()
-	gameSave.width = 100
-	gameSave.height = 100
+	gameSave.vertical_chunks = 9
+	gameSave.horizontal_chunks = 18
 	await WorldGenerator.GenerateWorld(gameSave)
 	
 	# Load game save
 	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
 	
-	tile_list = []
-	walls_list = []
-	for x in gameSave.width:
-		var tile_col = []
-		var wall_col = []
-		for y in gameSave.height:
-			tile_col.append(gameSave.tiles[x + y*gameSave.width])
-			wall_col.append(gameSave.walls[x + y*gameSave.width])
-			
-			var tile_resource = TileHandler.tiles[gameSave.tiles[x + y*gameSave.width]]
-			tiles_tilemap.set_cell(0, Vector2i(x,y), tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
-			
-			var wall_resource = TileHandler.tiles[gameSave.walls[x + y*gameSave.width]]
-			tiles_tilemap.set_cell(1, Vector2i(x,y), tile_dict[wall_resource.name][0], tile_dict[wall_resource.name][1])
-			
-		tile_list.append(tile_col)
-		walls_list.append(wall_col)
-	
+	var player_spawn = gameSave.player_spawn
+	var player_spawn_chunk : Vector2i = player_spawn / GlobalReferences.CHUNK_SIZE
+	for y in range(-1,2): # inclusive start, exclusive end
+		for x in range(-1,2):
+			var coords = player_spawn_chunk + Vector2i(x,y)
+			load_chunk(coords)
 
-	player.global_position = global_position + gameSave.player_spawn
+	player.global_position = player_spawn * GlobalReferences.TILE_SIZE
 	
 	world_finished_loading.emit()
+	loading_world = false
+	print("World done loading")
 
-func is_tile_empty(coords : Vector2) -> bool:
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
-		return true
-	return tile_list[coords.x][coords.y] == 0
+func load_chunk(coords : Vector2i):
+	#print("loading chunk")
+	var chunk : Chunk = chunk_prefab.instantiate()
+	add_child(chunk)
+	chunk.position = coords * GlobalReferences.CHUNK_SIZE * GlobalReferences.TILE_SIZE
+	loaded_chunks[coords] = chunk
+	chunk.initialize(gameSave.get_chunk(coords), coords)
 
-func is_wall_empty(coords : Vector2) -> bool:
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
-		return true
-	return walls_list[coords.x][coords.y] == 8
+func unload_chunk(coords : Vector2i):
+	#print("unloading chunk")
+	# TODO: Save chunk
+	LightManager.release_chunk(coords, loaded_chunks[coords].light_index)
+	loaded_chunks[coords].queue_free()
+	loaded_chunks.erase(coords)
+
+func player_entered_chunk(chunk_coords : Vector2i):
+	if loading_world:
+		return
+	var chunks_to_load = []
+	var chunks_to_unload = []
+	var new_set = []
+	for y in range(-1,2): # inclusive start, exclusive end
+		for x in range(-1,2):
+			var coords = chunk_coords + Vector2i(x,y)
+			if !loaded_chunks.has(coords):
+				chunks_to_load.append(coords)
+			new_set.append(coords)
+
+	for old_chunk in loaded_chunks:
+		if !new_set.has(old_chunk):
+			chunks_to_unload.append(old_chunk)
+	
+	for c in chunks_to_load:
+		await Engine.get_main_loop().process_frame
+		load_chunk(c)
+	for c in chunks_to_unload:
+		await Engine.get_main_loop().process_frame
+		unload_chunk(c)
+			
+
+func is_tile_empty(coords : Vector2i) -> bool:
+	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
+	if loaded_chunks.has(chunk_coords):
+		return loaded_chunks[chunk_coords].get_tile(coords % int(GlobalReferences.CHUNK_SIZE)) == 0
+	
+	return true
+
+func is_wall_empty(coords : Vector2i) -> bool:
+	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
+	if loaded_chunks.has(chunk_coords):
+		return loaded_chunks[chunk_coords].get_wall(coords % int(GlobalReferences.CHUNK_SIZE)) == 8
+	
+	return true
 
 func get_player_spawn():
 	return gameSave.player_spawn
 
 
-func get_tile(coords : Vector2) -> TileResource:
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
-		return null
-	return TileHandler.tiles[ tile_list[coords.x][coords.y] ]
+func get_tile(coords : Vector2i) -> TileResource:
+	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
+	if loaded_chunks.has(chunk_coords):
+		var id = loaded_chunks[chunk_coords].get_tile(coords % GlobalReferences.CHUNK_SIZE)
+		return TileHandler.tiles[id]
+	
+	return null
 
-func get_wall(coords : Vector2) -> TileResource:
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
-		return null
-	return TileHandler.tiles[ walls_list[coords.x][coords.y] ]
+func get_wall(coords : Vector2i) -> TileResource:
+	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
+	if loaded_chunks.has(chunk_coords):
+		var id = loaded_chunks[chunk_coords].get_wall(coords % GlobalReferences.CHUNK_SIZE)
+		return TileHandler.tiles[id]
+	
+	return null
 
 
 func break_tile(coords : Vector2, wall : bool):
@@ -146,24 +187,28 @@ func update(coords : Vector2, wall : bool):
 	#if changed:
 		#update_neighbors(coords, wall)
 
-func set_tile(coords : Vector2, tile_resource : TileResource):
-	tile_list[coords.x][coords.y] = tile_resource.id
-	tiles_tilemap.set_cell(0, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
+func set_tile(coords : Vector2i, tile_resource : TileResource):
+	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
+	var chunk = loaded_chunks[chunk_coords]
+	chunk.set_tile(coords % GlobalReferences.CHUNK_SIZE, tile_resource)
+	#tile_list[coords.x][coords.y] = tile_resource.id
+	#tiles_tilemap.set_cell(0, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
 	LightManager.update(coords)
 	
-	gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
+	#gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
 
-func set_wall(coords : Vector2, tile_resource : TileResource):
-	walls_list[coords.x][coords.y] = tile_resource.id
-	tiles_tilemap.set_cell(1, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
+func set_wall(coords : Vector2i, tile_resource : TileResource):
+	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
+	var chunk = loaded_chunks[chunk_coords]
+	chunk.set_wall(coords % GlobalReferences.CHUNK_SIZE, tile_resource)
 	
 	LightManager.update(coords)
 	
-	gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
+	#gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
 
 func place_tile(coords : Vector2, item : TileItem):
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.width or coords.y >= gameSave.height:
+	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.get_width() or coords.y >= gameSave.get_height():
 		push_error("Trying to place tile out of bounds: ", item.name, " : ", coords)
 		return
 	
@@ -191,4 +236,4 @@ func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
 
 func save_game():
-	ResourceSaver.save(gameSave, "res://game saves/game_save_resource.tres")
+	pass#ResourceSaver.save(gameSave, "res://game saves/game_save_resource.tres")

@@ -3,115 +3,62 @@ extends Node
 
 static var rng := RandomNumberGenerator.new()
 
+static var empty = 0
+static var dirt = 1
+static var grass = 2
+static var stone = 3
+
+static var copper = 33
+static var iron = 34
+static var mithril = 35
+
+static var empty_wall = 8
+static var dirt_wall = 9
+static var stone_wall = 10
+
+static var tree_base = 13
+static var tree_trunk = 14
+static var tree_trunk_left = 15
+static var tree_trunk_right = 16
+static var tree_branch_left = 17
+static var tree_branch_right = 18
+static var tree_top1 = 19
+static var tree_top2 = 20
+static var tree_top3 = 21
+static var tree_top4 = 22
+static var tree_top5 = 23
+static var tree_top6 = 24
+
 static func GenerateWorld(worldResource : GameSave):
-	worldResource.tiles.clear()
-	
-	var empty = 0
-	var dirt = 1
-	var grass = 2
-	var stone = 3
-	
-	var copper = 33
-	var iron = 34
-	var mithril = 35
-	
-	var empty_wall = 8
-	var dirt_wall = 9
-	var stone_wall = 10
-	
-	var tree_base = 13
-	var tree_trunk = 14
-	var tree_trunk_left = 15
-	var tree_trunk_right = 16
-	var tree_branch_left = 17
-	var tree_branch_right = 18
-	var tree_top1 = 19
-	var tree_top2 = 20
-	var tree_top3 = 21
-	var tree_top4 = 22
-	var tree_top5 = 23
-	var tree_top6 = 24
-	
-	# Determine surface height for each column
-	var heights = []
-	var increment = 0
-	var remaining_tiles = 0
-	for i in worldResource.width:
-		if i == 0:
-			heights.append(worldResource.height*0.7)
-			continue
-		if remaining_tiles == 0:
-			# start a new stretch
-			if increment == 0:
-				increment = sign(rng.randf()-0.5)
-				remaining_tiles = rng.randi_range(1,5)
+	worldResource.chunks.clear()
+	worldResource.seed = rng.randi()
+	# Generate chunks (2 sky, 1 surface, 6 cave
+	for y in worldResource.vertical_chunks:
+		for x in worldResource.horizontal_chunks:
+			if y <= 1:
+				worldResource.chunks.append(generate_sky_chunk())
+			elif y == 2:
+				worldResource.chunks.append(generate_surface_chunk(Vector2(x,y)))
 			else:
-				increment = 0
-				remaining_tiles = rng.randi_range(5,10)
-		
-		heights.append(heights[i-1] + increment)
-		remaining_tiles -= 1
+				worldResource.chunks.append(await generate_cave_chunk(Vector2(x,y), worldResource.seed))
+	
 	
 	# Set player spawn
 	@warning_ignore("integer_division")
-	var midpoint : int = worldResource.width / 2
-	worldResource.player_spawn = GlobalReferences.TILE_SIZE*Vector2(midpoint, worldResource.height-heights[midpoint])
+	var mid_chunk : int = worldResource.horizontal_chunks / 2
+	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 2))
+	var t = chunk[0][GlobalReferences.CHUNK_SIZE/2]
+	var spawn_y = 0
+	while t != grass:
+		spawn_y += 1
+		t = chunk[0][GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
 	
-	# set tiles based on heights
-	var columns = []
-	for h in heights:
-		var col = []
-		
-		for i in worldResource.height - h:
-			col.append(empty)
-		
-		col.append(grass)
-		
-		for i in rng.randi_range(2,4):
-			col.append(dirt)
-		
-		while col.size() < worldResource.height:
-			col.append(stone)
-		
-		columns.append(col)
-		
-	
-	
-	# Place tiles and walls
-	for y in worldResource.height:
-		for x in worldResource.width:
-			worldResource.tiles.append(columns[x][y])
-			
-			if columns[x][y] == dirt:
-				worldResource.walls.append(dirt_wall)
-			elif columns[x][y] == stone:
-				worldResource.walls.append(stone_wall)
-			else:
-				worldResource.walls.append(empty_wall)
-	
-	var cave_tex = await generate_cave_texture(rng.randi(), Vector2.ZERO)
-	var img = cave_tex.get_image()
-	for y in worldResource.height:
-		for x in worldResource.width:
-			if worldResource.tiles[x+ y*worldResource.width] == empty:
-				continue
-			var color : Color = img.get_pixel(x,y)
-			if color.r == color.g and color.r == color.b:
-				if color.r > 0.5:
-					continue
-				else:
-					worldResource.tiles[x+ y*worldResource.width] = empty
-			elif color.r > 0.5:
-				worldResource.tiles[x+ y*worldResource.width] = copper
-			elif color.g > 0.5:
-				worldResource.tiles[x+ y*worldResource.width] = iron
-			elif color.b > 0.5:
-				worldResource.tiles[x+ y*worldResource.width] = mithril
-				
-				
-	
-	
-	# Place trees
+	var spawnX = (float(mid_chunk)-0.5)*GlobalReferences.CHUNK_SIZE
+	var spawnY = GlobalReferences.CHUNK_SIZE * 2 + spawn_y-1
+	worldResource.player_spawn = Vector2(spawnX, spawnY)
+	#place_trees(worldResource)
+
+static func place_trees(worldResource : GameSave):
 	var just_placed = false
 	for x in range(1, worldResource.width-1):
 		if rng.randf() < 0.8 or just_placed:
@@ -150,7 +97,7 @@ static func GenerateWorld(worldResource : GameSave):
 		worldResource.tiles[x + (y2-2)*worldResource.width] = tree_top2
 		worldResource.tiles[x-1 + (y2-2)*worldResource.width] = tree_top1
 		worldResource.tiles[x+1 + (y2-2)*worldResource.width] = tree_top3
-		
+
 static func generate_cave_texture(seed : int, offset : Vector2) -> Texture2D:
 	var cave_tex = await generate_cave_tex(seed, offset)
 	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural_terrain.glsl", [cave_tex], 100, 100)
@@ -159,7 +106,6 @@ static func generate_cave_texture(seed : int, offset : Vector2) -> Texture2D:
 	var final_tex = ShaderComputer.run_shader("res://environment/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], 100, 100)
 	
 	return final_tex
-	
 
 static func generate_cave_tex(seed : int, offset : Vector2):
 	var noise = FastNoiseLite.new()
@@ -199,3 +145,97 @@ static func generate_ore_tex(seed : int, offset : Vector2):
 	await tex.changed
 	
 	return tex
+
+
+static func generate_sky_chunk():
+	var tiles = []
+	var walls = []
+	
+	for y in GlobalReferences.CHUNK_SIZE:
+		for x in GlobalReferences.CHUNK_SIZE:
+			tiles.append(empty)
+			walls.append(empty_wall)
+	
+	return [tiles, walls]
+
+
+static func generate_surface_chunk(chunk_coords : Vector2):
+	var tiles = []
+	var walls = []
+	
+	# Determine column heights
+	var heights = []
+	var increment = 0
+	var remaining_tiles = 0
+	for i in GlobalReferences.CHUNK_SIZE:
+		if i == 0:
+			heights.append(GlobalReferences.CHUNK_SIZE * 0.5)
+			continue
+		if remaining_tiles == 0:
+			# start a new stretch
+			if increment == 0:
+				increment = sign(rng.randf()-0.5)
+				remaining_tiles = rng.randi_range(1,5)
+			else:
+				increment = 0
+				remaining_tiles = rng.randi_range(5,10)
+		
+		heights.append(min(max(0,heights[i-1] + increment), GlobalReferences.CHUNK_SIZE-1))
+		remaining_tiles -= 1
+	
+	# Determine tiles based on height
+	var columns = []
+	for h in heights:
+		var col = []
+		
+		for i in GlobalReferences.CHUNK_SIZE - h:
+			col.append(empty)
+		
+		col.append(grass)
+		
+		for i in rng.randi_range(2,4):
+			col.append(dirt)
+		
+		while col.size() < GlobalReferences.CHUNK_SIZE:
+			col.append(stone)
+		
+		columns.append(col)
+	
+	# Set tiles and walls
+	for y in GlobalReferences.CHUNK_SIZE:
+		for x in GlobalReferences.CHUNK_SIZE:
+			tiles.append(columns[x][y])
+			
+			if columns[x][y] == dirt:
+				walls.append(dirt_wall)
+			elif columns[x][y] == stone:
+				walls.append(stone_wall)
+			else:
+				walls.append(empty_wall)
+	
+	return [tiles, walls]
+
+static func generate_cave_chunk(chunk_coords: Vector2, seed : int):
+	var tiles = []
+	var walls = []
+	
+	var cave_tex = await generate_cave_texture(seed, chunk_coords)
+	var img = cave_tex.get_image()
+	for y in GlobalReferences.CHUNK_SIZE:
+		for x in GlobalReferences.CHUNK_SIZE:
+			var color : Color = img.get_pixel(x,y)
+			if color.r == color.g and color.r == color.b:
+				if color.r > 0.5:
+					tiles.append(stone)
+				else:
+					tiles.append(empty)
+			elif color.r > 0.5:
+				tiles.append(copper)
+			elif color.g > 0.5:
+				tiles.append(iron)
+			elif color.b > 0.5:
+				tiles.append(mithril)
+			
+			walls.append(stone_wall)
+	
+	return [tiles, walls]
