@@ -232,6 +232,20 @@ func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem):
 	
 	multiblock.setup(self, coords)
 
+
+func get_light_values(coords : Vector2i):
+	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
+	var inner_coords = coords % GlobalReferences.CHUNK_SIZE
+	return loaded_chunks[chunk_coords].get_light_values(inner_coords)
+
+func set_light_values(coords : Vector2i, values : Vector2):
+	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
+	var inner_coords = coords % GlobalReferences.CHUNK_SIZE
+	loaded_chunks[chunk_coords].set_light_values(inner_coords, values)
+
+func contains_coordinates(coords : Vector2):
+	return gameSave.contains_coordinates(coords)
+
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
 

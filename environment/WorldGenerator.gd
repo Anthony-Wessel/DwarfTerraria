@@ -47,15 +47,19 @@ static func GenerateWorld(worldResource : GameSave):
 	@warning_ignore("integer_division")
 	var mid_chunk : int = worldResource.horizontal_chunks / 2
 	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 2))
-	var t = chunk[0][GlobalReferences.CHUNK_SIZE/2]
+	var t = chunk[0][GlobalReferences.CHUNK_SIZE/2] # 0 for tiles, then x value (y = 0)
 	var spawn_y = 0
 	while t != grass:
 		spawn_y += 1
 		t = chunk[0][GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
 	
-	var spawnX = (float(mid_chunk)-0.5)*GlobalReferences.CHUNK_SIZE
+	var spawnX = (float(mid_chunk)+0.5)*GlobalReferences.CHUNK_SIZE
 	var spawnY = GlobalReferences.CHUNK_SIZE * 2 + spawn_y-1
 	worldResource.player_spawn = Vector2(spawnX, spawnY)
+	
+	# calculate lighting
+	LightManager.preload_lighting(worldResource)
+	
 	#place_trees(worldResource)
 
 static func place_trees(worldResource : GameSave):
@@ -150,18 +154,20 @@ static func generate_ore_tex(seed : int, offset : Vector2):
 static func generate_sky_chunk():
 	var tiles = []
 	var walls = []
+	var lights = []
 	
 	for y in GlobalReferences.CHUNK_SIZE:
 		for x in GlobalReferences.CHUNK_SIZE:
 			tiles.append(empty)
 			walls.append(empty_wall)
+			lights.append(Vector2(0,30))
 	
-	return [tiles, walls]
-
+	return [tiles, walls, lights]
 
 static func generate_surface_chunk(chunk_coords : Vector2):
 	var tiles = []
 	var walls = []
+	var lights = []
 	
 	# Determine column heights
 	var heights = []
@@ -205,6 +211,7 @@ static func generate_surface_chunk(chunk_coords : Vector2):
 	for y in GlobalReferences.CHUNK_SIZE:
 		for x in GlobalReferences.CHUNK_SIZE:
 			tiles.append(columns[x][y])
+			lights.append(Vector2(0,0))
 			
 			if columns[x][y] == dirt:
 				walls.append(dirt_wall)
@@ -212,12 +219,14 @@ static func generate_surface_chunk(chunk_coords : Vector2):
 				walls.append(stone_wall)
 			else:
 				walls.append(empty_wall)
+				lights[x + y*GlobalReferences.CHUNK_SIZE] = Vector2(0,30)
 	
-	return [tiles, walls]
+	return [tiles, walls, lights]
 
 static func generate_cave_chunk(chunk_coords: Vector2, seed : int):
 	var tiles = []
 	var walls = []
+	var lights = []
 	
 	var cave_tex = await generate_cave_texture(seed, chunk_coords)
 	var img = cave_tex.get_image()
@@ -237,5 +246,6 @@ static func generate_cave_chunk(chunk_coords: Vector2, seed : int):
 				tiles.append(mithril)
 			
 			walls.append(stone_wall)
+			lights.append(Vector2(0,0))
 	
-	return [tiles, walls]
+	return [tiles, walls, lights]
