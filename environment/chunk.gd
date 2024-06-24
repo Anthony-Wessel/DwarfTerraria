@@ -5,16 +5,21 @@ var tiles = []
 var walls = []
 var lights = []
 
-@export var tilemap : TileMap
-var coords : Vector2i
 var light_index
 
-func initialize(chunk_info, chunk_coords : Vector2i):
+@export var tilemap : TileMap
+@export var multimesh : MultiMeshInstance2D
+var chunk_coords : Vector2i
+
+func initialize(chunk_info, chunk_coordinates : Vector2i):
 	#var time = Time.get_ticks_msec()
 	tiles = chunk_info[0]
 	walls = chunk_info[1]
 	lights = chunk_info[2]
-	coords = chunk_coords
+	chunk_coords = chunk_coordinates
+	
+	light_index = LightManager.claim_first_available_index()
+	#print(tilemap.process_thread_group)
 	
 	#print(Time.get_ticks_msec() - time)
 	#time = Time.get_ticks_msec()
@@ -26,28 +31,39 @@ func initialize(chunk_info, chunk_coords : Vector2i):
 			
 			var wall_resource = TileHandler.tiles[walls[x + y * GlobalReferences.CHUNK_SIZE]]
 			set_wall(Vector2(x,y), wall_resource)
-	
-	#print(Time.get_ticks_msec() - time)
-	#time = Time.get_ticks_msec()
-	
-	#light_index = await LightManager.setup_chunk(coords)
-	LightManager.setup_chunk(coords, self)
-	
-	#print(Time.get_ticks_msec() - time)
-	#time = Time.get_ticks_msec()
-	
+			
+			var mesh_index = x + y * GlobalReferences.CHUNK_SIZE
+			var mesh_coords : Vector2i = chunk_coords * GlobalReferences.CHUNK_SIZE + Vector2i(x,y)
+			
+			var tform = Transform2D(0, (Vector2(mesh_coords)+Vector2(0.5,0.5)) * GlobalReferences.TILE_SIZE)
+			LightManager.set_tform((light_index * pow(GlobalReferences.CHUNK_SIZE, 2)) + mesh_index, tform)
+			
+			var sky_light_lost = 30.0 - lights[mesh_index].y
+			var color = Color(lights[mesh_index].x, sky_light_lost, 0)
+			LightManager.set_color((light_index * pow(GlobalReferences.CHUNK_SIZE, 2)) + mesh_index, color)
+
+
+func unload():
+	LightManager.release_index(light_index)
+	queue_free()
 
 func set_tile(coords : Vector2, tile_resource : TileResource):
 	tiles[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
+	#tilemap.set_cell(0, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 	tilemap.set_cell(0, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 
 func set_wall(coords : Vector2, tile_resource : TileResource):
 	walls[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
+	#tilemap.set_cell(1, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 	tilemap.set_cell(1, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 
 func set_light_values(coords : Vector2, light_values : Vector2):
-	lights[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = light_values
-
+	var mesh_index = coords.x + coords.y*GlobalReferences.CHUNK_SIZE
+	lights[mesh_index] = light_values
+	
+	var sky_light_lost = 30.0 - lights[mesh_index].y
+	var color = Color(lights[mesh_index].x, sky_light_lost, 0)
+	LightManager.set_color((light_index * pow(GlobalReferences.CHUNK_SIZE, 2)) + mesh_index, color)
 
 func get_tile(coords : Vector2):
 	return tiles[coords.x + coords.y*GlobalReferences.CHUNK_SIZE]
@@ -58,5 +74,5 @@ func get_wall(coords : Vector2):
 func get_light_values(coords : Vector2):
 	return lights[coords.x + coords.y * GlobalReferences.CHUNK_SIZE]
 
-func _on_player_entered(body):
-	GameWorld.instance.player_entered_chunk(coords)
+func _on_player_entered(_body):
+	GameWorld.instance.player_entered_chunk(chunk_coords)

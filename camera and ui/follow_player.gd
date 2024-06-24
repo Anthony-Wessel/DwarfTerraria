@@ -18,6 +18,6 @@ func set_bounds():
 
 func _process(_delta):
 	position = player.sprite_holder.global_position
-	#position.x = clamp(position.x, min_bounds.x, max_bounds.x)
-	#position.y = clamp(position.y, min_bounds.y, max_bounds.y)
+	position.x = clamp(position.x, min_bounds.x, max_bounds.x)
+	position.y = clamp(position.y, min_bounds.y, max_bounds.y)
 	
