@@ -12,17 +12,13 @@ var light_index
 var chunk_coords : Vector2i
 
 func initialize(chunk_info, chunk_coordinates : Vector2i):
-	#var time = Time.get_ticks_msec()
 	tiles = chunk_info[0]
 	walls = chunk_info[1]
 	lights = chunk_info[2]
 	chunk_coords = chunk_coordinates
 	
 	light_index = LightManager.claim_first_available_index()
-	#print(tilemap.process_thread_group)
-	
-	#print(Time.get_ticks_msec() - time)
-	#time = Time.get_ticks_msec()
+
 	for y in GlobalReferences.CHUNK_SIZE:
 		#await Engine.get_main_loop().process_frame
 		for x in GlobalReferences.CHUNK_SIZE:
@@ -49,12 +45,10 @@ func unload():
 
 func set_tile(coords : Vector2, tile_resource : TileResource):
 	tiles[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
-	#tilemap.set_cell(0, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 	tilemap.set_cell(0, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 
 func set_wall(coords : Vector2, tile_resource : TileResource):
 	walls[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
-	#tilemap.set_cell(1, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 	tilemap.set_cell(1, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
 
 func set_light_values(coords : Vector2, light_values : Vector2):

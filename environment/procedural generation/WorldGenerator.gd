@@ -31,7 +31,7 @@ static var tree_top6 = 24
 
 static func GenerateWorld(worldResource : GameSave):
 	worldResource.chunks.clear()
-	worldResource.seed = rng.randi()
+	worldResource.world_seed = rng.randi()
 	# Generate chunks (2 sky, 1 surface, 6 cave
 	for y in worldResource.vertical_chunks:
 		for x in worldResource.horizontal_chunks:
@@ -40,17 +40,19 @@ static func GenerateWorld(worldResource : GameSave):
 			elif y == 2:
 				worldResource.chunks.append(generate_surface_chunk(Vector2(x,y)))
 			else:
-				worldResource.chunks.append(await generate_cave_chunk(Vector2(x,y), worldResource.seed))
+				worldResource.chunks.append(await generate_cave_chunk(Vector2(x,y), worldResource.world_seed))
 	
 	
 	# Set player spawn
 	@warning_ignore("integer_division")
 	var mid_chunk : int = worldResource.horizontal_chunks / 2
 	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 2))
+	@warning_ignore("integer_division")
 	var t = chunk[0][GlobalReferences.CHUNK_SIZE/2] # 0 for tiles, then x value (y = 0)
 	var spawn_y = 0
 	while t != grass:
 		spawn_y += 1
+		@warning_ignore("integer_division")
 		t = chunk[0][GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
 	
 	var spawnX = (float(mid_chunk)+0.5)*GlobalReferences.CHUNK_SIZE
@@ -102,21 +104,21 @@ static func place_trees(worldResource : GameSave):
 		worldResource.tiles[x-1 + (y2-2)*worldResource.width] = tree_top1
 		worldResource.tiles[x+1 + (y2-2)*worldResource.width] = tree_top3
 
-static func generate_cave_texture(seed : int, offset : Vector2) -> Texture2D:
-	var cave_tex = await generate_cave_tex(seed, offset)
-	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural_terrain.glsl", [cave_tex], 100, 100)
+static func generate_cave_texture(rng_seed : int, offset : Vector2) -> Texture2D:
+	var cave_tex = await generate_cave_tex(rng_seed, offset)
+	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_terrain.glsl", [cave_tex], 100, 100)
 	
-	var base_ore_tex = await generate_ore_tex(seed, offset)
-	var final_tex = ShaderComputer.run_shader("res://environment/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], 100, 100)
+	var base_ore_tex = await generate_ore_tex(rng_seed, offset)
+	var final_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], 100, 100)
 	
 	return final_tex
 
-static func generate_cave_tex(seed : int, offset : Vector2):
+static func generate_cave_tex(rng_seed : int, offset : Vector2):
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise.fractal_type = FastNoiseLite.FRACTAL_NONE
 	noise.frequency = 0.05
-	noise.seed = seed
+	noise.seed = rng_seed
 	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
 	
 	var noise_tex = NoiseTexture2D.new()
@@ -129,7 +131,7 @@ static func generate_cave_tex(seed : int, offset : Vector2):
 	
 	return noise_tex
 
-static func generate_ore_tex(seed : int, offset : Vector2):
+static func generate_ore_tex(rng_seed : int, offset : Vector2):
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
 	noise.cellular_return_type = FastNoiseLite.RETURN_CELL_VALUE
@@ -137,7 +139,7 @@ static func generate_ore_tex(seed : int, offset : Vector2):
 	noise.cellular_distance_function = FastNoiseLite.DISTANCE_HYBRID
 	noise.cellular_jitter = 2.0
 	noise.frequency = 0.2
-	noise.seed = seed
+	noise.seed = rng_seed
 	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
 	
 	var tex = NoiseTexture2D.new()
@@ -223,12 +225,12 @@ static func generate_surface_chunk(chunk_coords : Vector2):
 	
 	return [tiles, walls, lights]
 
-static func generate_cave_chunk(chunk_coords: Vector2, seed : int):
+static func generate_cave_chunk(chunk_coords: Vector2, rng_seed : int):
 	var tiles = []
 	var walls = []
 	var lights = []
 	
-	var cave_tex = await generate_cave_texture(seed, chunk_coords)
+	var cave_tex = await generate_cave_texture(rng_seed, chunk_coords)
 	var img = cave_tex.get_image()
 	for y in GlobalReferences.CHUNK_SIZE:
 		for x in GlobalReferences.CHUNK_SIZE:

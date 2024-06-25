@@ -7,10 +7,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sonpe"]
 size = Vector2(800, 800)
 
-[node name="Chunk" type="Node2D" node_paths=PackedStringArray("tilemap", "multimesh")]
+[node name="Chunk" type="Node2D" node_paths=PackedStringArray("tilemap")]
 script = ExtResource("1_ln6kp")
 tilemap = NodePath("Tilemap")
-multimesh = NodePath("")
 
 [node name="Tilemap" type="TileMap" parent="."]
 tile_set = ExtResource("1_n4n41")

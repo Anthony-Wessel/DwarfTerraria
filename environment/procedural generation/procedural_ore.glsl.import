@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://d3s8prxyura6n"
+path="res://.godot/imported/procedural_ore.glsl-9a0725ce51c42d96133166c299fa201c.res"
+
+[deps]
+
+source_file="res://environment/procedural generation/procedural_ore.glsl"
+dest_files=["res://.godot/imported/procedural_ore.glsl-9a0725ce51c42d96133166c299fa201c.res"]
+
+[params]
+

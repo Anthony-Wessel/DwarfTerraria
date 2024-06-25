@@ -3,15 +3,6 @@ extends Node2D
 
 static var instance : GameWorld
 
-var chunk_loading_thread : Thread
-var chunk_loading_semaphore : Semaphore
-var exit_thread := false
-var exit_mutex : Mutex
-var ready_chunks = {}
-var unready_chunks = {}
-var ready_chunks_mutex : Mutex
-var unready_chunks_mutex : Mutex
-
 var gameSave : GameSave
 @export var player : CharacterMovement
 
@@ -34,29 +25,10 @@ func _init():
 	instance = self
 
 func _ready():
-	chunk_loading_thread = Thread.new()
-	chunk_loading_semaphore = Semaphore.new()
-	exit_mutex = Mutex.new()
-	ready_chunks_mutex = Mutex.new()
-	unready_chunks_mutex = Mutex.new()
-	
-	chunk_loading_thread.start(check_unready_chunks)
-	
 	generate_tile_dict()
 	load_game()
 
-func _exit_tree():
-	exit_mutex.lock()
-	exit_thread = true
-	exit_mutex.unlock()
-	
-	chunk_loading_semaphore.post()
-	
-	chunk_loading_thread.wait_to_finish()
-
 func _process(_delta):
-	if Input.is_key_pressed(KEY_SPACE):
-		check_ready_chunks()
 	if Time.get_ticks_msec() - last_save_time > save_frequency * 1000:
 		save_game()
 		last_save_time = Time.get_ticks_msec()
@@ -89,14 +61,7 @@ func load_game():
 	for y in range(-1,2): # inclusive start, exclusive end
 		for x in range(-1,2):
 			var coords = player_spawn_chunk + Vector2i(x,y)
-			var chunk = chunk_prefab.instantiate()
-			load_chunk(chunk, coords)
-	
-	while ready_chunks.size() > 0:
-		var coords = ready_chunks.keys()[0]
-		loaded_chunks[coords] = ready_chunks[coords]
-		add_child(ready_chunks[coords])
-		ready_chunks.erase(coords)
+			load_chunk(coords)
 	
 	player.global_position = player_spawn * GlobalReferences.TILE_SIZE
 	
@@ -104,62 +69,16 @@ func load_game():
 	loading_world = false
 	print("World done loading")
 
-func load_chunk(chunk, coords : Vector2i):
-	print("loading chunk")
-	#var chunk : Chunk = chunk_prefab.instantiate()
+func load_chunk(coords : Vector2i):
+	var chunk : Chunk = chunk_prefab.instantiate()
 	chunk.position = coords * GlobalReferences.CHUNK_SIZE * GlobalReferences.TILE_SIZE
 	chunk.initialize(gameSave.get_chunk(coords), coords)
-	
-	ready_chunks_mutex.lock()
-	#ready_chunks[coords] = chunk
-	ready_chunks_mutex.unlock()
 	
 	loaded_chunks[coords] = chunk
 	add_child.call_deferred(chunk)
 
-func check_ready_chunks():
-	ready_chunks_mutex.lock()
-	if ready_chunks.size() > 0:
-		var coords = ready_chunks.keys()[0]
-		loaded_chunks[coords] = ready_chunks[coords]
-		add_child(ready_chunks[coords])
-		ready_chunks.erase(coords)
-	ready_chunks_mutex.unlock()
-
-func check_unready_chunks():
-	while true:
-		#print("waiting")
-		chunk_loading_semaphore.wait()
-		chunk_loading_thread.set_thread_safety_checks_enabled(false)
-		#print("done waiting")
-		
-		exit_mutex.lock()
-		if exit_thread:
-			break
-		exit_mutex.unlock()
-		
-		#print("did not break")
-		
-		unready_chunks_mutex.lock()
-		#print("pre-loop")
-		#print(unready_chunks)
-		#var coords = unready_chunks.keys()[0]
-		#print(unready_chunks[coords], ", ", coords)
-		#load_chunk(unready_chunks[coords], coords)
-		for coords in unready_chunks.keys():
-			#print("for loop: ", coords)
-			(unready_chunks[coords] as Node).process_thread_group = Node.PROCESS_THREAD_GROUP_SUB_THREAD
-			#(unready_chunks[coords] as Node).process_thread_group_order = 1
-			load_chunk(unready_chunks[coords], coords)
-			#print("test")
-		unready_chunks.clear()
-		unready_chunks_mutex.unlock()
-		#print("thread loop")
-
 func unload_chunk(coords : Vector2i):
-	#print("unloading chunk")
 	# TODO: Save chunk
-	#LightManager.release_chunk(coords, loaded_chunks[coords].light_index)
 	loaded_chunks[coords].unload()
 	loaded_chunks.erase(coords)
 
@@ -167,31 +86,21 @@ func player_entered_chunk(chunk_coords : Vector2i):
 	if loading_world:
 		return
 	var chunks_to_load = []
-	var chunks_to_unload = []
 	var new_set = []
 	for y in range(-1,2): # inclusive start, exclusive end
 		for x in range(-1,2):
 			var coords = chunk_coords + Vector2i(x,y)
-			if !loaded_chunks.has(coords) and !ready_chunks.has(coords):
+			if !loaded_chunks.has(coords):
 				chunks_to_load.append(coords)
 			new_set.append(coords)
 
 	for old_chunk in loaded_chunks:
 		if !new_set.has(old_chunk):
-			chunks_to_unload.append(old_chunk)
+			unload_chunk(old_chunk)
 	
-	for c in chunks_to_unload:
-		unload_chunk(c)
-	
-	#thread_load_chunks(chunks_to_load)
-	unready_chunks_mutex.lock()
-	for c in chunks_to_load:
-		var test = chunk_prefab.instantiate()
+	for coords in chunks_to_load:
 		await Engine.get_main_loop().process_frame
-		load_chunk(test, c)
-	unready_chunks_mutex.unlock()
-	#print("post")
-	#chunk_loading_semaphore.post()
+		load_chunk(coords)
 
 func is_tile_empty(coords : Vector2i) -> bool:
 	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
@@ -249,8 +158,6 @@ func update_neighbors(coords : Vector2i, wall : bool):
 		update(coords+offset, wall)
 
 func update(coords : Vector2, wall : bool):
-	#var changed := false
-	
 	var tile_resource : TileResource
 	if wall : tile_resource = get_wall(coords)
 	else: tile_resource = get_tile(coords)
@@ -266,21 +173,13 @@ func update(coords : Vector2, wall : bool):
 				break
 		if !support_found:
 			break_tile(coords, wall)
-			#changed = true
-	
-	#if changed:
-		#update_neighbors(coords, wall)
 
 func set_tile(coords : Vector2i, tile_resource : TileResource):
 	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
 	var chunk = loaded_chunks[chunk_coords]
 	chunk.set_tile(coords % GlobalReferences.CHUNK_SIZE, tile_resource)
-	#tile_list[coords.x][coords.y] = tile_resource.id
-	#tiles_tilemap.set_cell(0, coords, tile_dict[tile_resource.name][0], tile_dict[tile_resource.name][1])
 	
 	LightManager.update(coords)
-	
-	#gameSave.tiles[coords.x + coords.y*gameSave.width] = tile_resource.id
 
 func set_wall(coords : Vector2i, tile_resource : TileResource):
 	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
@@ -288,8 +187,6 @@ func set_wall(coords : Vector2i, tile_resource : TileResource):
 	chunk.set_wall(coords % GlobalReferences.CHUNK_SIZE, tile_resource)
 	
 	LightManager.update(coords)
-	
-	#gameSave.walls[coords.x + coords.y*gameSave.width] = tile_resource.id
 
 func place_tile(coords : Vector2, item : TileItem):
 	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.get_width() or coords.y >= gameSave.get_height():

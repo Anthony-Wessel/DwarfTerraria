@@ -35,4 +35,4 @@ func contains_coordinates(coords : Vector2):
 @export var chunks = []
 @export var multiblocks = []
 @export var player_spawn := Vector2(0,0)
-@export var seed : int
+@export var world_seed : int
