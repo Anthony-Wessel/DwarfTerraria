@@ -38,7 +38,7 @@ static func GenerateWorld(worldResource : GameSave):
 			if y <= 1:
 				worldResource.chunks.append(generate_sky_chunk())
 			elif y == 2:
-				worldResource.chunks.append(generate_surface_chunk(Vector2(x,y)))
+				worldResource.chunks.append(await generate_surface_chunk(Vector2(x,y), worldResource.world_seed))
 			else:
 				worldResource.chunks.append(await generate_cave_chunk(Vector2(x,y), worldResource.world_seed))
 	
@@ -152,6 +152,23 @@ static func generate_ore_tex(rng_seed : int, offset : Vector2):
 	
 	return tex
 
+static func generate_surface_tex(rng_seed : int, offset : Vector2):
+	var noise = FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+	noise.frequency = 0.01
+	noise.seed = rng_seed
+	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
+	
+	var noise_tex = NoiseTexture2D.new()
+	noise_tex.height = 100
+	noise_tex.width = 100
+	noise_tex.generate_mipmaps = false
+	noise_tex.noise = noise
+	
+	await noise_tex.changed
+	
+	return noise_tex
 
 static func generate_sky_chunk():
 	var tiles = []
@@ -166,30 +183,21 @@ static func generate_sky_chunk():
 	
 	return [tiles, walls, lights]
 
-static func generate_surface_chunk(chunk_coords : Vector2):
+static func generate_surface_chunk(chunk_coords : Vector2, rng_seed : int):
 	var tiles = []
 	var walls = []
 	var lights = []
+	
+	var surface_tex = await generate_surface_tex(rng_seed, chunk_coords)
+	var img = surface_tex.get_image()
 	
 	# Determine column heights
 	var heights = []
 	var increment = 0
 	var remaining_tiles = 0
-	for i in GlobalReferences.CHUNK_SIZE:
-		if i == 0:
-			heights.append(GlobalReferences.CHUNK_SIZE * 0.5)
-			continue
-		if remaining_tiles == 0:
-			# start a new stretch
-			if increment == 0:
-				increment = sign(rng.randf()-0.5)
-				remaining_tiles = rng.randi_range(1,5)
-			else:
-				increment = 0
-				remaining_tiles = rng.randi_range(5,10)
-		
-		heights.append(min(max(0,heights[i-1] + increment), GlobalReferences.CHUNK_SIZE-1))
-		remaining_tiles -= 1
+	for x in GlobalReferences.CHUNK_SIZE:
+		var color := img.get_pixel(x,0)
+		heights.append(color.r * (GlobalReferences.CHUNK_SIZE/2)+5)
 	
 	# Determine tiles based on height
 	var columns = []
