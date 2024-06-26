@@ -62,11 +62,11 @@ static func GenerateWorld(worldResource : GameSave):
 	# calculate lighting
 	LightManager.preload_lighting(worldResource)
 	
-	#place_trees(worldResource)
+	place_trees(worldResource)
 
 static func place_trees(worldResource : GameSave):
 	var just_placed = false
-	for x in range(1, worldResource.width-1):
+	for x in range(1, worldResource.get_width()-1):
 		if rng.randf() < 0.8 or just_placed:
 			just_placed = false
 			continue
@@ -74,35 +74,35 @@ static func place_trees(worldResource : GameSave):
 		just_placed = true
 		
 		# find the highest solid tile
-		var tile = worldResource.tiles[x]
-		var y = 0
-		while tile == empty and y < worldResource.height-5:
+		var tile = worldResource.get_tile(Vector2i(x, 2*GlobalReferences.CHUNK_SIZE))
+		var y = 2*GlobalReferences.CHUNK_SIZE
+		while tile.id == empty and y < (3*GlobalReferences.CHUNK_SIZE) - 1:
 			y += 1
-			tile = worldResource.tiles[x+ y*worldResource.width]
-		if y >= worldResource.height - 5:
+			tile = worldResource.get_tile(Vector2i(x, y))
+		if y >= (3*GlobalReferences.CHUNK_SIZE) - 1:
 			continue
 		
 		# place the tree
-		worldResource.tiles[x + (y-1)*worldResource.width] = tree_base
+		worldResource.set_tile(Vector2i(x, y-1), tree_base)
 		var y2 = y-1
 		for i in rng.randi_range(3,10):
 			y2 -= 1 
 			var r = rng.randf()
-			if r < 0.1 and worldResource.tiles[x-1 + y2*worldResource.width] == empty:
-				worldResource.tiles[x + y2*worldResource.width] = tree_trunk_left
-				worldResource.tiles[x-1 + y2*worldResource.width] = tree_branch_left
-			elif r > 0.9 and worldResource.tiles[x+1 + y2*worldResource.width] == empty:
-				worldResource.tiles[x + y2*worldResource.width] = tree_trunk_right
-				worldResource.tiles[x+1 + y2*worldResource.width] = tree_branch_right
+			if r < 0.1 and worldResource.get_tile(Vector2i(x-1, y2)).id == empty:
+				worldResource.set_tile(Vector2i(x, y2), tree_trunk_left)
+				worldResource.set_tile(Vector2i(x-1, y2), tree_branch_left)
+			elif r > 0.9 and worldResource.get_tile(Vector2i(x+1, y2)).id == empty:
+				worldResource.set_tile(Vector2i(x, y2), tree_trunk_right)
+				worldResource.set_tile(Vector2i(x+1, y2), tree_branch_right)
 			else:
-				worldResource.tiles[x + y2*worldResource.width] = tree_trunk
+				worldResource.set_tile(Vector2i(x, y2), tree_trunk)
 		
-		worldResource.tiles[x + (y2-1)*worldResource.width] = tree_top5
-		worldResource.tiles[x-1 + (y2-1)*worldResource.width] = tree_top4
-		worldResource.tiles[x+1 + (y2-1)*worldResource.width] = tree_top6
-		worldResource.tiles[x + (y2-2)*worldResource.width] = tree_top2
-		worldResource.tiles[x-1 + (y2-2)*worldResource.width] = tree_top1
-		worldResource.tiles[x+1 + (y2-2)*worldResource.width] = tree_top3
+		worldResource.set_tile(Vector2i(x, y2-1), tree_top5)
+		worldResource.set_tile(Vector2i(x-1, y2-1), tree_top4)
+		worldResource.set_tile(Vector2i(x+1, y2-1), tree_top6)
+		worldResource.set_tile(Vector2i(x, y2-2), tree_top2)
+		worldResource.set_tile(Vector2i(x-1, y2-2), tree_top1)
+		worldResource.set_tile(Vector2i(x+1, y2-2), tree_top3)
 
 static func generate_cave_texture(rng_seed : int, offset : Vector2) -> Texture2D:
 	var cave_tex = await generate_cave_tex(rng_seed, offset)
