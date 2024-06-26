@@ -86,17 +86,24 @@ func player_entered_chunk(chunk_coords : Vector2i):
 	if loading_world:
 		return
 	var chunks_to_load = []
+	var chunks_to_unload = []
 	var new_set = []
-	for y in range(-1,2): # inclusive start, exclusive end
-		for x in range(-1,2):
+	for y in range(-2,3): # inclusive start, exclusive end
+		for x in range(-2,3):
 			var coords = chunk_coords + Vector2i(x,y)
+			coords.x = max(min(coords.x, gameSave.horizontal_chunks-1), 0)
+			coords.y = max(min(coords.y, gameSave.vertical_chunks-1), 0)
+			
 			if !loaded_chunks.has(coords):
 				chunks_to_load.append(coords)
 			new_set.append(coords)
-
+	
 	for old_chunk in loaded_chunks:
 		if !new_set.has(old_chunk):
-			unload_chunk(old_chunk)
+			chunks_to_unload.append(old_chunk)
+	
+	for coords in chunks_to_unload:
+		unload_chunk(coords)
 	
 	for coords in chunks_to_load:
 		await Engine.get_main_loop().process_frame

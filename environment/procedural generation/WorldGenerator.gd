@@ -193,10 +193,9 @@ static func generate_surface_chunk(chunk_coords : Vector2, rng_seed : int):
 	
 	# Determine column heights
 	var heights = []
-	var increment = 0
-	var remaining_tiles = 0
 	for x in GlobalReferences.CHUNK_SIZE:
 		var color := img.get_pixel(x,0)
+		@warning_ignore("integer_division")
 		heights.append(color.r * (GlobalReferences.CHUNK_SIZE/2)+5)
 	
 	# Determine tiles based on height
