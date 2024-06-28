@@ -106,10 +106,10 @@ static func place_trees(worldResource : GameSave):
 
 static func generate_cave_texture(rng_seed : int, offset : Vector2) -> Texture2D:
 	var cave_tex = await generate_cave_tex(rng_seed, offset)
-	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_terrain.glsl", [cave_tex], 100, 100)
+	var refined_cave_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_terrain.glsl", [cave_tex], GlobalReferences.CHUNK_SIZE, GlobalReferences.CHUNK_SIZE)
 	
 	var base_ore_tex = await generate_ore_tex(rng_seed, offset)
-	var final_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], 100, 100)
+	var final_tex = ShaderComputer.run_shader("res://environment/procedural generation/procedural_ore.glsl", [refined_cave_tex, base_ore_tex], GlobalReferences.CHUNK_SIZE, GlobalReferences.CHUNK_SIZE)
 	
 	return final_tex
 
@@ -122,8 +122,8 @@ static func generate_cave_tex(rng_seed : int, offset : Vector2):
 	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
 	
 	var noise_tex = NoiseTexture2D.new()
-	noise_tex.height = 100
-	noise_tex.width = 100
+	noise_tex.height = GlobalReferences.CHUNK_SIZE
+	noise_tex.width = GlobalReferences.CHUNK_SIZE
 	noise_tex.generate_mipmaps = false
 	noise_tex.noise = noise
 	
@@ -143,8 +143,8 @@ static func generate_ore_tex(rng_seed : int, offset : Vector2):
 	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
 	
 	var tex = NoiseTexture2D.new()
-	tex.width = 100
-	tex.height = 100
+	tex.width = GlobalReferences.CHUNK_SIZE
+	tex.height = GlobalReferences.CHUNK_SIZE
 	tex.generate_mipmaps = false
 	tex.noise = noise
 	
@@ -156,19 +156,11 @@ static func generate_surface_tex(rng_seed : int, offset : Vector2):
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise.fractal_type = FastNoiseLite.FRACTAL_NONE
-	noise.frequency = 0.01
+	noise.frequency = 0.02
 	noise.seed = rng_seed
 	noise.offset = Vector3(offset.x, offset.y, 0.0) * GlobalReferences.CHUNK_SIZE
 	
-	var noise_tex = NoiseTexture2D.new()
-	noise_tex.height = 100
-	noise_tex.width = 100
-	noise_tex.generate_mipmaps = false
-	noise_tex.noise = noise
-	
-	await noise_tex.changed
-	
-	return noise_tex
+	return ImageTexture.create_from_image(noise.get_image(GlobalReferences.CHUNK_SIZE,GlobalReferences.CHUNK_SIZE,false,false,false))
 
 static func generate_sky_chunk():
 	var tiles = []
@@ -253,6 +245,8 @@ static func generate_cave_chunk(chunk_coords: Vector2, rng_seed : int):
 				tiles.append(iron)
 			elif color.b > 0.5:
 				tiles.append(mithril)
+			else:
+				tiles.append(stone)
 			
 			walls.append(stone_wall)
 			lights.append(Vector2(0,0))

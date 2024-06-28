@@ -15,7 +15,7 @@ float rand1dTo1d(float value, float mutator)
 void main()
 {
 	ivec2 texel = ivec2(gl_GlobalInvocationID.xy);
-	vec2 uv = texel/99.0;
+	vec2 uv = (vec2(0.5,0.5)+texel) * 1.0/textureSize(CAVE_TEXTURE,0);
 
 
 	float value = texture(ORE_TEXTURE, uv).r;

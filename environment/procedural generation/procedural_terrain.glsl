@@ -9,7 +9,7 @@ layout(set = 0, binding = 1) uniform sampler2D BASE_TEXTURE;
 void main()
 {
   ivec2 texel = ivec2(gl_GlobalInvocationID.xy);
-  vec2 uv = texel/99.0;
+  vec2 uv = (vec2(0.5,0.5)+texel) * 1.0/textureSize(BASE_TEXTURE,0);
   vec4 color = texture(BASE_TEXTURE, uv);
   vec4 end_color = vec4(0.0, 0.0, 0.0, 1.0);
 
