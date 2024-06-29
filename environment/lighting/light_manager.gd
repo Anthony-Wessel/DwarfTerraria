@@ -40,6 +40,7 @@ static func claim_first_available_index():
 			return i
 	
 	print("not enough light indices available")
+	print(GameWorld.instance.loaded_chunks.size(), " chunks loaded")
 
 static func release_index(index : int):
 	indices[index] = false

@@ -180,7 +180,7 @@ static func generate_surface_chunk(chunk_coords : Vector2, rng_seed : int):
 	var walls = []
 	var lights = []
 	
-	var surface_tex = await generate_surface_tex(rng_seed, chunk_coords)
+	var surface_tex = generate_surface_tex(rng_seed, chunk_coords)
 	var img = surface_tex.get_image()
 	
 	# Determine column heights
@@ -188,7 +188,7 @@ static func generate_surface_chunk(chunk_coords : Vector2, rng_seed : int):
 	for x in GlobalReferences.CHUNK_SIZE:
 		var color := img.get_pixel(x,0)
 		@warning_ignore("integer_division")
-		heights.append(color.r * (GlobalReferences.CHUNK_SIZE/2)+5)
+		heights.append(color.r * (GlobalReferences.CHUNK_SIZE/2)+15)
 	
 	# Determine tiles based on height
 	var columns = []

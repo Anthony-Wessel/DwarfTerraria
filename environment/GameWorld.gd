@@ -14,6 +14,7 @@ var gameSave : GameSave
 var tile_dict : Dictionary
 
 var loaded_chunks = {}
+var ready_chunks = []
 
 signal world_finished_loading
 var loading_world = true
@@ -29,6 +30,7 @@ func _ready():
 	load_game()
 
 func _process(_delta):
+	load_ready_chunks()
 	if Time.get_ticks_msec() - last_save_time > save_frequency * 1000:
 		save_game()
 		last_save_time = Time.get_ticks_msec()
@@ -69,7 +71,14 @@ func load_game():
 	loading_world = false
 	print("World done loading")
 
+func load_ready_chunks():
+	if ready_chunks.size() > 0:
+		load_chunk(ready_chunks[0])
+		ready_chunks.remove_at(0)
+
 func load_chunk(coords : Vector2i):
+	if loaded_chunks.has(coords):
+		push_error("Trying to load chunk that already exists")
 	var chunk : Chunk = chunk_prefab.instantiate()
 	chunk.position = coords * GlobalReferences.CHUNK_SIZE * GlobalReferences.TILE_SIZE
 	chunk.initialize(gameSave.get_chunk(coords), coords)
@@ -106,8 +115,8 @@ func player_entered_chunk(chunk_coords : Vector2i):
 		unload_chunk(coords)
 	
 	for coords in chunks_to_load:
-		await Engine.get_main_loop().process_frame
-		load_chunk(coords)
+		if !ready_chunks.has(coords):
+			ready_chunks.append(coords)
 
 func is_tile_empty(coords : Vector2i) -> bool:
 	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
@@ -175,9 +184,17 @@ func update(coords : Vector2, wall : bool):
 	if tile_resource.potential_supports.size() > 0:
 		var support_found := false
 		for support in tile_resource.potential_supports:
-			if wall and !is_wall_empty(coords+support) or !wall and !is_tile_empty(coords+support):
-				support_found = true
-				break
+			if wall:
+				var wall_resource = get_wall(coords+support)
+				if wall_resource == TileHandler.EMPTY_WALL || wall_resource == null:
+					support_found = true
+					break
+			else:
+				var t_resource = get_tile(coords+support)
+				if t_resource == TileHandler.EMPTY_TILE || t_resource == null:
+					support_found = true
+					break
+		
 		if !support_found:
 			break_tile(coords, wall)
 
