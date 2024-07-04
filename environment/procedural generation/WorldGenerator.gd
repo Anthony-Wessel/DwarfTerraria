@@ -30,34 +30,35 @@ static var tree_top5 = 23
 static var tree_top6 = 24
 
 static func GenerateWorld(worldResource : GameSave):
-	worldResource.chunks.clear()
-	worldResource.world_seed = rng.randi()
+	worldResource.world_info.name = "Test World"
+	worldResource.world_info.world_seed = rng.randi()
 	# Generate chunks (2 sky, 1 surface, 6 cave
-	for y in worldResource.vertical_chunks:
-		for x in worldResource.horizontal_chunks:
+	for y in worldResource.world_info.size.y:
+		for x in worldResource.world_info.size.x:
+			var new_chunk
 			if y <= 1:
-				worldResource.chunks.append(generate_sky_chunk())
+				new_chunk = generate_sky_chunk()
 			elif y == 2:
-				worldResource.chunks.append(await generate_surface_chunk(Vector2(x,y), worldResource.world_seed))
+				new_chunk = await generate_surface_chunk(Vector2(x,y), worldResource.world_info.world_seed)
 			else:
-				worldResource.chunks.append(await generate_cave_chunk(Vector2(x,y), worldResource.world_seed))
-	
+				new_chunk = await generate_cave_chunk(Vector2(x,y), worldResource.world_info.world_seed)
+			worldResource.chunks.append(ChunkSave.create(new_chunk[0], new_chunk[1], new_chunk[2]))
 	
 	# Set player spawn
 	@warning_ignore("integer_division")
-	var mid_chunk : int = worldResource.horizontal_chunks / 2
+	var mid_chunk : int = worldResource.world_info.size.x / 2
 	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 2))
 	@warning_ignore("integer_division")
-	var t = chunk[0][GlobalReferences.CHUNK_SIZE/2] # 0 for tiles, then x value (y = 0)
+	var t = chunk.tiles[GlobalReferences.CHUNK_SIZE/2] # 0 for tiles, then x value (y = 0)
 	var spawn_y = 0
 	while t != grass:
 		spawn_y += 1
 		@warning_ignore("integer_division")
-		t = chunk[0][GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
+		t = chunk.tiles[GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
 	
 	var spawnX = (float(mid_chunk)+0.5)*GlobalReferences.CHUNK_SIZE
 	var spawnY = GlobalReferences.CHUNK_SIZE * 2 + spawn_y-1
-	worldResource.player_spawn = Vector2(spawnX, spawnY)
+	worldResource.world_info.player_spawn = Vector2(spawnX, spawnY)
 	
 	# calculate lighting
 	LightManager.preload_lighting(worldResource)

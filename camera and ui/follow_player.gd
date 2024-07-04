@@ -9,7 +9,10 @@ var screen_width = 640
 var screen_height = 360
 
 func _ready():
-	GameWorld.instance.world_finished_loading.connect(set_bounds)
+	if GameWorld.instance.loading_world:
+		GameWorld.instance.world_finished_loading.connect(set_bounds)
+	else:
+		set_bounds()
 
 func set_bounds():
 	min_bounds = Vector2(screen_width/2.0, screen_height/2.0)

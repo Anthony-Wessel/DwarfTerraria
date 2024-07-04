@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WorldInfo" load_steps=2 format=3 uid="uid://cct353npmpk1q"]
+
+[ext_resource type="Script" path="res://game saves/world_info.gd" id="1_yq2sn"]
+
+[resource]
+script = ExtResource("1_yq2sn")
+world_seed = 3722196514
+name = "Test World"
+size = Vector2i(9, 9)
+player_spawn = Vector2(135, 66)

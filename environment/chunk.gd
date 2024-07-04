@@ -12,9 +12,9 @@ var light_index
 var chunk_coords : Vector2i
 
 func initialize(chunk_info, chunk_coordinates : Vector2i):
-	tiles = chunk_info[0]
-	walls = chunk_info[1]
-	lights = chunk_info[2]
+	tiles = chunk_info.tiles
+	walls = chunk_info.walls
+	lights = chunk_info.lights
 	chunk_coords = chunk_coordinates
 	
 	light_index = LightManager.claim_first_available_index()

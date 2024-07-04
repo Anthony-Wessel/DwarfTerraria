@@ -29,10 +29,17 @@ func _ready():
 	generate_tile_dict()
 	load_game()
 
+var chunk_save_index = 0
 func _process(_delta):
+	if loading_world:
+		return
+	
 	load_ready_chunks()
-	if Time.get_ticks_msec() - last_save_time > save_frequency * 1000:
-		save_game()
+	if Time.get_ticks_msec() - last_save_time > save_frequency * 100:
+		chunk_save_index = (chunk_save_index+1) % loaded_chunks.size()
+		
+		var coords = loaded_chunks.keys()[chunk_save_index]
+		save_chunk(coords)
 		last_save_time = Time.get_ticks_msec()
 
 func generate_tile_dict():
@@ -50,15 +57,13 @@ func generate_tile_dict():
 
 func load_game():
 	# Create new game save
-	gameSave = GameSave.new()
-	gameSave.vertical_chunks = 9
-	gameSave.horizontal_chunks = 9
-	await WorldGenerator.GenerateWorld(gameSave)
+	#gameSave = await GameSave.create_new_world("Test World", Vector2i(9,9))
 	
 	# Load game save
-	#gameSave = ResourceLoader.load("res://game saves/game_save_resource.tres")
+	gameSave = GameSave.load_world("Test World")
+
 	
-	var player_spawn = gameSave.player_spawn
+	var player_spawn = gameSave.world_info.player_spawn
 	var player_spawn_chunk : Vector2i = player_spawn / GlobalReferences.CHUNK_SIZE
 	for y in range(-1,2): # inclusive start, exclusive end
 		for x in range(-1,2):
@@ -67,8 +72,8 @@ func load_game():
 	
 	player.global_position = player_spawn * GlobalReferences.TILE_SIZE
 	
-	world_finished_loading.emit()
 	loading_world = false
+	world_finished_loading.emit()
 	print("World done loading")
 
 func load_ready_chunks():
@@ -87,7 +92,7 @@ func load_chunk(coords : Vector2i):
 	add_child.call_deferred(chunk)
 
 func unload_chunk(coords : Vector2i):
-	# TODO: Save chunk
+	save_chunk(coords)
 	loaded_chunks[coords].unload()
 	loaded_chunks.erase(coords)
 
@@ -100,8 +105,8 @@ func player_entered_chunk(chunk_coords : Vector2i):
 	for y in range(-2,3): # inclusive start, exclusive end
 		for x in range(-2,3):
 			var coords = chunk_coords + Vector2i(x,y)
-			coords.x = max(min(coords.x, gameSave.horizontal_chunks-1), 0)
-			coords.y = max(min(coords.y, gameSave.vertical_chunks-1), 0)
+			coords.x = max(min(coords.x, gameSave.world_info.size.x-1), 0)
+			coords.y = max(min(coords.y, gameSave.world_info.size.y-1), 0)
 			
 			if !loaded_chunks.has(coords):
 				chunks_to_load.append(coords)
@@ -254,5 +259,8 @@ func contains_coordinates(coords : Vector2):
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
 
-func save_game():
-	pass#ResourceSaver.save(gameSave, "res://game saves/game_save_resource.tres")
+func save_chunk(chunk_coords : Vector2i):
+	var chunk = null
+	if loaded_chunks.has(chunk_coords):
+		chunk = loaded_chunks[chunk_coords]
+	gameSave.save_chunk(chunk_coords, chunk)
