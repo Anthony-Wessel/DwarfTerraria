@@ -191,12 +191,12 @@ func update(coords : Vector2, wall : bool):
 		for support in tile_resource.potential_supports:
 			if wall:
 				var wall_resource = get_wall(coords+support)
-				if wall_resource == TileHandler.EMPTY_WALL || wall_resource == null:
+				if wall_resource != TileHandler.EMPTY_WALL and wall_resource != null:
 					support_found = true
 					break
 			else:
 				var t_resource = get_tile(coords+support)
-				if t_resource == TileHandler.EMPTY_TILE || t_resource == null:
+				if t_resource != TileHandler.EMPTY_TILE and t_resource != null:
 					support_found = true
 					break
 		
