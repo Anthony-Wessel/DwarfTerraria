@@ -24,11 +24,14 @@ func _on_mouse_exited():
 var tile_coords : Vector2
 var world : GameWorld
 var tile : TileResource
-func setup(game_world : GameWorld, coords : Vector2):
+var chunk : Chunk
+func setup(game_world : GameWorld, coords : Vector2, main_tile, chunk):
 	tile_coords = coords
 	world = game_world
-	tile = world.get_tile(coords)
+	tile = main_tile
+	self.chunk = chunk
 
 func _process(_delta):
 	if world.get_tile(tile_coords) != tile:
+		chunk.multiblocks.erase(tile_coords)
 		queue_free()

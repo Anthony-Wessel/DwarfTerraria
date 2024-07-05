@@ -5,7 +5,7 @@ extends Resource
 @export var walls = []
 @export var lights = []
 
-@export var multiblocks = []
+@export var multiblocks = {}
 
 static func create(tiles, walls, lights):
 	var new_chunk = ChunkSave.new()

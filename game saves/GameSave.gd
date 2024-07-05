@@ -66,9 +66,7 @@ static func create_new_world(name : String, size : Vector2i):
 static func load_world(world_name : String):
 	var loaded_save = GameSave.new()
 	var folder_path = "res://game saves/" + world_name
-	var temp = load(folder_path + "/world_info.tres")
-	print(temp)
-	loaded_save.world_info = temp
+	loaded_save.world_info = load(folder_path + "/world_info.tres")
 	var size = loaded_save.world_info.size
 	for y in size.y:
 		for x in size.x:
@@ -78,9 +76,20 @@ static func load_world(world_name : String):
 
 func save_all():
 	ResourceSaver.save(world_info, "res://game saves/" + world_info.name + "/world_info.tres")
+	
+	save_player()
+	
 	for x in world_info.size.x:
 		for y in world_info.size.y:
 			save_chunk(Vector2i(x,y), null)
+
+func save_player():
+	var player_info = PlayerSave.new()
+	player_info.inventory_contents = Player.instance.inventory.contents
+	ResourceSaver.save(player_info, "res://game saves/" + world_info.name + "/player_info.tres")
+
+func load_player():
+	return load("res://game saves/" + world_info.name + "/player_info.tres")
 
 func load_chunk(chunk_coords : Vector2i):
 	var chunk_string = str(chunk_coords.x) + "-" + str(chunk_coords.y)
@@ -94,39 +103,9 @@ func save_chunk(chunk_coords : Vector2i, updated_chunk : Chunk):
 		chunk.tiles = updated_chunk.tiles
 		chunk.walls = updated_chunk.walls
 		chunk.lights = updated_chunk.lights
+		chunk.multiblocks = updated_chunk.multiblocks
 	
 	# Save to file
 	var chunk_string = str(chunk_coords.x) + "-" + str(chunk_coords.y)
 	var filename = "res://game saves/" + world_info.name + "/" + chunk_string + ".tres"
 	ResourceSaver.save(chunk, filename)
-"""
-class ChunkSave extends Resource:
-	@export var tiles = []
-	@export var walls = []
-	@export var lights = []
-	
-	@export var multiblocks = []
-	
-	static func create(tiles, walls, lights):
-		var new_chunk = ChunkSave.new()
-		new_chunk.tiles = tiles
-		new_chunk.walls = walls
-		new_chunk.lights = lights
-		
-		return new_chunk
-"""
-"""
-class WorldInfo extends Resource:
-	@export var world_seed : int
-	@export var name : String
-	@export var size : Vector2i
-	@export var player_spawn : Vector2
-	
-	static func create(name : String, size : Vector2i):
-		var new_info = WorldInfo.new()
-		new_info.name = name
-		new_info.size = size
-		new_info.world_seed = RandomNumberGenerator.new().randi()
-		
-		return new_info
-"""

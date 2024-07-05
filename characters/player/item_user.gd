@@ -77,7 +77,7 @@ func handle_multiblock_usage(multiblock : MultiblockItem, _delta):
 		held_prefab.use("use_tile", 5.0)
 		
 		# Place the selected multiblock item
-		tile_grid.place_multiblock(tile_pos, multiblock)
+		tile_grid.place_multiblock(tile_pos, multiblock, true)
 		inventory.remove_item(multiblock)
 		
 		update_preview_sprite(tile_pos)

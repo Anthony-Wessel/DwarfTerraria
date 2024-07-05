@@ -38,6 +38,9 @@ func _process(_delta):
 	if Time.get_ticks_msec() - last_save_time > save_frequency * 100:
 		chunk_save_index = (chunk_save_index+1) % loaded_chunks.size()
 		
+		if chunk_save_index == 0:
+			gameSave.save_player()
+		
 		var coords = loaded_chunks.keys()[chunk_save_index]
 		save_chunk(coords)
 		last_save_time = Time.get_ticks_msec()
@@ -84,6 +87,7 @@ func load_ready_chunks():
 func load_chunk(coords : Vector2i):
 	if loaded_chunks.has(coords):
 		push_error("Trying to load chunk that already exists")
+		return
 	var chunk : Chunk = chunk_prefab.instantiate()
 	chunk.position = coords * GlobalReferences.CHUNK_SIZE * GlobalReferences.TILE_SIZE
 	chunk.initialize(gameSave.get_chunk(coords), coords)
@@ -229,18 +233,24 @@ func place_tile(coords : Vector2, item : TileItem):
 	else:
 		set_tile(coords, tile_resource)
 
-func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem):
+func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem, place_tiles : bool, chunk : Chunk = null):
+	if place_tiles:
+		for i in multiblock_item.tile_ids.size():
+			var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
+			@warning_ignore("integer_division")
+			var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
+			set_tile(coords + offset, tile_resource)
+		
+		if chunk == null:
+			var chunk_coords = Vector2i(coords) / GlobalReferences.CHUNK_SIZE
+			chunk = loaded_chunks[chunk_coords]
+		chunk.multiblocks[coords] = multiblock_item
+	
 	var multiblock = multiblock_item.prefab.instantiate()
 	multiblock.position = coords * GlobalReferences.TILE_SIZE
 	multiblocks_root.add_child(multiblock)
 	
-	for i in multiblock_item.tile_ids.size():
-		var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
-		@warning_ignore("integer_division")
-		var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
-		set_tile(coords + offset, tile_resource)
-	
-	multiblock.setup(self, coords)
+	multiblock.setup(self, coords, TileHandler.tiles[multiblock_item.tile_ids[0]], chunk)
 
 
 func get_light_values(coords : Vector2i):

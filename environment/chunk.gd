@@ -4,6 +4,7 @@ extends Node2D
 var tiles = []
 var walls = []
 var lights = []
+var multiblocks = {}
 
 var light_index
 
@@ -15,6 +16,7 @@ func initialize(chunk_info, chunk_coordinates : Vector2i):
 	tiles = chunk_info.tiles
 	walls = chunk_info.walls
 	lights = chunk_info.lights
+	multiblocks = chunk_info.multiblocks
 	chunk_coords = chunk_coordinates
 	
 	light_index = LightManager.claim_first_available_index()
@@ -38,6 +40,9 @@ func initialize(chunk_info, chunk_coordinates : Vector2i):
 			var color = Color(lights[mesh_index].x, sky_light_lost, 0)
 			LightManager.set_color((light_index * pow(GlobalReferences.CHUNK_SIZE, 2)) + mesh_index, color)
 
+	# Load multiblocks
+	for coords in chunk_info.multiblocks.keys():
+		GameWorld.instance.place_multiblock(coords, chunk_info.multiblocks[coords], false, self)
 
 func unload():
 	LightManager.release_index(light_index)

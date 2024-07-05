@@ -16,6 +16,10 @@ func _ready():
 	for stack in default_items:
 		add_items(stack.item, stack.count)
 
+func load_contents(loaded_contents):
+	contents = loaded_contents
+	inventory_updated.emit(contents)
+
 func add_item(item : Item):
 	add_items(item, 1)
 
