@@ -1,22 +1,28 @@
+class_name ItemUser
 extends Node2D
+
+static var instance : ItemUser
 
 var held_item : Item
 var tile_grid : GameWorld
-var miner : Miner
+#var miner : Miner
 @export var inventory : Inventory
 
-@export var held_prefab : HeldItem
+#@export var held_prefab : HeldItem
 
 @export var preview_sprite : Node2D
 var preview_intersections : Array[bool]
 var prev_pos : Vector2i
 
+var instantiated_use_scene : Node
+
 func _init():
 	HUD.instance.hotbar.on_selected_item_changed.connect(swap_item)
+	instance = self
 
 func _ready():
 	tile_grid = GameWorld.instance
-	miner = Miner.instance
+	#miner = Miner.instance
 	for i in 9:
 		preview_intersections.append(false)
 
@@ -31,21 +37,26 @@ func swap_item(new_item : Item):
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
 		update_preview_sprite(tile_pos)
 	
-	held_prefab.set_sprite(new_item.held_texture)
-	var weapon = new_item as WeaponItem
-	if weapon:
-		held_prefab.set_collision(weapon.collision_shape)
+	#held_prefab.set_sprite(new_item.held_texture)
+	#var weapon = new_item as WeaponItem
+	#if weapon:
+		#held_prefab.set_collision(weapon.collision_shape)
 
 func _process(delta):
-	if held_item is TileItem:
-		handle_tile_usage(held_item, delta)
-	if held_item is MultiblockItem:
-		handle_multiblock_usage(held_item, delta)
-	elif held_item is ToolItem:
-		handle_tool_usage(held_item, delta)
-	elif held_item is WeaponItem:
-		handle_weapon_usage(held_item, delta)
-
+	if held_item is TileItem or held_item is MultiblockItem:
+		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
+		if tile_pos != prev_pos:
+			update_preview_sprite(tile_pos)
+			prev_pos = tile_pos
+	
+	if instantiated_use_scene == null:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			if held_item.use_scene != null:
+				instantiated_use_scene = held_item.get_use_scene().instantiate()
+				add_child(instantiated_use_scene)
+			else:
+				push_error("Trying to use item that has no use scene set: ", held_item.name)
+"""
 func handle_tile_usage(tile : TileItem, _delta):
 	# Determine what tile the mouse is hovering over
 	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
@@ -111,7 +122,7 @@ func handle_weapon_usage(weapon : WeaponItem, _delta):
 func handle_hit(body):
 	var diff = body.global_position - global_position
 	(body as CharacterMovement).force_velocity(Vector2(sign(diff.x)*70,-50))
-	
+"""
 
 func update_preview_sprite(new_pos : Vector2i):
 	if held_item == null:

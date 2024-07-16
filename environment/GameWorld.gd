@@ -60,10 +60,10 @@ func generate_tile_dict():
 
 func load_game():
 	# Create new game save
-	gameSave = await GameSave.create_new_world("Test World", Vector2i(9,9))
+	#gameSave = await GameSave.create_new_world("Test World", Vector2i(9,9))
 	
 	# Load game save
-	#gameSave = GameSave.load_world("Test World")
+	gameSave = GameSave.load_world("Test World")
 
 	
 	var player_spawn = gameSave.world_info.player_spawn

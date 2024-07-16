@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cccpn847bcvgo"]
+
+[ext_resource type="PackedScene" uid="uid://dejxaex2w723r" path="res://items/item use scenes/rotate_base.tscn" id="1_vxhp2"]
+
+[node name="rotate_base" instance=ExtResource("1_vxhp2")]

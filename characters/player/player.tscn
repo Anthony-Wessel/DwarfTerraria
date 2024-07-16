@@ -1,17 +1,21 @@
-[gd_scene load_steps=17 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=25 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
 [ext_resource type="Texture2D" uid="uid://bg3i1y8b37fr6" path="res://art/character spritesheets/Dwarf-Sheet.png" id="2_85k5r"]
 [ext_resource type="Script" path="res://inventory/inventory.gd" id="3_g1w5g"]
-[ext_resource type="PackedScene" uid="uid://b6wwd40v3y18t" path="res://items/held prefabs/held_prefab_base.tscn" id="3_lkeaf"]
 [ext_resource type="Script" path="res://characters/player/item_user.gd" id="4_klp2n"]
 [ext_resource type="Texture2D" uid="uid://dfsch3yx6dyqd" path="res://art/ui/SmallSquare.png" id="5_uccx5"]
 [ext_resource type="PackedScene" uid="uid://b6yvvsx2s2pue" path="res://characters/player/preview_sprite.tscn" id="5_ynaqn"]
 [ext_resource type="Script" path="res://characters/player/area_miner_ui.gd" id="6_kcnxb"]
+[ext_resource type="Resource" uid="uid://bgeqr0731us2e" path="res://items/weapons/Isword.tres" id="10_i7tmx"]
 [ext_resource type="Script" path="res://characters/health.gd" id="11_1svu7"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="11_yfbr4"]
 [ext_resource type="Script" path="res://characters/player/respawn_on_death.gd" id="12_5fget"]
+[ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="12_m1re3"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="13_jjvcd"]
+[ext_resource type="Resource" uid="uid://70ysduy78lea" path="res://items/tools/Ihammer.tres" id="13_pqrim"]
+[ext_resource type="Resource" uid="uid://o0302yifnps0" path="res://items/tiles/Igrass.tres" id="14_1y7sr"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -70,6 +74,26 @@ _data = {
 "run": SubResource("Animation_1vyll")
 }
 
+[sub_resource type="Resource" id="Resource_1cg0v"]
+script = ExtResource("11_yfbr4")
+item = ExtResource("10_i7tmx")
+count = 1
+
+[sub_resource type="Resource" id="Resource_h6w76"]
+script = ExtResource("11_yfbr4")
+item = ExtResource("12_m1re3")
+count = 1
+
+[sub_resource type="Resource" id="Resource_xg0c6"]
+script = ExtResource("11_yfbr4")
+item = ExtResource("13_pqrim")
+count = 1
+
+[sub_resource type="Resource" id="Resource_cebfc"]
+script = ExtResource("11_yfbr4")
+item = ExtResource("14_1y7sr")
+count = 5
+
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
 [node name="CollisionShape2D" parent="." index="0"]
@@ -88,16 +112,13 @@ hframes = 4
 vframes = 2
 frame = 1
 
-[node name="ItemUser" type="Node2D" parent="SpriteHolder" index="1" node_paths=PackedStringArray("inventory", "held_prefab", "preview_sprite")]
-position = Vector2(2, -9)
+[node name="ItemUser" type="Node2D" parent="SpriteHolder" index="1" node_paths=PackedStringArray("inventory", "preview_sprite")]
+position = Vector2(0, -8)
 script = ExtResource("4_klp2n")
 inventory = NodePath("../../Inventory")
-held_prefab = NodePath("HeldPrefabBase")
 preview_sprite = NodePath("../../PreviewSprite")
 
-[node name="HeldPrefabBase" parent="SpriteHolder/ItemUser" index="0" instance=ExtResource("3_lkeaf")]
-
-[node name="AreaMinerUI" type="Sprite2D" parent="SpriteHolder/ItemUser" index="1" node_paths=PackedStringArray("item_user")]
+[node name="AreaMinerUI" type="Sprite2D" parent="SpriteHolder/ItemUser" index="0" node_paths=PackedStringArray("item_user")]
 texture = ExtResource("5_uccx5")
 script = ExtResource("6_kcnxb")
 item_user = NodePath("..")
@@ -123,6 +144,7 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
+default_items = Array[ExtResource("11_yfbr4")]([SubResource("Resource_1cg0v"), SubResource("Resource_h6w76"), SubResource("Resource_xg0c6"), SubResource("Resource_cebfc")])
 
 [node name="Health" type="Node" parent="." index="6"]
 script = ExtResource("11_1svu7")
@@ -132,6 +154,5 @@ max_health = 5
 script = ExtResource("12_5fget")
 root_node = NodePath("../..")
 
-[connection signal="collision_detected" from="SpriteHolder/ItemUser/HeldPrefabBase" to="SpriteHolder/ItemUser" method="handle_hit"]
 [connection signal="hit" from="SpriteHolder/Hitbox" to="Health" method="handle_hit"]
 [connection signal="dead" from="Health" to="Health/RespawnOnDeath" method="respawn"]

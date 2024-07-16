@@ -48,7 +48,6 @@ buffer = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 [node name="Lighting" type="CanvasLayer" parent="Post Processing"]
 
 [node name="TextureRect" type="TextureRect" parent="Post Processing/Lighting" node_paths=PackedStringArray("vport")]
-visible = false
 material = SubResource("ShaderMaterial_hy40h")
 anchors_preset = 15
 anchor_right = 1.0
