@@ -1,13 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://keo15c26sr7s"]
+[gd_scene load_steps=2 format=3 uid="uid://keo15c26sr7s"]
 
-[ext_resource type="PackedScene" uid="uid://dejxaex2w723r" path="res://items/item use scenes/rotate_base.tscn" id="1_2xxpr"]
-[ext_resource type="Texture2D" uid="uid://dlit4af68xex0" path="res://art/tools/copper_pickaxe.png" id="2_n8qt4"]
 [ext_resource type="Script" path="res://items/item use scenes/mine_tile.gd" id="3_mwl3e"]
 
-[node name="rotate_base" instance=ExtResource("1_2xxpr")]
+[node name="rotate_base" type="Node2D"]
 script = ExtResource("3_mwl3e")
 
-[node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("2_n8qt4")
-
-[node name="MineTile" type="Node2D" parent="." index="1"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.90735e-06, -18)
+rotation = -0.785398
