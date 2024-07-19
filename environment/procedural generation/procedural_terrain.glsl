@@ -3,7 +3,7 @@
 
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
-layout(set = 0, binding = 0, r8) uniform image2D OUTPUT_TEXTURE;
+layout(set = 0, binding = 0, rgba32f) uniform image2D OUTPUT_TEXTURE;
 layout(set = 0, binding = 1) uniform sampler2D BASE_TEXTURE;
 
 void main()
@@ -17,6 +17,6 @@ void main()
   {
 	end_color = vec4(1.0, 1.0, 1.0, 1.0);
   }
-  
+
   imageStore(OUTPUT_TEXTURE, texel, end_color);
 }

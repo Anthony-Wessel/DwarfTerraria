@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=28 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="Shader" path="res://environment/lighting/lighting.gdshader" id="1_gcpuu"]
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://camera and ui/hud.tscn" id="1_l83f0"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://environment/lighting/day_night_cycle.gd" id="11_r7rar"]
 [ext_resource type="Texture2D" uid="uid://bi30i5t2jevl4" path="res://art/tiles/tileBreakAnimation.png" id="11_vim8l"]
 [ext_resource type="Script" path="res://tiles/tile_handler.gd" id="16_0a2ww"]
+[ext_resource type="Script" path="res://display_texture.gd" id="17_5ua3v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hy40h"]
 shader = ExtResource("1_gcpuu")
@@ -131,6 +132,17 @@ hframes = 4
 
 [node name="Player" parent="." instance=ExtResource("8_2mjqa")]
 position = Vector2(28, -25)
+
+[node name="TextureRect" type="TextureRect" parent="Player"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 30.0
+offset_bottom = -120.0
+grow_vertical = 0
+scale = Vector2(5, 5)
+script = ExtResource("17_5ua3v")
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("9_rwkjp")]
 player = NodePath("../Player")
