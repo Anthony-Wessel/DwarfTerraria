@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://bd11dn7tr7jgh"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_nl1d4"]
+[ext_resource type="Texture2D" uid="uid://cmvxt0561ao4s" path="res://art/walls/wall_brick.png" id="2_iak44"]
+
+[resource]
+script = ExtResource("1_nl1d4")
+size = Vector2i(1, 1)
+tile_ids = Array[int]([11])
+name = "stone brick wall"
+texture = ExtResource("2_iak44")

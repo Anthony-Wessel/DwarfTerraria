@@ -33,7 +33,7 @@ func swap_item(new_item : Item):
 	if new_item == null:
 		return
 	
-	if new_item is TileItem or new_item is MultiblockItem:
+	if new_item is PlaceableItem:
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/8)
 		update_preview_sprite(tile_pos)
 	
@@ -42,16 +42,16 @@ func swap_item(new_item : Item):
 	#if weapon:
 		#held_prefab.set_collision(weapon.collision_shape)
 
-func _process(delta):
-	if held_item is TileItem or held_item is MultiblockItem:
+func _process(_delta):
+	if held_item is PlaceableItem:
 		var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
 		if tile_pos != prev_pos:
 			update_preview_sprite(tile_pos)
 			prev_pos = tile_pos
 	
-	if instantiated_use_scene == null:
+	if instantiated_use_scene == null and held_item != null:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if held_item.use_scene != null:
+			if held_item.get_use_scene() != null:
 				instantiated_use_scene = held_item.get_use_scene().instantiate()
 				add_child(instantiated_use_scene)
 			else:
@@ -145,26 +145,17 @@ func update_preview_sprite(new_pos : Vector2i):
 	else:
 		for i in preview_intersections.size():
 			preview_intersections[i] = false
-		var multiblock = held_item as MultiblockItem
-		# placing multiblock
-		if multiblock:
-			for a in multiblock.size.x:
-				for b in multiblock.size.y:
-					if !tile_grid.is_tile_empty(new_pos + Vector2i(a,b)):
-						preview_intersections[a+b*3] = true
-					else:
-						preview_intersections[a+b*3] = false
-		# placing single tile
-		else:
-			var is_empty
-			var tile_resource = TileHandler.tiles[held_item.tile_id]
-			if tile_resource.wall:
-				is_empty = tile_grid.is_wall_empty(new_pos)
-			else:
-				is_empty = tile_grid.is_tile_empty(new_pos)
-			if !is_empty:
-				preview_intersections[0] = true
-			else:
-				preview_intersections[0] = false
+		
+		var tile_resource = TileHandler.tiles[held_item.tile_ids[0]]
+		var placing_wall = tile_resource.wall
+		
+		for a in held_item.size.x:
+			for b in held_item.size.y:
+				if !placing_wall and !tile_grid.is_tile_empty(new_pos + Vector2i(a,b)):
+					preview_intersections[a+b*3] = true
+				elif placing_wall and !tile_grid.is_wall_empty(new_pos + Vector2i(a,b)):
+					preview_intersections[a+b*3] = true
+				else:
+					preview_intersections[a+b*3] = false
 	
 	preview_sprite.update_intersections(preview_intersections)

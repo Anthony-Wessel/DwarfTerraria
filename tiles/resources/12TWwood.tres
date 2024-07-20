@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://cvq76fedo7h7y"]
 
-[ext_resource type="Resource" uid="uid://lenqovqvb57o" path="res://items/walls/Wwood.tres" id="1_hftbf"]
+[ext_resource type="Resource" uid="uid://cpj8i1k3gtsjq" path="res://items/walls/Pwood_wall.tres" id="1_wg40x"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_m6gyr"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 12
 name = "wood wall"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_hftbf")
+dropped_item = ExtResource("1_wg40x")
 potential_supports = Array[Vector2]([])
 light_source = 0
 wall = true

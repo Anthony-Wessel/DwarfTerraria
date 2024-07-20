@@ -11,5 +11,4 @@ mining_speed = 2.0
 mines_walls = true
 name = "hammer"
 texture = ExtResource("1_tkwd2")
-held_texture = ExtResource("1_tkwd2")
 use_scene = ExtResource("3_8jbhj")

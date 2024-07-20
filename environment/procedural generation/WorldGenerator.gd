@@ -264,6 +264,7 @@ static func place_trees(worldResource : GameSave):
 		worldResource.set_tile(Vector2i(x+1, y2-2), tree_top3)
 
 static func place_caves(worldResource : GameSave):
+	@warning_ignore("integer_division")
 	var mid_chunk : int = worldResource.world_info.size.x / 2
 	var cooldown = 0
 	for x in worldResource.world_info.size.x:

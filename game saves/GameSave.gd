@@ -103,7 +103,6 @@ func save_chunk(chunk_coords : Vector2i, updated_chunk : Chunk):
 		chunk.tiles = updated_chunk.tiles
 		chunk.walls = updated_chunk.walls
 		chunk.lights = updated_chunk.lights
-		chunk.multiblocks = updated_chunk.multiblocks
 	
 	# Save to file
 	var chunk_string = str(chunk_coords.x) + "-" + str(chunk_coords.y)

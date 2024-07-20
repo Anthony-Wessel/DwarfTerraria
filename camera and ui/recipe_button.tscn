@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://djs46hkqd16kl"]
 
-[ext_resource type="Texture2D" uid="uid://dctmjapn8cu1y" path="res://art/tiles/t_stoneBrick.png" id="1_u7dw5"]
+[ext_resource type="Texture2D" uid="uid://cdpb0jlx3b8yg" path="res://art/tiles/error_tile.png" id="1_5kyk1"]
 
 [node name="RecipeButton" type="Button"]
 custom_minimum_size = Vector2(56, 56)
@@ -22,4 +22,4 @@ theme_override_constants/margin_bottom = 4
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 layout_mode = 2
-texture = ExtResource("1_u7dw5")
+texture = ExtResource("1_5kyk1")

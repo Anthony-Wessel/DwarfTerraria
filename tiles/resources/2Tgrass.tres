@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://d370kdgkmoyp3"]
 
-[ext_resource type="Resource" uid="uid://o0302yifnps0" path="res://items/tiles/Igrass.tres" id="1_abqoa"]
+[ext_resource type="Resource" uid="uid://uq1u7160753u" path="res://items/tiles/Pgrass.tres" id="1_pirt0"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_8w3qk"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 2
 name = "grass"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_abqoa")
+dropped_item = ExtResource("1_pirt0")
 potential_supports = Array[Vector2]([])
 light_source = 0
 wall = false

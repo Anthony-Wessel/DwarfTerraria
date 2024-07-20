@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg1pdvovspval"]
+
+[ext_resource type="PackedScene" uid="uid://cjo2ijbxgofc0" path="res://environment/tile entities/entity.tscn" id="1_m623u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqut4"]
+size = Vector2(16, 16)
+
+[node name="Furnace" instance=ExtResource("1_m623u")]
+
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_aqut4")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://b2m56f618pfsg"]
 
-[ext_resource type="Resource" uid="uid://ci33gi01paqjh" path="res://items/tiles/Iwood.tres" id="1_ppewu"]
+[ext_resource type="Resource" uid="uid://cpikgovv5nqfo" path="res://items/tiles/Pwood.tres" id="1_dv25c"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_mpn4j"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 23
 name = "tree top 5"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_ppewu")
+dropped_item = ExtResource("1_dv25c")
 potential_supports = Array[Vector2]([Vector2(0, 1)])
 light_source = 0
 wall = false

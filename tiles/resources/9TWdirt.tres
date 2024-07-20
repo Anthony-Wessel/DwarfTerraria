@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://c075a7ltu8lx"]
 
+[ext_resource type="Resource" uid="uid://byo7iotyri2u4" path="res://items/walls/Pdirt_wall.tres" id="1_8x3yn"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="1_jvbtp"]
-[ext_resource type="Resource" uid="uid://beaobqrbhoii1" path="res://items/walls/Wdirt.tres" id="1_y4mmx"]
 
 [resource]
 script = ExtResource("1_jvbtp")
@@ -9,7 +9,7 @@ id = 9
 name = "dirt wall"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_y4mmx")
+dropped_item = ExtResource("1_8x3yn")
 potential_supports = Array[Vector2]([])
 light_source = 0
 wall = true

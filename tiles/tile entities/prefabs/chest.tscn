@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://cveh6wh1esmnn"]
+
+[ext_resource type="PackedScene" uid="uid://cjo2ijbxgofc0" path="res://tiles/tile entities/entity.tscn" id="1_4h0xx"]
+[ext_resource type="Script" path="res://tiles/tile entities/chest_opener.gd" id="2_rnbr2"]
+[ext_resource type="Script" path="res://inventory/inventory.gd" id="3_18rkt"]
+
+[node name="Chest" instance=ExtResource("1_4h0xx")]
+
+[node name="Interact" parent="." index="1" node_paths=PackedStringArray("inventory")]
+script = ExtResource("2_rnbr2")
+inventory = NodePath("../Inventory")
+
+[node name="Inventory" type="Node" parent="." index="2"]
+script = ExtResource("3_18rkt")

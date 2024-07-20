@@ -5,12 +5,10 @@ extends Resource
 @export var walls = []
 @export var lights = []
 
-@export var multiblocks = {}
-
-static func create(tiles, walls, lights):
+static func create(_tiles, _walls, _lights):
 	var new_chunk = ChunkSave.new()
-	new_chunk.tiles = tiles
-	new_chunk.walls = walls
-	new_chunk.lights = lights
+	new_chunk.tiles = _tiles
+	new_chunk.walls = _walls
+	new_chunk.lights = _lights
 	
 	return new_chunk

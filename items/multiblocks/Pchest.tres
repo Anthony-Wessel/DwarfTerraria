@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://dnnoal4dqix2b"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_wup8w"]
+[ext_resource type="Texture2D" uid="uid://cjoxndcls8fcb" path="res://art/multiblocks/chest.png" id="3_p6kpi"]
+
+[resource]
+script = ExtResource("1_wup8w")
+size = Vector2i(2, 1)
+tile_ids = Array[int]([27, 28])
+name = "Chest"
+texture = ExtResource("3_p6kpi")

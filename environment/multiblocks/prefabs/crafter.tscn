@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://45p5kh0akq8v"]
-
-[ext_resource type="PackedScene" uid="uid://cjo2ijbxgofc0" path="res://environment/multiblocks/multiblock.tscn" id="1_76edb"]
-
-[node name="Crafter" instance=ExtResource("1_76edb")]

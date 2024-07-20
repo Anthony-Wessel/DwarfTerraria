@@ -7,9 +7,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sonpe"]
 size = Vector2(800, 800)
 
-[node name="Chunk" type="Node2D" node_paths=PackedStringArray("tilemap")]
+[node name="Chunk" type="Node2D" node_paths=PackedStringArray("tilemap", "entity_root")]
 script = ExtResource("1_ln6kp")
 tilemap = NodePath("Tilemap")
+entity_root = NodePath("EntityRoot")
 
 [node name="Tilemap" type="TileMap" parent="."]
 tile_set = ExtResource("1_n4n41")
@@ -31,5 +32,7 @@ collision_mask = 2
 position = Vector2(400, 400)
 shape = SubResource("RectangleShape2D_sonpe")
 script = ExtResource("3_lmqjd")
+
+[node name="EntityRoot" type="Node2D" parent="."]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_player_entered"]

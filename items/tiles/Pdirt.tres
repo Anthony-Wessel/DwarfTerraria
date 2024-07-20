@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://di4ua54dedxkh"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_angrw"]
+[ext_resource type="Texture2D" uid="uid://b3cywqhilv74g" path="res://art/tiles/dirt.png" id="2_4oqwv"]
+
+[resource]
+script = ExtResource("1_angrw")
+size = Vector2i(1, 1)
+tile_ids = Array[int]([1])
+name = "dirt"
+texture = ExtResource("2_4oqwv")

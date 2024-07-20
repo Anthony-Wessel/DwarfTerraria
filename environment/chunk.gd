@@ -4,19 +4,17 @@ extends Node2D
 var tiles = []
 var walls = []
 var lights = []
-var multiblocks = {}
 
 var light_index
 
 @export var tilemap : TileMap
-@export var multimesh : MultiMeshInstance2D
+@export var entity_root : Node2D
 var chunk_coords : Vector2i
 
 func initialize(chunk_info, chunk_coordinates : Vector2i):
 	tiles = chunk_info.tiles
 	walls = chunk_info.walls
 	lights = chunk_info.lights
-	multiblocks = chunk_info.multiblocks
 	chunk_coords = chunk_coordinates
 	
 	light_index = LightManager.claim_first_available_index()
@@ -28,7 +26,7 @@ func initialize(chunk_info, chunk_coordinates : Vector2i):
 			set_tile(Vector2(x,y), tile_resource)
 			
 			var wall_resource = TileHandler.tiles[walls[x + y * GlobalReferences.CHUNK_SIZE]]
-			set_wall(Vector2(x,y), wall_resource)
+			set_tile(Vector2(x,y), wall_resource)
 			
 			var mesh_index = x + y * GlobalReferences.CHUNK_SIZE
 			var mesh_coords : Vector2i = chunk_coords * GlobalReferences.CHUNK_SIZE + Vector2i(x,y)
@@ -40,21 +38,29 @@ func initialize(chunk_info, chunk_coordinates : Vector2i):
 			var color = Color(lights[mesh_index].x, sky_light_lost, 0)
 			LightManager.set_color((light_index * pow(GlobalReferences.CHUNK_SIZE, 2)) + mesh_index, color)
 
-	# Load multiblocks
-	for coords in chunk_info.multiblocks.keys():
-		GameWorld.instance.place_multiblock(coords, chunk_info.multiblocks[coords], false, self)
-
 func unload():
 	LightManager.release_index(light_index)
 	queue_free()
 
-func set_tile(coords : Vector2, tile_resource : TileResource):
-	tiles[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
-	tilemap.set_cell(0, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
-
-func set_wall(coords : Vector2, tile_resource : TileResource):
-	walls[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
-	tilemap.set_cell(1, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
+func set_tile(coords : Vector2i, tile_resource : TileResource):
+	var tilemap_layer
+	var list
+	if tile_resource.wall:
+		list = walls
+		tilemap_layer = 1
+	else:
+		list = tiles
+		tilemap_layer = 0
+	
+	list[coords.x + coords.y * GlobalReferences.CHUNK_SIZE] = tile_resource.id
+	tilemap.set_cell(tilemap_layer, coords, GameWorld.instance.tile_dict[tile_resource.name][0], GameWorld.instance.tile_dict[tile_resource.name][1])
+	
+	if tile_resource.entity_prefab != null:
+		var entity = tile_resource.entity_prefab.instantiate()
+		entity.position = coords * GlobalReferences.TILE_SIZE
+		entity_root.add_child(entity)
+		
+		entity.setup(GameWorld.instance, chunk_coords * GlobalReferences.CHUNK_SIZE + coords, tile_resource)
 
 func set_light_values(coords : Vector2, light_values : Vector2):
 	var mesh_index = coords.x + coords.y*GlobalReferences.CHUNK_SIZE

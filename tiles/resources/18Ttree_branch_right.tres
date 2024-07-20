@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://deg1ru4lmpgri"]
 
-[ext_resource type="Resource" uid="uid://ci33gi01paqjh" path="res://items/tiles/Iwood.tres" id="1_o2144"]
+[ext_resource type="Resource" uid="uid://cpikgovv5nqfo" path="res://items/tiles/Pwood.tres" id="1_7r81q"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_b4nhm"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 18
 name = "tree branch right"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_o2144")
+dropped_item = ExtResource("1_7r81q")
 potential_supports = Array[Vector2]([Vector2(-1, 0)])
 light_source = 0
 wall = false

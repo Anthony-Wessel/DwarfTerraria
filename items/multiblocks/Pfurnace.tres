@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://dsvih6dp6aceu"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="2_asa46"]
+[ext_resource type="Texture2D" uid="uid://c7hbh3rlgcygr" path="res://art/multiblocks/furnace.png" id="3_u7bn3"]
+
+[resource]
+script = ExtResource("2_asa46")
+size = Vector2i(2, 2)
+tile_ids = Array[int]([29, 30, 31, 32])
+name = "Furnace"
+texture = ExtResource("3_u7bn3")

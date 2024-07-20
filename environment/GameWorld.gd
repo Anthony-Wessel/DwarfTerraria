@@ -6,8 +6,6 @@ static var instance : GameWorld
 var gameSave : GameSave
 @export var player : CharacterMovement
 
-@export var multiblocks_root : Node2D
-
 @export var tile_set : TileSet
 @export var chunk_prefab : PackedScene
 
@@ -166,7 +164,7 @@ func break_tile(coords : Vector2, wall : bool):
 	var tile_resource
 	if wall:
 		tile_resource = get_wall(coords)
-		set_wall(coords, TileHandler.EMPTY_WALL)
+		set_tile(coords, TileHandler.EMPTY_WALL)
 	else:
 		tile_resource = get_tile(coords)
 		set_tile(coords, TileHandler.EMPTY_TILE)
@@ -214,44 +212,14 @@ func set_tile(coords : Vector2i, tile_resource : TileResource):
 	
 	LightManager.update(coords)
 
-func set_wall(coords : Vector2i, tile_resource : TileResource):
-	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
-	var chunk = loaded_chunks[chunk_coords]
-	chunk.set_wall(coords % GlobalReferences.CHUNK_SIZE, tile_resource)
-	
-	LightManager.update(coords)
-
-func place_tile(coords : Vector2, item : TileItem):
-	if coords.x < 0 or coords.y < 0 or coords.x >= gameSave.get_width() or coords.y >= gameSave.get_height():
-		push_error("Trying to place tile out of bounds: ", item.name, " : ", coords)
-		return
-	
-	var tile_resource = TileHandler.tiles[item.tile_id]
-	
-	if tile_resource.wall:
-		set_wall(coords, tile_resource)
-	else:
-		set_tile(coords, tile_resource)
-
-func place_multiblock(coords : Vector2, multiblock_item : MultiblockItem, place_tiles : bool, chunk : Chunk = null):
+func place_item(coords : Vector2, item : PlaceableItem, place_tiles : bool):
 	if place_tiles:
-		for i in multiblock_item.tile_ids.size():
-			var tile_resource = TileHandler.tiles[multiblock_item.tile_ids[i]]
+		for i in item.tile_ids.size():
+			var tile_resource = TileHandler.tiles[item.tile_ids[i]]
 			@warning_ignore("integer_division")
-			var offset = Vector2(i%multiblock_item.size.x, i/multiblock_item.size.x)
-			set_tile(coords + offset, tile_resource)
-		
-		if chunk == null:
-			var chunk_coords = Vector2i(coords) / GlobalReferences.CHUNK_SIZE
-			chunk = loaded_chunks[chunk_coords]
-		chunk.multiblocks[coords] = multiblock_item
-	
-	var multiblock = multiblock_item.prefab.instantiate()
-	multiblock.position = coords * GlobalReferences.TILE_SIZE
-	multiblocks_root.add_child(multiblock)
-	
-	multiblock.setup(self, coords, TileHandler.tiles[multiblock_item.tile_ids[0]], chunk)
-
+			var offset = Vector2(i%item.size.x, i/item.size.x)
+			
+			set_tile(coords+offset, tile_resource)
 
 func get_light_values(coords : Vector2i):
 	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE

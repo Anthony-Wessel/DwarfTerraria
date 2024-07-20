@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://xnr0f6xl6dmk"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_q40b7"]
+[ext_resource type="Texture2D" uid="uid://birbfvp3uo6gc" path="res://art/tiles/torch.png" id="2_48s6a"]
+
+[resource]
+script = ExtResource("1_q40b7")
+size = Vector2i(1, 1)
+tile_ids = Array[int]([6])
+name = "torch"
+texture = ExtResource("2_48s6a")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://bd0v0tlgwflvq"]
 
-[ext_resource type="Resource" uid="uid://ci33gi01paqjh" path="res://items/tiles/Iwood.tres" id="1_dko7r"]
+[ext_resource type="Resource" uid="uid://cpikgovv5nqfo" path="res://items/tiles/Pwood.tres" id="1_yv46b"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_58pwa"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 17
 name = "tree branch left"
 hardness = 0
 health = 1.0
-dropped_item = ExtResource("1_dko7r")
+dropped_item = ExtResource("1_yv46b")
 potential_supports = Array[Vector2]([Vector2(1, 0)])
 light_source = 0
 wall = false

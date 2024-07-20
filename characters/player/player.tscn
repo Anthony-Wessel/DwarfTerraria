@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bp4qkuukddqqv"]
+[gd_scene load_steps=27 format=3 uid="uid://bp4qkuukddqqv"]
 
 [ext_resource type="Script" path="res://characters/player/player_controls.gd" id="1_n3c7b"]
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_vgd4h"]
@@ -15,7 +15,8 @@
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="12_m1re3"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="13_jjvcd"]
 [ext_resource type="Resource" uid="uid://70ysduy78lea" path="res://items/tools/Ihammer.tres" id="13_pqrim"]
-[ext_resource type="Resource" uid="uid://o0302yifnps0" path="res://items/tiles/Igrass.tres" id="14_1y7sr"]
+[ext_resource type="Resource" uid="uid://uq1u7160753u" path="res://items/tiles/Pgrass.tres" id="14_g6lcb"]
+[ext_resource type="Resource" uid="uid://cryd7m28j7k1y" path="res://items/multiblocks/Pcrafter.tres" id="15_aiyyk"]
 
 [sub_resource type="Animation" id="Animation_mr461"]
 resource_name = "idle"
@@ -91,8 +92,13 @@ count = 1
 
 [sub_resource type="Resource" id="Resource_cebfc"]
 script = ExtResource("11_yfbr4")
-item = ExtResource("14_1y7sr")
+item = ExtResource("14_g6lcb")
 count = 5
+
+[sub_resource type="Resource" id="Resource_4q7op"]
+script = ExtResource("11_yfbr4")
+item = ExtResource("15_aiyyk")
+count = 1
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
@@ -144,7 +150,7 @@ character_movement = NodePath("..")
 
 [node name="Inventory" type="Node" parent="." index="5"]
 script = ExtResource("3_g1w5g")
-default_items = Array[ExtResource("11_yfbr4")]([SubResource("Resource_1cg0v"), SubResource("Resource_h6w76"), SubResource("Resource_xg0c6"), SubResource("Resource_cebfc")])
+default_items = Array[ExtResource("11_yfbr4")]([SubResource("Resource_1cg0v"), SubResource("Resource_h6w76"), SubResource("Resource_xg0c6"), SubResource("Resource_cebfc"), SubResource("Resource_4q7op")])
 
 [node name="Health" type="Node" parent="." index="6"]
 script = ExtResource("11_1svu7")

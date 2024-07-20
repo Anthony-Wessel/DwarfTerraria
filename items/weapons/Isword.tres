@@ -11,5 +11,4 @@ speed = 5.0
 collision_shape = Rect2(0.5, -10, 3, 12)
 name = "sword"
 texture = ExtResource("1_jsxmq")
-held_texture = ExtResource("1_jsxmq")
 use_scene = ExtResource("3_48b84")

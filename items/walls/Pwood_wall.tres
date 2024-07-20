@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://cpj8i1k3gtsjq"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_vkm2c"]
+[ext_resource type="Texture2D" uid="uid://486bf6nmcfj" path="res://art/walls/wall_wood.png" id="2_hct32"]
+
+[resource]
+script = ExtResource("1_vkm2c")
+size = Vector2i(1, 1)
+tile_ids = Array[int]([12])
+name = "wood wall"
+texture = ExtResource("2_hct32")

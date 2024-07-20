@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://bkcyhj82o36tl"]
 
-[ext_resource type="Texture2D" uid="uid://dctmjapn8cu1y" path="res://art/tiles/t_stoneBrick.png" id="1_rk3su"]
 [ext_resource type="Script" path="res://camera and ui/crafting_panel.gd" id="1_sidac"]
 [ext_resource type="PackedScene" uid="uid://djs46hkqd16kl" path="res://camera and ui/recipe_button.tscn" id="3_cr3r8"]
+[ext_resource type="Texture2D" uid="uid://cdpb0jlx3b8yg" path="res://art/tiles/error_tile.png" id="3_ity0x"]
 
 [sub_resource type="Gradient" id="Gradient_f33yt"]
 offsets = PackedFloat32Array(0)
@@ -100,7 +100,7 @@ theme_override_constants/separation = 20
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 0
-texture = ExtResource("1_rk3su")
+texture = ExtResource("3_ity0x")
 expand_mode = 2
 
 [node name="Label" type="Label" parent="TextureRect/VSplitContainer/MarginContainer/TextureRect/MarginContainer/VBoxContainer/HBoxContainer"]

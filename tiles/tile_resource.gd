@@ -10,3 +10,4 @@ extends Resource
 @export var light_source : int
 @export var wall : bool
 @export var opacity : int
+@export var entity_prefab : PackedScene

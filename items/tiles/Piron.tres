@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=3 format=3 uid="uid://ohgp16h03t4i"]
+
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="1_3d7xo"]
+[ext_resource type="Texture2D" uid="uid://cmnc64osfv6nj" path="res://art/tiles/iron_ore.png" id="2_0t7sh"]
+
+[resource]
+script = ExtResource("1_3d7xo")
+size = Vector2i(1, 1)
+tile_ids = Array[int]([34])
+name = "iron ore"
+texture = ExtResource("2_0t7sh")

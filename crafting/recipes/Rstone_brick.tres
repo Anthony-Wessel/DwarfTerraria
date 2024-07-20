@@ -1,18 +1,18 @@
 [gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://wcfbx6ek54o8"]
 
-[ext_resource type="Resource" uid="uid://brk5xr24xok5y" path="res://items/tiles/Istone_brick.tres" id="1_gieq6"]
 [ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="1_irw2l"]
-[ext_resource type="Resource" uid="uid://crsauq3fnbdtl" path="res://items/tiles/Istone.tres" id="1_p6m3j"]
+[ext_resource type="Resource" uid="uid://c7ceyur6d5u02" path="res://items/tiles/Pstone.tres" id="1_ohqi7"]
 [ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_ul6gd"]
+[ext_resource type="Resource" uid="uid://xvmsfw5luwhu" path="res://items/tiles/Pstone_brick.tres" id="3_321rh"]
 
 [sub_resource type="Resource" id="Resource_pps62"]
 script = ExtResource("2_ul6gd")
-item = ExtResource("1_p6m3j")
+item = ExtResource("1_ohqi7")
 count = 2
 
 [sub_resource type="Resource" id="Resource_aud46"]
 script = ExtResource("2_ul6gd")
-item = ExtResource("1_gieq6")
+item = ExtResource("3_321rh")
 count = 1
 
 [resource]

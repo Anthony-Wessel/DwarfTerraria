@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://dcecwphgxljb4"]
 
-[ext_resource type="Resource" uid="uid://c0m41xbqamnu1" path="res://items/walls/Wstone_brick.tres" id="1_1wdrp"]
+[ext_resource type="Resource" uid="uid://bd11dn7tr7jgh" path="res://items/walls/Pstone_brick_wall.tres" id="1_m3407"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_dm3fl"]
 
 [resource]
@@ -9,7 +9,7 @@ id = 11
 name = "stone brick wall"
 hardness = 0
 health = 1.5
-dropped_item = ExtResource("1_1wdrp")
+dropped_item = ExtResource("1_m3407")
 potential_supports = Array[Vector2]([])
 light_source = 0
 wall = true

@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="Recipe" load_steps=9 format=3 uid="uid://04c0bvy3or1w"]
 
-[ext_resource type="Resource" uid="uid://o0302yifnps0" path="res://items/tiles/Igrass.tres" id="1_rlr20"]
+[ext_resource type="Resource" uid="uid://uq1u7160753u" path="res://items/tiles/Pgrass.tres" id="1_ynblc"]
 [ext_resource type="Resource" uid="uid://c3j00ysiprev5" path="res://items/tools/Ipickaxe.tres" id="2_bvd2y"]
 [ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_rrodg"]
-[ext_resource type="Resource" uid="uid://brm30g40d2uih" path="res://items/tiles/Idirt.tres" id="3_2xxex"]
 [ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="3_4bkuj"]
+[ext_resource type="Resource" uid="uid://di4ua54dedxkh" path="res://items/tiles/Pdirt.tres" id="4_4hurr"]
 
 [sub_resource type="Resource" id="Resource_43xja"]
 script = ExtResource("2_rrodg")
-item = ExtResource("1_rlr20")
+item = ExtResource("1_ynblc")
 count = 1
 
 [sub_resource type="Resource" id="Resource_2fc7l"]
@@ -18,7 +18,7 @@ count = 1
 
 [sub_resource type="Resource" id="Resource_8beo4"]
 script = ExtResource("2_rrodg")
-item = ExtResource("3_2xxex")
+item = ExtResource("4_4hurr")
 count = 1
 
 [resource]

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlaceableItem" load_steps=4 format=3 uid="uid://cryd7m28j7k1y"]
+
+[ext_resource type="PackedScene" uid="uid://45p5kh0akq8v" path="res://tiles/tile entities/prefabs/crafter.tscn" id="1_m7068"]
+[ext_resource type="Script" path="res://items/placeable_item.gd" id="2_gxl1a"]
+[ext_resource type="Texture2D" uid="uid://d0vlihnprynhe" path="res://art/multiblocks/workbench.png" id="3_ig6ls"]
+
+[resource]
+script = ExtResource("2_gxl1a")
+size = Vector2i(2, 1)
+tile_ids = Array[int]([25, 26])
+entity_prefab = ExtResource("1_m7068")
+name = "Crafter"
+texture = ExtResource("3_ig6ls")

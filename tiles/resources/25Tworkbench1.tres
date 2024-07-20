@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="TileResource" load_steps=3 format=3 uid="uid://blk5xspppb3ob"]
+[gd_resource type="Resource" script_class="TileResource" load_steps=4 format=3 uid="uid://blk5xspppb3ob"]
 
-[ext_resource type="Resource" uid="uid://cs1hm1slslke5" path="res://items/multiblocks/Icrafter.tres" id="1_qd4ob"]
+[ext_resource type="Resource" uid="uid://cryd7m28j7k1y" path="res://items/multiblocks/Pcrafter.tres" id="1_5l48r"]
 [ext_resource type="Script" path="res://tiles/tile_resource.gd" id="2_qpcng"]
+[ext_resource type="PackedScene" uid="uid://45p5kh0akq8v" path="res://tiles/tile entities/prefabs/crafter.tscn" id="2_ymho1"]
 
 [resource]
 script = ExtResource("2_qpcng")
@@ -9,8 +10,9 @@ id = 25
 name = "workbench 1"
 hardness = 0
 health = 0.0
-dropped_item = ExtResource("1_qd4ob")
+dropped_item = ExtResource("1_5l48r")
 potential_supports = Array[Vector2]([Vector2(1, 0)])
 light_source = 0
 wall = false
 opacity = 2
+entity_prefab = ExtResource("2_ymho1")
