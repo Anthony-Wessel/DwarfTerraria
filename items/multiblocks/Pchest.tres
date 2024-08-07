@@ -9,3 +9,4 @@ size = Vector2i(2, 1)
 tile_ids = Array[int]([27, 28])
 name = "Chest"
 texture = ExtResource("3_p6kpi")
+stack_size = 64

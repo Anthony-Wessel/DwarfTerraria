@@ -233,11 +233,11 @@ static func place_trees(worldResource : GameSave):
 		just_placed = true
 		
 		# find the highest solid tile
-		var tile = worldResource.get_tile(Vector2i(x, 2*GlobalReferences.CHUNK_SIZE))
+		var tile = worldResource.get_tile(Vector2i(x, 2*GlobalReferences.CHUNK_SIZE), false)
 		var y = 2*GlobalReferences.CHUNK_SIZE
 		while tile.id != grass and y < (3*GlobalReferences.CHUNK_SIZE) - 1:
 			y += 1
-			tile = worldResource.get_tile(Vector2i(x, y))
+			tile = worldResource.get_tile(Vector2i(x, y), false)
 		if y >= (3*GlobalReferences.CHUNK_SIZE) - 1:
 			continue
 		
@@ -247,10 +247,10 @@ static func place_trees(worldResource : GameSave):
 		for i in rng.randi_range(3,10):
 			y2 -= 1 
 			var r = rng.randf()
-			if r < 0.1 and worldResource.get_tile(Vector2i(x-1, y2)).id == empty:
+			if r < 0.1 and worldResource.get_tile(Vector2i(x-1, y2), false).id == empty:
 				worldResource.set_tile(Vector2i(x, y2), tree_trunk_left)
 				worldResource.set_tile(Vector2i(x-1, y2), tree_branch_left)
-			elif r > 0.9 and worldResource.get_tile(Vector2i(x+1, y2)).id == empty:
+			elif r > 0.9 and worldResource.get_tile(Vector2i(x+1, y2), false).id == empty:
 				worldResource.set_tile(Vector2i(x, y2), tree_trunk_right)
 				worldResource.set_tile(Vector2i(x+1, y2), tree_branch_right)
 			else:
@@ -282,7 +282,7 @@ static func dig_cave(worldResource : GameSave, chunk_coords : Vector2, direction
 	# Find the starting point for the cave on the surface
 	var surface_center = (chunk_coords + Vector2(0.5, 0)) * GlobalReferences.CHUNK_SIZE
 	var counter = 0
-	while worldResource.get_tile(surface_center) == TileHandler.EMPTY_TILE and counter < GlobalReferences.CHUNK_SIZE:
+	while worldResource.get_tile(surface_center, false) == TileHandler.EMPTY_TILE and counter < GlobalReferences.CHUNK_SIZE:
 		surface_center += Vector2(0,1)
 		counter += 1
 	

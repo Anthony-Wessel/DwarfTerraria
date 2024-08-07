@@ -1,4 +1,4 @@
 class_name PlayerSave
 extends Resource
 
-@export var inventory_contents : Array[ItemStack]
+@export var inventory_contents : Dictionary

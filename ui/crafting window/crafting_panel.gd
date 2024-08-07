@@ -1,7 +1,5 @@
 extends Control
 
-@export var root_node : Control
-
 @export var recipe_button_prefab : PackedScene
 @export var recipe_button_parent : Control
 
@@ -16,20 +14,15 @@ var recipe_buttons : Dictionary
 func _ready():
 	for recipe in RecipeHandler.recipes:
 		create_recipe_button(recipe)
-	HUD.instance.hotbar.inventory_panel_closed.connect(close)
 
 func open():
-	root_node.visible = true
 	var inventory = Player.instance.inventory
 	for recipe in recipe_buttons.keys():
 		recipe_buttons[recipe].visible = true
 		for reagent in recipe.reagents:
-			if !inventory.has_items(reagent.item, reagent.count):
+			if !inventory.has(reagent):
 				recipe_buttons[recipe].visible = false
 				continue
-
-func close():
-	root_node.visible = false
 
 func create_recipe_button(recipe : Recipe):
 	var btn = recipe_button_prefab.instantiate()
@@ -59,11 +52,11 @@ func craft():
 		return
 	var inventory = Player.instance.inventory
 	for reagent in selected_recipe.reagents:
-		if !inventory.has_items(reagent.item, reagent.count):
+		if !inventory.has(reagent):
 			return
 	
 	for reagent in selected_recipe.reagents:
-		inventory.remove_items(reagent.item, reagent.count)
+		inventory.remove(reagent)
 	
-	inventory.add_items(selected_recipe.result.item, selected_recipe.result.count)
+	inventory.add(selected_recipe.result)
 	open()

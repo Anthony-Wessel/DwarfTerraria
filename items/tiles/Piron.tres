@@ -9,3 +9,4 @@ size = Vector2i(1, 1)
 tile_ids = Array[int]([34])
 name = "iron ore"
 texture = ExtResource("2_0t7sh")
+stack_size = 64

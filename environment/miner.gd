@@ -40,17 +40,11 @@ func mine_tile(coords_list : Array[Vector2i], _mining_tier, amount : float, wall
 			previously_mined_tiles[coords] = 0
 	
 	for coords in previously_mined_tiles.keys():
-		var tile_resource
-		if wall:
-			tile_resource = game_world.get_wall(coords)
-			if tile_resource == null or tile_resource == TileHandler.EMPTY_WALL:
-				previously_mined_tiles[coords] = -1
-				continue
-		else:
-			tile_resource = game_world.get_tile(coords)
-			if tile_resource == null or tile_resource == TileHandler.EMPTY_TILE:
-				previously_mined_tiles[coords] = -1
-				continue
+		if game_world.is_tile_empty(coords, wall):
+			previously_mined_tiles[coords] = -1
+			continue
+		
+		var tile_resource = game_world.get_tile(coords, wall)
 		
 		if previously_mined_tiles[coords] != -1:
 			previously_mined_tiles[coords] += amount/get_mined_tiles_count()
@@ -80,9 +74,7 @@ func update_sprites():
 			available_sprites.remove_at(0)
 		
 		# get the tile information
-		var tile_resource : TileResource
-		if previous_tool_wall: tile_resource = game_world.get_wall(coords)
-		else: tile_resource = game_world.get_tile(coords)
+		var tile_resource := game_world.get_tile(coords, previous_tool_wall)
 		
 		# don't update sprite on empty tile
 		if tile_resource.health == 0:

@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4p72fgh5oclv"]
+
+[ext_resource type="Texture2D" uid="uid://hkimjr0pv7ra" path="res://art/ui/inventory_slot.png" id="1_l3740"]
+[ext_resource type="Texture2D" uid="uid://dkbupbpoohvej" path="res://art/tiles/stone.png" id="2_bhops"]
+[ext_resource type="Script" path="res://ui/item_slot_gui.gd" id="2_cg6q3"]
+
+[node name="ItemSlot" type="TextureRect"]
+custom_minimum_size = Vector2(30, 30)
+texture = ExtResource("1_l3740")
+script = ExtResource("2_cg6q3")
+
+[node name="ItemTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bhops")
+
+[node name="ItemCount" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -18.0
+offset_right = 2.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "999"
+horizontal_alignment = 2
+vertical_alignment = 2

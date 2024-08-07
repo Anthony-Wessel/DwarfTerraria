@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://dg1pdvovspval"]
+[gd_scene load_steps=4 format=3 uid="uid://dg1pdvovspval"]
 
-[ext_resource type="PackedScene" uid="uid://cjo2ijbxgofc0" path="res://environment/tile entities/entity.tscn" id="1_m623u"]
+[ext_resource type="Script" path="res://tiles/tile entities/crafter_entity.gd" id="1_my2ek"]
+[ext_resource type="Script" path="res://tiles/tile entities/detect_interaction.gd" id="2_lr28b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqut4"]
 size = Vector2(16, 16)
 
-[node name="Furnace" instance=ExtResource("1_m623u")]
+[node name="Furnace" type="Node2D"]
+script = ExtResource("1_my2ek")
 
-[node name="CollisionShape2D" parent="." index="0"]
+[node name="Interact" type="Area2D" parent="."]
+script = ExtResource("2_lr28b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact"]
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_aqut4")
+
+[connection signal="input_event" from="Interact" to="Interact" method="_on_input_event"]
+[connection signal="interacted" from="Interact" to="." method="open_inventory"]

@@ -1,13 +1,14 @@
 extends RigidBody2D
 
-var item : Item
+var item_stack : ItemStack
 
 
 func enable(item_ : Item, position_ : Vector2):
-	item = item_
-	$Sprite2D.texture = item.texture
+	item_stack = ItemStack.new(item_, 1)
+	$Sprite2D.texture = item_.texture
 	position = position_
 
 func _on_player_entered(_body):
-	Player.instance.inventory.add_item(item)
-	queue_free()
+	item_stack = InventoryInterface.player_inventory.add_stack(item_stack)
+	if item_stack.item == null:
+		queue_free()

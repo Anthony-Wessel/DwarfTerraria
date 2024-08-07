@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b4ql5xmwf0x1y"]
 
-[ext_resource type="Script" path="res://camera and ui/fps_counter.gd" id="1_6mjbs"]
+[ext_resource type="Script" path="res://ui/hud/fps_counter.gd" id="1_6mjbs"]
 
 [node name="FPS Counter" type="Label"]
 anchors_preset = 2

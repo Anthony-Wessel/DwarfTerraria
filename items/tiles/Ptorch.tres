@@ -9,3 +9,4 @@ size = Vector2i(1, 1)
 tile_ids = Array[int]([6])
 name = "torch"
 texture = ExtResource("2_48s6a")
+stack_size = 64

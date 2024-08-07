@@ -1,14 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://cveh6wh1esmnn"]
 
-[ext_resource type="PackedScene" uid="uid://cjo2ijbxgofc0" path="res://tiles/tile entities/entity.tscn" id="1_4h0xx"]
-[ext_resource type="Script" path="res://tiles/tile entities/chest_opener.gd" id="2_rnbr2"]
-[ext_resource type="Script" path="res://inventory/inventory.gd" id="3_18rkt"]
+[ext_resource type="Script" path="res://tiles/tile entities/chest_entity.gd" id="1_hycat"]
+[ext_resource type="Script" path="res://tiles/tile entities/detect_interaction.gd" id="1_v6jsc"]
 
-[node name="Chest" instance=ExtResource("1_4h0xx")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oai6r"]
+size = Vector2(16, 8)
 
-[node name="Interact" parent="." index="1" node_paths=PackedStringArray("inventory")]
-script = ExtResource("2_rnbr2")
-inventory = NodePath("../Inventory")
+[node name="Chest" type="Node2D"]
+script = ExtResource("1_hycat")
 
-[node name="Inventory" type="Node" parent="." index="2"]
-script = ExtResource("3_18rkt")
+[node name="Interact" type="Area2D" parent="."]
+script = ExtResource("1_v6jsc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact"]
+position = Vector2(8, 4)
+shape = SubResource("RectangleShape2D_oai6r")
+
+[connection signal="input_event" from="Interact" to="Interact" method="_on_input_event"]
+[connection signal="interacted" from="Interact" to="." method="on_interacted"]

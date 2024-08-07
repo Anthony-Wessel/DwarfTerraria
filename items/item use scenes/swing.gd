@@ -5,7 +5,7 @@ extends Node2D
 @export var time := 0.25
 
 func _ready():
-	var item = ItemUser.instance.held_item
+	var item = InventoryInterface.get_selected_item()
 	$Sprite2D.texture = item.texture
 	
 	var tween = get_tree().create_tween()

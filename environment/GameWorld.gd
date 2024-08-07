@@ -24,6 +24,7 @@ func _init():
 	instance = self
 
 func _ready():
+	get_tree().set_auto_accept_quit(false)
 	generate_tile_dict()
 	load_game()
 
@@ -72,6 +73,10 @@ func load_game():
 			load_chunk(coords)
 	
 	player.global_position = player_spawn * GlobalReferences.TILE_SIZE
+	
+	var player_save = gameSave.load_player()
+	if player_save != null:
+		InventoryInterface.load_player_inventory(player_save)
 	
 	loading_world = false
 	world_finished_loading.emit()
@@ -125,48 +130,29 @@ func player_entered_chunk(chunk_coords : Vector2i):
 		if !ready_chunks.has(coords):
 			ready_chunks.append(coords)
 
-func is_tile_empty(coords : Vector2i) -> bool:
-	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
-	if loaded_chunks.has(chunk_coords):
-		return loaded_chunks[chunk_coords].get_tile(coords % int(GlobalReferences.CHUNK_SIZE)) == 0
-	
-	return true
-
-func is_wall_empty(coords : Vector2i) -> bool:
-	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
-	if loaded_chunks.has(chunk_coords):
-		return loaded_chunks[chunk_coords].get_wall(coords % int(GlobalReferences.CHUNK_SIZE)) == 8
-	
-	return true
+func is_tile_empty(coords : Vector2i, wall : bool) -> bool:
+	if wall:
+		return get_tile(coords, wall) == TileHandler.EMPTY_WALL
+	else:
+		return get_tile(coords, wall) == TileHandler.EMPTY_TILE
 
 func get_player_spawn():
 	return gameSave.player_spawn
 
 
-func get_tile(coords : Vector2i) -> TileResource:
+func get_tile(coords : Vector2i, wall : bool) -> TileResource:
 	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
 	if loaded_chunks.has(chunk_coords):
-		var id = loaded_chunks[chunk_coords].get_tile(coords % GlobalReferences.CHUNK_SIZE)
+		var id = loaded_chunks[chunk_coords].get_tile(coords % GlobalReferences.CHUNK_SIZE, wall)
 		return TileHandler.tiles[id]
 	
 	return null
-
-func get_wall(coords : Vector2i) -> TileResource:
-	var chunk_coords : Vector2i = coords / GlobalReferences.CHUNK_SIZE
-	if loaded_chunks.has(chunk_coords):
-		var id = loaded_chunks[chunk_coords].get_wall(coords % GlobalReferences.CHUNK_SIZE)
-		return TileHandler.tiles[id]
-	
-	return null
-
 
 func break_tile(coords : Vector2, wall : bool):
-	var tile_resource
+	var tile_resource = get_tile(coords, wall)
 	if wall:
-		tile_resource = get_wall(coords)
 		set_tile(coords, TileHandler.EMPTY_WALL)
 	else:
-		tile_resource = get_tile(coords)
 		set_tile(coords, TileHandler.EMPTY_TILE)
 	
 	if tile_resource.dropped_item != null:
@@ -181,9 +167,7 @@ func update_neighbors(coords : Vector2i, wall : bool):
 		update(coords+offset, wall)
 
 func update(coords : Vector2, wall : bool):
-	var tile_resource : TileResource
-	if wall : tile_resource = get_wall(coords)
-	else: tile_resource = get_tile(coords)
+	var tile_resource := get_tile(coords, wall)
 	
 	if tile_resource == null:
 		return
@@ -191,16 +175,13 @@ func update(coords : Vector2, wall : bool):
 	if tile_resource.potential_supports.size() > 0:
 		var support_found := false
 		for support in tile_resource.potential_supports:
-			if wall:
-				var wall_resource = get_wall(coords+support)
-				if wall_resource != TileHandler.EMPTY_WALL and wall_resource != null:
-					support_found = true
-					break
-			else:
-				var t_resource = get_tile(coords+support)
-				if t_resource != TileHandler.EMPTY_TILE and t_resource != null:
-					support_found = true
-					break
+			var support_resource = get_tile(coords+support, wall)
+			
+			if support_resource != null\
+			and support_resource != TileHandler.EMPTY_WALL\
+			and support_resource != TileHandler.EMPTY_TILE:
+				support_found = true
+				break
 		
 		if !support_found:
 			break_tile(coords, wall)
@@ -212,14 +193,21 @@ func set_tile(coords : Vector2i, tile_resource : TileResource):
 	
 	LightManager.update(coords)
 
-func place_item(coords : Vector2, item : PlaceableItem, place_tiles : bool):
-	if place_tiles:
-		for i in item.tile_ids.size():
-			var tile_resource = TileHandler.tiles[item.tile_ids[i]]
-			@warning_ignore("integer_division")
-			var offset = Vector2(i%item.size.x, i/item.size.x)
-			
-			set_tile(coords+offset, tile_resource)
+func place_item(coords : Vector2, item : PlaceableItem):
+	var is_wall = TileHandler.tiles[item.tile_ids[0]].wall
+	for x in item.size.x:
+		for y in item.size.y:
+			if !is_tile_empty(coords+Vector2(x,y), is_wall):
+				return false
+	
+	for i in item.tile_ids.size():
+		var tile_resource = TileHandler.tiles[item.tile_ids[i]]
+		@warning_ignore("integer_division")
+		var offset = Vector2(i%item.size.x, i/item.size.x)
+		
+		set_tile(coords+offset, tile_resource)
+	
+	return true
 
 func get_light_values(coords : Vector2i):
 	var chunk_coords = coords / GlobalReferences.CHUNK_SIZE
@@ -242,3 +230,10 @@ func save_chunk(chunk_coords : Vector2i):
 	if loaded_chunks.has(chunk_coords):
 		chunk = loaded_chunks[chunk_coords]
 	gameSave.save_chunk(chunk_coords, chunk)
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		for coords in loaded_chunks.keys():
+			save_chunk(coords)
+		gameSave.save_all()
+		get_tree().quit()

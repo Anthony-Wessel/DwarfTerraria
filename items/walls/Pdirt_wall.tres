@@ -9,3 +9,4 @@ size = Vector2i(1, 1)
 tile_ids = Array[int]([9])
 name = "dirt wall"
 texture = ExtResource("2_i4hhf")
+stack_size = 64

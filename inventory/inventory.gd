@@ -1,91 +1,43 @@
 class_name Inventory
-extends Node
+extends Resource
 
+signal inventory_updated
+@export var contents : Array[InventorySlot]
 
-@export var size := 60
-@export var default_items : Array[ItemStack]
+func _init(size : int):
+	for i in size:
+		contents.append(InventorySlot.new())
 
-var contents : Array[ItemStack]
-signal inventory_updated(updated_contents : Array[ItemStack])
-
-func _ready():
-	for i in range(size):
-		contents.append(ItemStack.new())
+# returns remainder that couldn't be added
+func add_stack(stack : ItemStack) -> ItemStack:
+	for slot in contents:
+		stack = slot.add(stack)
+		if stack.count == 0:
+			break
 	
-	# Add the default items
-	for stack in default_items:
-		add_items(stack.item, stack.count)
+	return stack
 
-func load_contents(loaded_contents):
-	contents = loaded_contents
-	inventory_updated.emit(contents)
-
-func add_item(item : Item):
-	add_items(item, 1)
-
-func remove_item(item : Item):
-	remove_items(item, 1)
-
-func remove_items(item : Item, count : int):
-	for stack in contents:
-		if stack.item == item:
-			if stack.count >= count:
-				stack.count -= count
-				if stack.count == 0:
-					stack.item = null
-				inventory_updated.emit(contents)
-				return
+func remove_stack(stack : ItemStack):
+	for slot in contents:
+		if slot.item == stack.item:
+			if stack.count >= slot.count:
+				stack.count -= slot.count
+				slot.remove(slot.count)
 			else:
-				count = count - stack.count
+				slot.remove(stack.count)
 				stack.count = 0
-				stack.item = null
+			
+			if stack.count == 0:
+				return
+	
+	push_error("tried to remove too much from inventory")
 
-func remove_from_slot(slot : int, count : int):
-	if contents[slot].count < count:
-		return false
-	
-	contents[slot].count -= count
-	if contents[slot].count == 0:
-		contents[slot].item = null
-	
-	inventory_updated.emit(contents)
-	return true
-
-func add_items(item : Item, count : int) -> bool :
-	if item == null:
-		print("Can't add null item")
-		return false
-	var first_null = null
-	for stack in contents:
-		if stack.item == null and first_null == null:
-			first_null = stack
-		elif stack.item == item:
-			stack.count += count
-			inventory_updated.emit(contents)
-			return true
-	
-	if first_null == null:
-		return false
-	else:
-		first_null.item = item
-		first_null.count = count
-		inventory_updated.emit(contents)
-		return true
-
-func swap_stack(new_stack : ItemStack, slot_index : int) -> ItemStack :
-	var removed_stack = contents[slot_index]
-	contents[slot_index] = new_stack
-	
-	inventory_updated.emit(contents)
-	
-	return removed_stack
-
-func has_items(item : Item, minimum_count : int) -> bool :
-	var total = 0
-	for stack in contents:
-		if stack.item == item:
-			total += stack.count
-			if total >= minimum_count:
+func has_stack(stack : ItemStack) -> bool:
+	var found_count = 0
+	for slot in contents:
+		if slot.item == stack.item:
+			found_count += slot.count
+			if found_count >= stack.count:
 				return true
 	
 	return false

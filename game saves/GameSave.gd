@@ -9,10 +9,12 @@ func get_height():
 func get_chunk(coords: Vector2):
 	return chunks[coords.x + coords.y*world_info.size.x]
 
-func get_tile(coords : Vector2i):
-	return TileHandler.tiles[get_value(coords, 0)]
-func get_wall(coords : Vector2i):
-	return TileHandler.tiles[get_value(coords, 1)]
+func get_tile(coords : Vector2i, wall : bool):
+	if wall:
+		return TileHandler.tiles[get_value(coords, 1)]
+	else:
+		return TileHandler.tiles[get_value(coords, 0)]
+
 func get_light_values(coords : Vector2i):
 	return get_value(coords, 2)
 
@@ -85,10 +87,14 @@ func save_all():
 
 func save_player():
 	var player_info = PlayerSave.new()
-	player_info.inventory_contents = Player.instance.inventory.contents
+	var counter = 0
+	for slot in InventoryInterface.player_inventory.contents:
+		if slot.item != null:
+			player_info.inventory_contents[counter] = slot.contents
+		counter +=1
 	ResourceSaver.save(player_info, "res://game saves/" + world_info.name + "/player_info.tres")
 
-func load_player():
+func load_player() -> PlayerSave:
 	return load("res://game saves/" + world_info.name + "/player_info.tres")
 
 func load_chunk(chunk_coords : Vector2i):
@@ -103,6 +109,7 @@ func save_chunk(chunk_coords : Vector2i, updated_chunk : Chunk):
 		chunk.tiles = updated_chunk.tiles
 		chunk.walls = updated_chunk.walls
 		chunk.lights = updated_chunk.lights
+		chunk.entity_data = updated_chunk.save_entities()
 	
 	# Save to file
 	var chunk_string = str(chunk_coords.x) + "-" + str(chunk_coords.y)

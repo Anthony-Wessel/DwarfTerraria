@@ -1,0 +1,244 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkcyhj82o36tl"]
+
+[ext_resource type="Script" path="res://ui/crafting window/crafting_panel.gd" id="1_sidac"]
+[ext_resource type="PackedScene" uid="uid://djs46hkqd16kl" path="res://ui/crafting window/recipe_button.tscn" id="3_cr3r8"]
+[ext_resource type="Texture2D" uid="uid://cdpb0jlx3b8yg" path="res://art/tiles/error_tile.png" id="3_ity0x"]
+[ext_resource type="StyleBox" uid="uid://xj1mcecoh7ms" path="res://ui/style_box.tres" id="3_yqxth"]
+
+[sub_resource type="Gradient" id="Gradient_csw8r"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_171ro"]
+gradient = SubResource("Gradient_csw8r")
+width = 24
+
+[sub_resource type="Gradient" id="Gradient_c64nw"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_csgxx"]
+gradient = SubResource("Gradient_c64nw")
+width = 32
+
+[node name="CraftingPanel" type="Control" node_paths=PackedStringArray("recipe_button_parent", "selected_recipe_texture", "selected_recipe_label", "selected_recipe_reagents")]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -300.0
+offset_right = 600.0
+grow_vertical = 0
+pivot_offset = Vector2(0, -300)
+script = ExtResource("1_sidac")
+recipe_button_prefab = ExtResource("3_cr3r8")
+recipe_button_parent = NodePath("Panel/HSplitContainer/Recipes/GridContainer")
+selected_recipe_texture = NodePath("Panel/HSplitContainer/Info/VBoxContainer/TextureRect")
+selected_recipe_label = NodePath("Panel/HSplitContainer/Info/VBoxContainer/Label")
+selected_recipe_reagents = [NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect"), NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect2"), NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect3"), NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect4"), NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect5"), NodePath("Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect6")]
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_yqxth")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 80.0
+offset_bottom = 258.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 110
+dragger_visibility = 2
+
+[node name="Info" type="MarginContainer" parent="Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HSplitContainer/Info"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_ity0x")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+text = "Stone Brick"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="Panel/HSplitContainer/Info/VBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Craft"
+icon = SubResource("GradientTexture1D_171ro")
+
+[node name="GridContainer" type="GridContainer" parent="Panel/HSplitContainer/Info/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect2"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect3"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect4" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect4"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect5" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect5"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect6" type="TextureRect" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_csgxx")
+
+[node name="Label" type="Label" parent="Panel/HSplitContainer/Info/VBoxContainer/GridContainer/TextureRect6"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(26, 26)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Recipes" type="MarginContainer" parent="Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="Panel/HSplitContainer/Recipes"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 5
+
+[connection signal="pressed" from="Panel/HSplitContainer/Info/VBoxContainer/Button" to="." method="craft"]

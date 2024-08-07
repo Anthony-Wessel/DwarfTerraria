@@ -7,7 +7,7 @@ var corner_offsets = [Vector2(-3,-3), Vector2(3,-3), Vector2(3,3), Vector2(-3,3)
 
 func _ready():
 	# Setup
-	var tool = ItemUser.instance.held_item as ToolItem
+	var tool = InventoryInterface.get_selected_item() as ToolItem
 	if !tool:
 		push_error("tool prefab being used with non-tool item")
 		return

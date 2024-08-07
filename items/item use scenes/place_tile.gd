@@ -8,22 +8,15 @@ extends Node2D
 func _ready():
 	# Setup
 	var tile_grid = GameWorld.instance
-	var item = ItemUser.instance.held_item as PlaceableItem
+	var item = InventoryInterface.get_selected_item() as PlaceableItem
 	$Sprite2D.texture = item.texture
 	
-	# Check if can place tile
-	var intersections = ItemUser.instance.preview_intersections
-
-	for x in item.size.x:
-		for y in item.size.y:
-			if intersections[x + y * item.size.x]:
-				queue_free()
-				return
+	var tile_pos = Vector2i(tile_grid.get_local_mouse_position()/GlobalReferences.TILE_SIZE)
+	if !tile_grid.place_item(tile_pos, item):
+		queue_free()
+		return
 	
-	tile_grid.place_item(ItemUser.instance.prev_pos, item, true)
-	ItemUser.instance.inventory.remove_item(item)
-	ItemUser.instance.update_preview_sprite(ItemUser.instance.prev_pos)
-	
+	InventoryInterface.used_selected_item()
 	
 	# Swing (cooldown)
 	var tween = get_tree().create_tween()

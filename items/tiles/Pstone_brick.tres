@@ -9,3 +9,4 @@ size = Vector2i(1, 1)
 tile_ids = Array[int]([4])
 name = "stone brick"
 texture = ExtResource("2_dn0p7")
+stack_size = 64

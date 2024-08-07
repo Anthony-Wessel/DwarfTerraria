@@ -79,13 +79,13 @@ func propagate_light(coords : Vector2, world_data = game_world):
 
 func calculate_light_level(coords : Vector2, world_data = game_world) -> bool:
 	# light emitted by this tile
-	var tile_resource = world_data.get_tile(coords)
+	var tile_resource = world_data.get_tile(coords, false)
 	var tile_value = tile_resource.light_source
 	
 	# sky light in this tile
 	var sky_value = 0
 	if tile_resource == TileHandler.EMPTY_TILE:
-		var wall_resource = world_data.get_wall(coords)
+		var wall_resource = world_data.get_tile(coords, true)
 		if wall_resource.opacity == 0:
 			sky_value = sky_light_level
 	

@@ -4,6 +4,7 @@ extends Resource
 @export var tiles = []
 @export var walls = []
 @export var lights = []
+@export var entity_data = {}
 
 static func create(_tiles, _walls, _lights):
 	var new_chunk = ChunkSave.new()

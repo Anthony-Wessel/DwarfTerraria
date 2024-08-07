@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ToolItem" load_steps=4 format=3 uid="uid://70ysduy78lea"]
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://70ysduy78lea"]
 
 [ext_resource type="Texture2D" uid="uid://dl4073fsae7pr" path="res://art/tools/iron_hammer.png" id="1_tkwd2"]
 [ext_resource type="Script" path="res://items/tool_item.gd" id="2_gvnv5"]
-[ext_resource type="PackedScene" uid="uid://keo15c26sr7s" path="res://items/item use scenes/prefabs/Utool.tscn" id="3_8jbhj"]
 
 [resource]
 script = ExtResource("2_gvnv5")
@@ -11,4 +10,4 @@ mining_speed = 2.0
 mines_walls = true
 name = "hammer"
 texture = ExtResource("1_tkwd2")
-use_scene = ExtResource("3_8jbhj")
+stack_size = 1

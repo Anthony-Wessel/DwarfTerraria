@@ -3,21 +3,10 @@ extends Node2D
 
 static var instance
 
-@export var inventory : Node
 @export var character_movement : CharacterMovement
 
 func _init():
 	instance = self
-
-func _ready():
-	var load_inventory = func():
-		var player_info = GameWorld.instance.gameSave.load_player()
-		if player_info != null:
-			inventory.load_contents(player_info.inventory_contents)
-	if GameWorld.instance.loading_world:
-		GameWorld.instance.world_finished_loading.connect(load_inventory)
-	else:
-		load_inventory.call()
 
 func _process(_delta):
 	if Input.is_action_pressed("Right"):

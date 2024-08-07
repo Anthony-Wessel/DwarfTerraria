@@ -9,3 +9,4 @@ size = Vector2i(1, 1)
 tile_ids = Array[int]([12])
 name = "wood wall"
 texture = ExtResource("2_hct32")
+stack_size = 64
