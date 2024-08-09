@@ -9,4 +9,8 @@ func update(stack : ItemStack):
 	else:
 		visible = true
 		texture = stack.item.texture
-		$HeldCount.text = str(stack.count)
+		if stack.count > 1:
+			$HeldCount.text = str(stack.count)
+			$HeldCount.visible = true
+		else:
+			$HeldCount.visible = false

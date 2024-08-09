@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=42 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="Shader" path="res://environment/lighting/lighting.gdshader" id="1_gcpuu"]
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://ui/hud/gui.tscn" id="1_l83f0"]
@@ -30,6 +30,7 @@
 [ext_resource type="Resource" uid="uid://70ysduy78lea" path="res://items/tools/Ihammer.tres" id="28_ovl10"]
 [ext_resource type="Resource" uid="uid://dnnoal4dqix2b" path="res://items/multiblocks/Pchest.tres" id="29_gcfd8"]
 [ext_resource type="Resource" uid="uid://cryd7m28j7k1y" path="res://items/multiblocks/Pcrafter.tres" id="30_6ym4o"]
+[ext_resource type="Resource" uid="uid://cjvf1qkkp6eow" path="res://items/equipment/temp_helmet.tres" id="31_whn4o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hy40h"]
 shader = ExtResource("1_gcpuu")
@@ -72,6 +73,11 @@ count = 1
 [sub_resource type="Resource" id="Resource_2nnsm"]
 script = ExtResource("26_0wmaa")
 item = ExtResource("30_6ym4o")
+count = 1
+
+[sub_resource type="Resource" id="Resource_pj8at"]
+script = ExtResource("26_0wmaa")
+item = ExtResource("31_whn4o")
 count = 1
 
 [node name="Main" type="Node2D"]
@@ -192,4 +198,4 @@ script = ExtResource("16_0a2ww")
 
 [node name="InventoryInterface" type="Node" parent="."]
 script = ExtResource("24_xtiby")
-default_items = Array[ExtResource("26_0wmaa")]([SubResource("Resource_t26mi"), SubResource("Resource_o00s5"), SubResource("Resource_pg3ll"), SubResource("Resource_wrook"), SubResource("Resource_2nnsm")])
+default_items = Array[ExtResource("26_0wmaa")]([SubResource("Resource_t26mi"), SubResource("Resource_o00s5"), SubResource("Resource_pg3ll"), SubResource("Resource_wrook"), SubResource("Resource_2nnsm"), SubResource("Resource_pj8at")])

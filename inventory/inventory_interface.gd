@@ -12,6 +12,7 @@ signal storage_changed(inventory)
 
 static var instance : InventoryInterface
 
+static var player_equipment : Inventory
 static var player_inventory : Inventory
 static var storage_inventory : Inventory : set = set_storage
 static func set_storage(value):
@@ -44,6 +45,12 @@ func _ready():
 	for item in default_items:
 		if !player_inventory.has_stack(item):
 			player_inventory.add_stack(item)
+
+static func add_equipment_slot(new_slot : InventorySlot):
+	if instance.player_equipment == null:
+		instance.player_equipment = Inventory.new(0)
+	
+	instance.player_equipment.contents.append(new_slot)
 
 static func load_player_inventory(player_save : PlayerSave):
 	for index in player_save.inventory_contents.keys():
