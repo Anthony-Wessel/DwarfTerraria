@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://dgpfvehv7rool"]
+
+[ext_resource type="Resource" uid="uid://djjlxk8qr3u23" path="res://items/tiles/Pcopper.tres" id="1_t16a0"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_jod5d"]
+[ext_resource type="Resource" uid="uid://csym48rlnng30" path="res://items/equipment/copper_legs.tres" id="3_velri"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_2evaj"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_jod5d")
+item = ExtResource("1_t16a0")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_jod5d")
+item = ExtResource("3_velri")
+count = 1
+
+[resource]
+script = ExtResource("4_2evaj")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_jod5d")]([SubResource("Resource_lkl4f")])

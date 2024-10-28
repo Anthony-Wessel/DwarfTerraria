@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://csym48rlnng30"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_5qrk5"]
+[ext_resource type="Texture2D" uid="uid://bovjp4rdhhol5" path="res://art/character spritesheets/copper_legs.png" id="2_0a34v"]
+[ext_resource type="Texture2D" uid="uid://cpy3yybrwrp5u" path="res://art/equipment/copper_equipment_sprites.png" id="2_gavf5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_gavf5")
+region = Rect2(0, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_5qrk5")
+type = 2
+armor = 1
+spritesheet = ExtResource("2_0a34v")
+name = "Copper Leggings"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

@@ -37,11 +37,12 @@ region = Rect2(0, 0, 8, 8)
 atlas = ExtResource("11_nbf74")
 region = Rect2(8, 8, 8, 8)
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("inventory_root", "hotbar_root", "storage_root")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("inventory_root", "hotbar_root", "storage_root", "crafting_panel")]
 script = ExtResource("1_umlcp")
 inventory_root = NodePath("InventoryGUI")
 hotbar_root = NodePath("HotbarGUI")
 storage_root = NodePath("InventoryGUI/StoragePanel")
+crafting_panel = NodePath("InventoryGUI/CraftingPanel")
 
 [node name="HotbarGUI" type="Control" parent="." node_paths=PackedStringArray("slot_container", "highlight")]
 layout_mode = 3
@@ -125,6 +126,7 @@ script = ExtResource("6_lr7nm")
 item_slot_prefab = ExtResource("6_f2d6f")
 
 [node name="StoragePanel" type="Panel" parent="InventoryGUI" node_paths=PackedStringArray("item_slot_grid")]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -268,3 +270,12 @@ grow_vertical = 0
 text = "999"
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+text = "Press Tab to open inventory and crafting"

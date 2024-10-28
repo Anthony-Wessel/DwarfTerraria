@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=9 format=3 uid="uid://djqumw7ynfy72"]
+
+[ext_resource type="Resource" uid="uid://djjlxk8qr3u23" path="res://items/tiles/Pcopper.tres" id="1_8auru"]
+[ext_resource type="Resource" uid="uid://dohea2u5i7ci3" path="res://items/tools/Iwooden_pickaxe.tres" id="1_b0dm4"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_yrvlx"]
+[ext_resource type="Resource" uid="uid://c7j5x2bjikaia" path="res://items/tools/Icopper_pickaxe.tres" id="3_xo4vt"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_366ly"]
+
+[sub_resource type="Resource" id="Resource_oc78w"]
+script = ExtResource("2_yrvlx")
+item = ExtResource("1_b0dm4")
+count = 1
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_yrvlx")
+item = ExtResource("1_8auru")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_yrvlx")
+item = ExtResource("3_xo4vt")
+count = 1
+
+[resource]
+script = ExtResource("4_366ly")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_yrvlx")]([SubResource("Resource_oc78w"), SubResource("Resource_lkl4f")])

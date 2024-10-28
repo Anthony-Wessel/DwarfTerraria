@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://dohea2u5i7ci3"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_dlr3d"]
+[ext_resource type="Texture2D" uid="uid://ylcvt766wb66" path="res://art/tools/wooden_pickaxe.png" id="2_3nuat"]
+
+[resource]
+script = ExtResource("1_dlr3d")
+mining_tier = 0
+mining_speed = 2.0
+mines_walls = false
+name = "wooden pickaxe"
+texture = ExtResource("2_3nuat")
+stack_size = 1

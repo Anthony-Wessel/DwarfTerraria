@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=9 format=3 uid="uid://dxgxnorkd2n5x"]
+
+[ext_resource type="Resource" uid="uid://ohgp16h03t4i" path="res://items/tiles/Piron.tres" id="1_g3dly"]
+[ext_resource type="Resource" uid="uid://c7j5x2bjikaia" path="res://items/tools/Icopper_pickaxe.tres" id="1_uu05k"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_q5cps"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_m8lxd"]
+[ext_resource type="Resource" uid="uid://bjxj5tuumthlb" path="res://items/tools/Iiron_pickaxe.tres" id="4_vme3n"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_q5cps")
+item = ExtResource("1_uu05k")
+count = 1
+
+[sub_resource type="Resource" id="Resource_5mevr"]
+script = ExtResource("2_q5cps")
+item = ExtResource("1_g3dly")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_q5cps")
+item = ExtResource("4_vme3n")
+count = 1
+
+[resource]
+script = ExtResource("4_m8lxd")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_q5cps")]([SubResource("Resource_lkl4f"), SubResource("Resource_5mevr")])

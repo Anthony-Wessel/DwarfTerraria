@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://87gd5e4fxyar"]
+
+[ext_resource type="Resource" uid="uid://cpikgovv5nqfo" path="res://items/tiles/Pwood.tres" id="1_ig4ad"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_0xs5d"]
+[ext_resource type="Resource" uid="uid://3q2xeujc568o" path="res://items/tools/Iwooden_hammer.tres" id="3_uhcv4"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_xmtbw"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_0xs5d")
+item = ExtResource("1_ig4ad")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_0xs5d")
+item = ExtResource("3_uhcv4")
+count = 1
+
+[resource]
+script = ExtResource("4_xmtbw")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_0xs5d")]([SubResource("Resource_lkl4f")])

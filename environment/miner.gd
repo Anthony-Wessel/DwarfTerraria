@@ -45,13 +45,16 @@ func mine_tile(coords_list : Array[Vector2i], _mining_tier, amount : float, wall
 			continue
 		
 		var tile_resource = game_world.get_tile(coords, wall)
+		if tile_resource == null:
+			continue
 		
 		if previously_mined_tiles[coords] != -1:
-			previously_mined_tiles[coords] += amount/get_mined_tiles_count()
+			if _mining_tier >= tile_resource.hardness:
+				previously_mined_tiles[coords] += amount/get_mined_tiles_count()
 		
-			# tile destroyed
-			if previously_mined_tiles[coords] >= tile_resource.health:
-				game_world.break_tile(coords, wall)
+				# tile destroyed
+				if previously_mined_tiles[coords] >= tile_resource.health:
+					game_world.break_tile(coords, wall)
 	
 	update_sprites()
 

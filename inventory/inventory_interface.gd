@@ -73,7 +73,18 @@ static func on_slot_interaction(slot : InventorySlot, lmb : bool):
 	match lmb:
 		true:
 			if Input.is_key_pressed(KEY_SHIFT):
-				pass
+				if player_inventory.contents.has(slot): # Shift clicking FROM player inventory
+					if storage_inventory != null:
+						slot.contents = storage_inventory.add_stack(slot.contents)
+						slot.contents_updated.emit()
+					elif slot.contents.item is EquipmentItem:
+						slot.contents = player_equipment.add_stack(slot.contents)
+						slot.contents_updated.emit()
+					else:
+						pass # send to hotbar?
+				else:
+					slot.contents = player_inventory.add_stack(slot.contents)
+					slot.contents_updated.emit()
 			else:
 				if held_stack.item == slot.item:
 					held_stack = slot.add(held_stack)

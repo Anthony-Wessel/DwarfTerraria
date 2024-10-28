@@ -40,7 +40,7 @@ func _process(delta):
 		else:
 			movement = perp * circle_speed
 	elif state == 2: # chase player
-		movement = diff.normalized() * chase_speed
+		movement = (diff+Vector2(0,-5)).normalized() * chase_speed
 		if diff.length() < GlobalReferences.TILE_SIZE/2.0:
 			set_circle_state()
 	elif state == 3: # run away from player

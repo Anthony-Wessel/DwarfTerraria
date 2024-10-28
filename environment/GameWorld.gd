@@ -20,6 +20,12 @@ var loading_world = true
 var save_frequency = 1 # times per second
 var last_save_time = 0
 
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		get_tree().quit()
+
+
 func _init():
 	instance = self
 
@@ -27,22 +33,6 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	generate_tile_dict()
 	load_game()
-
-var chunk_save_index = 0
-func _process(_delta):
-	if loading_world:
-		return
-	
-	load_ready_chunks()
-	if Time.get_ticks_msec() - last_save_time > save_frequency * 100:
-		chunk_save_index = (chunk_save_index+1) % loaded_chunks.size()
-		
-		if chunk_save_index == 0:
-			gameSave.save_player()
-		
-		var coords = loaded_chunks.keys()[chunk_save_index]
-		save_chunk(coords)
-		last_save_time = Time.get_ticks_msec()
 
 func generate_tile_dict():
 	for source_index in tile_set.get_source_count():
@@ -59,17 +49,18 @@ func generate_tile_dict():
 
 func load_game():
 	# Create new game save
-	gameSave = await GameSave.create_new_world("Test World", Vector2i(9,9))
+	var world_size = Vector2i(5,4)
+	gameSave = await GameSave.create_new_world("Test World", world_size)
 	
 	# Load game save
 	#gameSave = GameSave.load_world("Test World")
 
 	
 	var player_spawn = gameSave.world_info.player_spawn
-	var player_spawn_chunk : Vector2i = player_spawn / GlobalReferences.CHUNK_SIZE
-	for y in range(-1,2): # inclusive start, exclusive end
-		for x in range(-1,2):
-			var coords = player_spawn_chunk + Vector2i(x,y)
+	
+	for y in world_size.y: # inclusive start, exclusive end
+		for x in world_size.x:
+			var coords = Vector2i(x,y)
 			load_chunk(coords)
 	
 	player.global_position = player_spawn * GlobalReferences.TILE_SIZE
@@ -82,11 +73,6 @@ func load_game():
 	world_finished_loading.emit()
 	print("World done loading")
 
-func load_ready_chunks():
-	if ready_chunks.size() > 0:
-		load_chunk(ready_chunks[0])
-		ready_chunks.remove_at(0)
-
 func load_chunk(coords : Vector2i):
 	if loaded_chunks.has(coords):
 		push_error("Trying to load chunk that already exists")
@@ -98,38 +84,6 @@ func load_chunk(coords : Vector2i):
 	loaded_chunks[coords] = chunk
 	add_child.call_deferred(chunk)
 
-func unload_chunk(coords : Vector2i):
-	save_chunk(coords)
-	loaded_chunks[coords].unload()
-	loaded_chunks.erase(coords)
-
-func player_entered_chunk(chunk_coords : Vector2i):
-	if loading_world:
-		return
-	var chunks_to_load = []
-	var chunks_to_unload = []
-	var new_set = []
-	for y in range(-2,3): # inclusive start, exclusive end
-		for x in range(-2,3):
-			var coords = chunk_coords + Vector2i(x,y)
-			coords.x = max(min(coords.x, gameSave.world_info.size.x-1), 0)
-			coords.y = max(min(coords.y, gameSave.world_info.size.y-1), 0)
-			
-			if !loaded_chunks.has(coords):
-				chunks_to_load.append(coords)
-			new_set.append(coords)
-	
-	for old_chunk in loaded_chunks:
-		if !new_set.has(old_chunk):
-			chunks_to_unload.append(old_chunk)
-	
-	for coords in chunks_to_unload:
-		unload_chunk(coords)
-	
-	for coords in chunks_to_load:
-		if !ready_chunks.has(coords):
-			ready_chunks.append(coords)
-
 func is_tile_empty(coords : Vector2i, wall : bool) -> bool:
 	if wall:
 		return get_tile(coords, wall) == TileHandler.EMPTY_WALL
@@ -137,7 +91,7 @@ func is_tile_empty(coords : Vector2i, wall : bool) -> bool:
 		return get_tile(coords, wall) == TileHandler.EMPTY_TILE
 
 func get_player_spawn():
-	return gameSave.player_spawn
+	return gameSave.world_info.player_spawn
 
 
 func get_tile(coords : Vector2i, wall : bool) -> TileResource:
@@ -224,16 +178,3 @@ func contains_coordinates(coords : Vector2):
 
 func global_to_tile_coordinates(global_coords : Vector2):
 	return (global_coords - global_position)/GlobalReferences.TILE_SIZE
-
-func save_chunk(chunk_coords : Vector2i):
-	var chunk = null
-	if loaded_chunks.has(chunk_coords):
-		chunk = loaded_chunks[chunk_coords]
-	gameSave.save_chunk(chunk_coords, chunk)
-
-func _notification(what):
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		for coords in loaded_chunks.keys():
-			save_chunk(coords)
-		gameSave.save_all()
-		get_tree().quit()

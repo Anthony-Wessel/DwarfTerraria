@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cccpn847bcvgo"]
 
-[ext_resource type="Script" path="res://items/item use scenes/weapon_collision.gd" id="1_ekwkl"]
 [ext_resource type="Script" path="res://items/item use scenes/swing.gd" id="1_gsgls"]
 [ext_resource type="Texture2D" uid="uid://ccdy4v2c5pagq" path="res://art/weapons/mithril_sword.png" id="2_ux7wx"]
+[ext_resource type="Script" path="res://characters/hitbox.gd" id="3_rpaaa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0uv0k"]
 size = Vector2(4, 18)
@@ -16,12 +16,12 @@ rotation = -0.785398
 texture = ExtResource("2_ux7wx")
 
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 16
 collision_mask = 4
-script = ExtResource("1_ekwkl")
+script = ExtResource("3_rpaaa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_0uv0k")
 
-[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]

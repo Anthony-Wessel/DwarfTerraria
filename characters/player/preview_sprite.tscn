@@ -62,6 +62,7 @@ region_enabled = true
 region_rect = Rect2(16, 16, 8, 8)
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://dmkq7kyyh1heb"]
+
+[ext_resource type="Resource" uid="uid://ohgp16h03t4i" path="res://items/tiles/Piron.tres" id="1_l1c8q"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_hr1qr"]
+[ext_resource type="Resource" uid="uid://bhjcm2dx5lcuo" path="res://items/equipment/iron_helmet.tres" id="3_t7314"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_dkcmy"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_hr1qr")
+item = ExtResource("1_l1c8q")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_hr1qr")
+item = ExtResource("3_t7314")
+count = 1
+
+[resource]
+script = ExtResource("4_dkcmy")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_hr1qr")]([SubResource("Resource_lkl4f")])

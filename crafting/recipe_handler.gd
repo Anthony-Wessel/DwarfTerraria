@@ -11,6 +11,9 @@ func _init():
 		
 		var file_name = dir.get_next()
 		while file_name != "":
+			if file_name.ends_with(".remap"):
+				file_name = file_name.replace(".remap", "")
+			
 			recipes.append(load(path + file_name))
 			file_name = dir.get_next()
 		dir.list_dir_end()

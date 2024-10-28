@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3c5b5278odna"]
+[gd_scene load_steps=12 format=3 uid="uid://d3c5b5278odna"]
 
 [ext_resource type="Script" path="res://characters/enemies/flying_movement.gd" id="1_i0ui8"]
 [ext_resource type="Texture2D" uid="uid://dtoxkihrk1bwk" path="res://art/enemies/bat.png" id="2_6rt6c"]
 [ext_resource type="Script" path="res://characters/enemies/flyer_control.gd" id="3_bkhfi"]
 [ext_resource type="Script" path="res://characters/hitbox.gd" id="3_ioo8i"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="3_mi3j4"]
-[ext_resource type="Script" path="res://characters/hurtbox.gd" id="4_fwfee"]
 [ext_resource type="Script" path="res://characters/health.gd" id="6_n7mgl"]
 [ext_resource type="Script" path="res://characters/enemies/destroy_on_death.gd" id="7_quade"]
 
@@ -39,7 +38,7 @@ _data = {
 radius = 4.0
 
 [node name="flying_enemy" type="CharacterBody2D"]
-collision_layer = 4
+collision_layer = 0
 script = ExtResource("1_i0ui8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -64,19 +63,11 @@ libraries = {
 
 [node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("sprite")]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("3_ioo8i")
 sprite = NodePath("../SpriteHolder/Sprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource("CircleShape2D_etlt6")
-
-[node name="Hurtbox" type="Area2D" parent="."]
-collision_layer = 32
-collision_mask = 2
-script = ExtResource("4_fwfee")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_etlt6")
 
 [node name="FlyerControl" type="Node" parent="." node_paths=PackedStringArray("movement")]
@@ -90,9 +81,8 @@ script = ExtResource("6_n7mgl")
 script = ExtResource("7_quade")
 root_node = NodePath("../..")
 
+[connection signal="area_entered" from="Hitbox" to="Hitbox" method="_on_area_entered"]
 [connection signal="hit" from="Hitbox" to="." method="handle_hit"]
 [connection signal="hit" from="Hitbox" to="FlyerControl" method="on_hit"]
 [connection signal="hit" from="Hitbox" to="Health" method="handle_hit"]
-[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]
-[connection signal="hit" from="Hurtbox" to="FlyerControl" method="on_hit_player"]
 [connection signal="dead" from="Health" to="Health/DestroyOnDeath" method="destroy"]

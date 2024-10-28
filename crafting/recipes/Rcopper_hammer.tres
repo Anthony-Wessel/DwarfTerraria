@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=9 format=3 uid="uid://cbtrqv1tw0vyx"]
+
+[ext_resource type="Resource" uid="uid://djjlxk8qr3u23" path="res://items/tiles/Pcopper.tres" id="1_kvho7"]
+[ext_resource type="Resource" uid="uid://3q2xeujc568o" path="res://items/tools/Iwooden_hammer.tres" id="1_mucus"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_pyxrr"]
+[ext_resource type="Resource" uid="uid://70ysduy78lea" path="res://items/tools/Icopper_hammer.tres" id="3_j1tkl"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_4ne14"]
+
+[sub_resource type="Resource" id="Resource_613v0"]
+script = ExtResource("2_pyxrr")
+item = ExtResource("1_mucus")
+count = 1
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_pyxrr")
+item = ExtResource("1_kvho7")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_pyxrr")
+item = ExtResource("3_j1tkl")
+count = 1
+
+[resource]
+script = ExtResource("4_4ne14")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_pyxrr")]([SubResource("Resource_613v0"), SubResource("Resource_lkl4f")])

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=9 format=3 uid="uid://cn64vvrvs7bhp"]
+
+[ext_resource type="Resource" uid="uid://cg1yho6ddebj7" path="res://items/tools/Iiron_hammer.tres" id="1_o6e20"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_uh0i1"]
+[ext_resource type="Resource" uid="uid://b68e7k3p7vnum" path="res://items/tiles/Pmithril.tres" id="3_dhhe6"]
+[ext_resource type="Resource" uid="uid://qxkps7lh4hus" path="res://items/tools/Imithril_hammer.tres" id="4_tqpfi"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="5_14vg7"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_uh0i1")
+item = ExtResource("1_o6e20")
+count = 1
+
+[sub_resource type="Resource" id="Resource_5mevr"]
+script = ExtResource("2_uh0i1")
+item = ExtResource("3_dhhe6")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_uh0i1")
+item = ExtResource("4_tqpfi")
+count = 1
+
+[resource]
+script = ExtResource("5_14vg7")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_uh0i1")]([SubResource("Resource_lkl4f"), SubResource("Resource_5mevr")])

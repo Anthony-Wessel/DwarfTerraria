@@ -14,6 +14,9 @@ func _init():
 		
 		var file_name = dir.get_next()
 		while file_name != "":
+			if file_name.ends_with(".remap"):
+				file_name = file_name.replace(".remap", "")
+			
 			var t_resource = load(path + file_name) as TileResource
 			
 			if t_resource.name == "empty tile": EMPTY_TILE = t_resource

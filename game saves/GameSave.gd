@@ -7,6 +7,8 @@ func get_height():
 	return world_info.size.y * GlobalReferences.CHUNK_SIZE
 
 func get_chunk(coords: Vector2):
+	if coords.x + coords.y*world_info.size.x >= 20:
+		print(coords)
 	return chunks[coords.x + coords.y*world_info.size.x]
 
 func get_tile(coords : Vector2i, wall : bool):

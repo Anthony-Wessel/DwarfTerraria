@@ -6,13 +6,14 @@ extends Node
 var last_attempt := 0.0
 
 var cam_reference
+var spawned_enemy : Node = null
 
 func _ready():
 	cam_reference = get_viewport().get_camera_2d()
 
 func _process(_delta):
 	# Every 1/attempt_frequency seconds 
-	if Time.get_ticks_msec()-last_attempt > 1000.0/attempt_frequency:
+	if Time.get_ticks_msec()-last_attempt > 1000.0/attempt_frequency or spawned_enemy == null:
 		attempt_spawn()
 		last_attempt = Time.get_ticks_msec()
 	
@@ -57,15 +58,15 @@ func attempt_spawn():
 	
 	
 	#print(pos, ", ", tile_coords, ", ", drop_height)
-	var spawned_enemy = enemy_to_spawn.prefab.instantiate()
+	spawned_enemy = enemy_to_spawn.prefab.instantiate()
 	spawned_enemy.position = (tile_coords + Vector2i(0.5,-1)) * GlobalReferences.TILE_SIZE
 	add_child(spawned_enemy)
 	
 func generate_spawn_position():
 	# get world coordinates of viewport
 	var rect : Rect2 = cam_reference.get_canvas_transform().affine_inverse()*get_viewport().get_visible_rect()
-	var x_max = GameWorld.instance.gameSave.width
-	var y_max= GameWorld.instance.gameSave.height
+	var x_max = GameWorld.instance.gameSave.get_width()
+	var y_max= GameWorld.instance.gameSave.get_height()
 	# get random offset
 	var rng = RandomNumberGenerator.new()
 	var x = rng.randf_range(max(0, rect.position.x-100), min(x_max, rect.position.x+rect.size.x+100))

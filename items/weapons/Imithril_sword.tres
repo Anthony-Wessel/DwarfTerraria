@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=4 format=3 uid="uid://bgeqr0731us2e"]
+
+[ext_resource type="Script" path="res://items/weapon_item.gd" id="1_dnsyy"]
+[ext_resource type="Texture2D" uid="uid://ccdy4v2c5pagq" path="res://art/weapons/mithril_sword.png" id="2_vphl3"]
+[ext_resource type="PackedScene" uid="uid://cccpn847bcvgo" path="res://items/item use scenes/prefabs/Umithril_sword.tscn" id="3_oo5ig"]
+
+[resource]
+script = ExtResource("1_dnsyy")
+damage = 3.0
+speed = 5.0
+collision_shape = Rect2(0.5, -10, 3, 12)
+use_scene = ExtResource("3_oo5ig")
+name = "mithril sword"
+texture = ExtResource("2_vphl3")
+stack_size = 1

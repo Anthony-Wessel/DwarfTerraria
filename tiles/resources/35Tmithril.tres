@@ -7,7 +7,7 @@
 script = ExtResource("1_uth68")
 id = 35
 name = "mithril ore"
-hardness = 0
+hardness = 2
 health = 1.0
 dropped_item = ExtResource("1_omfvq")
 potential_supports = Array[Vector2]([])

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://c7j5x2bjikaia"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_3gqh5"]
+[ext_resource type="Texture2D" uid="uid://dlit4af68xex0" path="res://art/tools/copper_pickaxe.png" id="2_e1tkt"]
+
+[resource]
+script = ExtResource("1_3gqh5")
+mining_tier = 1
+mining_speed = 2.0
+mines_walls = false
+name = "copper pickaxe"
+texture = ExtResource("2_e1tkt")
+stack_size = 1

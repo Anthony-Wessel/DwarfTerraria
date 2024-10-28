@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://c3j00ysiprev5"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_8dsfc"]
+[ext_resource type="Texture2D" uid="uid://dyh6sj7d5avvs" path="res://art/tools/mithril_pickaxe.png" id="2_yg5g3"]
+
+[resource]
+script = ExtResource("1_8dsfc")
+mining_tier = 3
+mining_speed = 6.0
+mines_walls = false
+name = "mithril pickaxe"
+texture = ExtResource("2_yg5g3")
+stack_size = 1

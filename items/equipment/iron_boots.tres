@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://cgnr4xx3gqvbl"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_lbrsh"]
+[ext_resource type="Texture2D" uid="uid://dskhvkwabkili" path="res://art/character spritesheets/iron_boots.png" id="2_2mke7"]
+[ext_resource type="Texture2D" uid="uid://bo3600tecba0g" path="res://art/equipment/iron_equipment_sprites.png" id="2_eefr6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_eefr6")
+region = Rect2(8, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_lbrsh")
+type = 3
+armor = 2
+spritesheet = ExtResource("2_2mke7")
+name = "Iron Boots"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

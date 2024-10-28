@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://ceex5oebn0t7e"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_cjxrv"]
+[ext_resource type="Texture2D" uid="uid://peyqkcb8i87t" path="res://art/character spritesheets/mithril_chest.png" id="2_2lxfy"]
+[ext_resource type="Texture2D" uid="uid://cidulrf8xijki" path="res://art/equipment/mithril_equipment_sprites.png" id="2_qhcmf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_qhcmf")
+region = Rect2(16, 0, 8, 8)
+
+[resource]
+script = ExtResource("1_cjxrv")
+type = 1
+armor = 3
+spritesheet = ExtResource("2_2lxfy")
+name = "Mithril Chestplate"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

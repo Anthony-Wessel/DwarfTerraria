@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://ci5ykns4by6gl"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_m2kov"]
+[ext_resource type="Texture2D" uid="uid://bo3600tecba0g" path="res://art/equipment/iron_equipment_sprites.png" id="2_f5gxu"]
+[ext_resource type="Texture2D" uid="uid://ct5l8effavjf6" path="res://art/character spritesheets/iron_legs.png" id="2_jrdat"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_f5gxu")
+region = Rect2(0, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_m2kov")
+type = 2
+armor = 2
+spritesheet = ExtResource("2_jrdat")
+name = "Iron Leggings"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

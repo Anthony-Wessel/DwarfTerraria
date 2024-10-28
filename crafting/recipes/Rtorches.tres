@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://v8plsby5ym1l"]
+
+[ext_resource type="Resource" uid="uid://cpikgovv5nqfo" path="res://items/tiles/Pwood.tres" id="1_eqhsn"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_3wacj"]
+[ext_resource type="Resource" uid="uid://xnr0f6xl6dmk" path="res://items/tiles/Ptorch.tres" id="3_3hrs4"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_lffhp"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_3wacj")
+item = ExtResource("1_eqhsn")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_3wacj")
+item = ExtResource("3_3hrs4")
+count = 10
+
+[resource]
+script = ExtResource("4_lffhp")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_3wacj")]([SubResource("Resource_lkl4f")])

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://78k2f0isdr5d"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_tb3bf"]
+[ext_resource type="Texture2D" uid="uid://cvkng8lukh03i" path="res://art/character spritesheets/mithril_helmet.png" id="2_jex8e"]
+[ext_resource type="Texture2D" uid="uid://cidulrf8xijki" path="res://art/equipment/mithril_equipment_sprites.png" id="2_utunh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_utunh")
+region = Rect2(8, 0, 8, 8)
+
+[resource]
+script = ExtResource("1_tb3bf")
+type = 0
+armor = 3
+spritesheet = ExtResource("2_jex8e")
+name = "Mithril Helmet"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

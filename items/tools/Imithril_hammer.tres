@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://qxkps7lh4hus"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_kikhd"]
+[ext_resource type="Texture2D" uid="uid://gmv5v888lfmu" path="res://art/tools/mithril_hammer.png" id="2_0wgin"]
+
+[resource]
+script = ExtResource("1_kikhd")
+mining_tier = 1
+mining_speed = 4.0
+mines_walls = true
+name = "mithril hammer"
+texture = ExtResource("2_0wgin")
+stack_size = 1

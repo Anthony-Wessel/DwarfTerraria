@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://bjxj5tuumthlb"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_yfhov"]
+[ext_resource type="Texture2D" uid="uid://didpja2wwgvr" path="res://art/tools/iron_pickaxe.png" id="2_6omki"]
+
+[resource]
+script = ExtResource("1_yfhov")
+mining_tier = 2
+mining_speed = 4.0
+mines_walls = false
+name = "iron pickaxe"
+texture = ExtResource("2_6omki")
+stack_size = 1

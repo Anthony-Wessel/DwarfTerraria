@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://4yjppfwxcxhu"]
+[gd_scene load_steps=13 format=3 uid="uid://4yjppfwxcxhu"]
 
 [ext_resource type="PackedScene" uid="uid://bbk30r003xeiw" path="res://characters/character.tscn" id="1_gmpjo"]
 [ext_resource type="Texture2D" uid="uid://bnelh7vm78ga5" path="res://art/enemies/zombie_spritesheet.png" id="2_bllf8"]
 [ext_resource type="Script" path="res://characters/enemies/grounded_enemy_control.gd" id="2_eyuho"]
 [ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="2_s0e6e"]
 [ext_resource type="PackedScene" uid="uid://sc18rjoamd4y" path="res://characters/healthbar.tscn" id="4_c6ja0"]
-[ext_resource type="Script" path="res://characters/hurtbox.gd" id="5_3bscv"]
 [ext_resource type="Script" path="res://characters/health.gd" id="6_y8kay"]
 [ext_resource type="Script" path="res://characters/enemies/destroy_on_death.gd" id="7_k5m8t"]
 
@@ -25,6 +24,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2i(0, 0), Vector2i(0, 0), Vector2i(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_u78t7"]
+resource_name = "jump"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteHolder/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2i(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_pckuq"]
@@ -47,14 +62,12 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h7ni0"]
 _data = {
 "idle": SubResource("Animation_f3hrk"),
+"jump": SubResource("Animation_u78t7"),
 "run": SubResource("Animation_pckuq")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gpn3t"]
 radius = 1.41421
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wb628"]
-size = Vector2(10, 15)
 
 [node name="Enemy" instance=ExtResource("1_gmpjo")]
 collision_layer = 4
@@ -74,7 +87,6 @@ scale = Vector2(-0.875, 0.938)
 texture = ExtResource("2_bllf8")
 hframes = 2
 vframes = 1
-frame = 0
 
 [node name="FloorDetector" type="Area2D" parent="SpriteHolder" index="1"]
 collision_layer = 0
@@ -84,37 +96,29 @@ script = ExtResource("2_s0e6e")
 position = Vector2(5, 2)
 shape = SubResource("CircleShape2D_gpn3t")
 
-[node name="Hitbox" parent="SpriteHolder" index="3"]
-collision_layer = 4
-
 [node name="Healthbar" parent="SpriteHolder" index="4" node_paths=PackedStringArray("health_node") instance=ExtResource("4_c6ja0")]
 position = Vector2(0, -16)
 health_node = NodePath("../../EnemyHealth")
+
+[node name="Hitbox" parent="SpriteHolder" index="5"]
+collision_layer = 4
+collision_mask = 2
 
 [node name="EnemyControl" type="Node2D" parent="." index="3" node_paths=PackedStringArray("character_movement", "floor_detector", "obstacle_detector")]
 script = ExtResource("2_eyuho")
 character_movement = NodePath("..")
 floor_detector = NodePath("../SpriteHolder/FloorDetector")
-obstacle_detector = NodePath("../SpriteHolder/ObstacleDetector")
+obstacle_detector = NodePath("../SpriteHolder/StepSpaceDetector")
 
-[node name="Hurtbox" type="Area2D" parent="." index="4"]
-collision_layer = 32
-collision_mask = 2
-script = ExtResource("5_3bscv")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" index="0"]
-position = Vector2(1, -7.5)
-shape = SubResource("RectangleShape2D_wb628")
-
-[node name="EnemyHealth" type="Node" parent="." index="5"]
+[node name="EnemyHealth" type="Node" parent="." index="4"]
 script = ExtResource("6_y8kay")
 
-[node name="DestoryOnDeath" type="Node" parent="EnemyHealth" index="0" node_paths=PackedStringArray("root_node")]
+[node name="DestroyOnDeath" type="Node" parent="EnemyHealth" index="0" node_paths=PackedStringArray("root_node")]
 script = ExtResource("7_k5m8t")
 root_node = NodePath("../..")
 
 [connection signal="body_entered" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_detected"]
 [connection signal="body_exited" from="SpriteHolder/FloorDetector" to="SpriteHolder/FloorDetector" method="_on_tile_lost"]
+[connection signal="area_entered" from="SpriteHolder/Hitbox" to="SpriteHolder/Hitbox" method="_on_area_entered"]
 [connection signal="hit" from="SpriteHolder/Hitbox" to="EnemyHealth" method="handle_hit"]
-[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]
-[connection signal="dead" from="EnemyHealth" to="EnemyHealth/DestoryOnDeath" method="destroy"]
+[connection signal="dead" from="EnemyHealth" to="EnemyHealth/DestroyOnDeath" method="destroy"]

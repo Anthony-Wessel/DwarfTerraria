@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://70ysduy78lea"]
+
+[ext_resource type="Texture2D" uid="uid://bpxhpjy3ic8ba" path="res://art/tools/copper_hammer.png" id="2_8jix6"]
+[ext_resource type="Script" path="res://items/tool_item.gd" id="2_gvnv5"]
+
+[resource]
+script = ExtResource("2_gvnv5")
+mining_tier = 1
+mining_speed = 2.0
+mines_walls = true
+name = "copper hammer"
+texture = ExtResource("2_8jix6")
+stack_size = 1

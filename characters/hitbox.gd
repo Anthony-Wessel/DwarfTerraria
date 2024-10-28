@@ -8,6 +8,7 @@ var immune := false
 
 signal hit(damage : float, collision_position : Vector2)
 
+# This object was hit by an attack
 func handle_hit(damage : float, collision_position : Vector2):
 	if immune:
 		return
@@ -27,3 +28,10 @@ func trigger_immunity():
 	
 	await get_tree().create_timer(immunity_length).timeout
 	immune = false
+
+
+# This object 
+func _on_area_entered(area):
+	# TODO: Deal damage to player
+	(area as Hitbox).handle_hit(1, global_position)
+	hit.emit(0, global_position)

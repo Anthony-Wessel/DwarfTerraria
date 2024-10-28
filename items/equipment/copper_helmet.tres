@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://cjvf1qkkp6eow"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_3mj8f"]
+[ext_resource type="Texture2D" uid="uid://cpy3yybrwrp5u" path="res://art/equipment/copper_equipment_sprites.png" id="2_eqcn4"]
+[ext_resource type="Texture2D" uid="uid://dcowp285sj1mh" path="res://art/character spritesheets/copper_helmet.png" id="2_r2prf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_eqcn4")
+region = Rect2(8, 0, 8, 8)
+
+[resource]
+script = ExtResource("1_3mj8f")
+type = 0
+armor = 1
+spritesheet = ExtResource("2_r2prf")
+name = "Copper Helmet"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

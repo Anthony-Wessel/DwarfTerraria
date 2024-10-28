@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://3q2xeujc568o"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_3xuld"]
+[ext_resource type="Texture2D" uid="uid://cj5at3ym4atwk" path="res://art/tools/wooden_hammer.png" id="2_3dwhj"]
+
+[resource]
+script = ExtResource("1_3xuld")
+mining_tier = 1
+mining_speed = 2.0
+mines_walls = true
+name = "wooden hammer"
+texture = ExtResource("2_3dwhj")
+stack_size = 1

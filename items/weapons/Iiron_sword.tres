@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=4 format=3 uid="uid://cf1w8bsxkoxn0"]
+
+[ext_resource type="Script" path="res://items/weapon_item.gd" id="1_snsh6"]
+[ext_resource type="Texture2D" uid="uid://vxmaxslj6joy" path="res://art/weapons/iron_sword.png" id="2_kgti4"]
+[ext_resource type="PackedScene" uid="uid://cccpn847bcvgo" path="res://items/item use scenes/prefabs/Umithril_sword.tscn" id="3_upss2"]
+
+[resource]
+script = ExtResource("1_snsh6")
+damage = 2.0
+speed = 5.0
+collision_shape = Rect2(0.5, -10, 3, 12)
+use_scene = ExtResource("3_upss2")
+name = "iron sword"
+texture = ExtResource("2_kgti4")
+stack_size = 1

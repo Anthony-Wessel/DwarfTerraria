@@ -17,11 +17,15 @@ func replace(stack : ItemStack) -> ItemStack:
 		if stack.item != null:
 			return stack
 	
-	return super(stack)
+	var result = super(stack)
+	GlobalReferences.armor_equipped.emit(type, contents.item)
+	return result
 
 # returns remainder that couldn't be added
 func add(stack : ItemStack) -> ItemStack:
 	if not stack.item is EquipmentItem or stack.item.type != type:
 		return stack
 	
-	return super(stack)
+	var result = super(stack)
+	GlobalReferences.armor_equipped.emit(type, contents.item)
+	return result

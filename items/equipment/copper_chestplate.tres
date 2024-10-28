@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EquipmentItem" load_steps=5 format=3 uid="uid://cas2u5gc1lm6i"]
+
+[ext_resource type="Script" path="res://items/equipment_item.gd" id="1_ki70w"]
+[ext_resource type="Texture2D" uid="uid://dqns3vpwcrq16" path="res://art/character spritesheets/copper_chest.png" id="2_d0l7y"]
+[ext_resource type="Texture2D" uid="uid://cpy3yybrwrp5u" path="res://art/equipment/copper_equipment_sprites.png" id="2_jovj7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1njq"]
+atlas = ExtResource("2_jovj7")
+region = Rect2(16, 0, 8, 8)
+
+[resource]
+script = ExtResource("1_ki70w")
+type = 1
+armor = 1
+spritesheet = ExtResource("2_d0l7y")
+name = "Copper Chestplate"
+texture = SubResource("AtlasTexture_f1njq")
+stack_size = 1

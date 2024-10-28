@@ -34,5 +34,3 @@ shape = SubResource("RectangleShape2D_sonpe")
 script = ExtResource("3_lmqjd")
 
 [node name="EntityRoot" type="Node2D" parent="."]
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_player_entered"]

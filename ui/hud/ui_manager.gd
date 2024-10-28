@@ -6,6 +6,7 @@ static var instance
 @export var inventory_root : Control
 @export var hotbar_root : Control
 @export var storage_root : Control
+@export var crafting_panel : Control
 
 func _init():
 	instance = self
@@ -28,6 +29,8 @@ func _input(event):
 			toggle_inventory()
 
 static func toggle_inventory():
+	instance.crafting_panel.open()
+	
 	instance.inventory_root.visible = !instance.inventory_root.visible
 	instance.hotbar_root.visible = !instance.inventory_root.visible
 	

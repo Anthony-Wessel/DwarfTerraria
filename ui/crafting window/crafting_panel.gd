@@ -16,11 +16,11 @@ func _ready():
 		create_recipe_button(recipe)
 
 func open():
-	var inventory = Player.instance.inventory
+	var inventory = InventoryInterface.player_inventory
 	for recipe in recipe_buttons.keys():
 		recipe_buttons[recipe].visible = true
 		for reagent in recipe.reagents:
-			if !inventory.has(reagent):
+			if !inventory.has_stack(reagent):
 				recipe_buttons[recipe].visible = false
 				continue
 
@@ -50,13 +50,13 @@ func select_recipe(recipe : Recipe):
 func craft():
 	if selected_recipe == null:
 		return
-	var inventory = Player.instance.inventory
+	var inventory = InventoryInterface.player_inventory
 	for reagent in selected_recipe.reagents:
-		if !inventory.has(reagent):
+		if !inventory.has_stack(reagent):
 			return
 	
 	for reagent in selected_recipe.reagents:
-		inventory.remove(reagent)
+		inventory.remove_stack(reagent.duplicate())
 	
-	inventory.add(selected_recipe.result)
+	inventory.add_stack(selected_recipe.result.duplicate())
 	open()

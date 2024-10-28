@@ -36,9 +36,9 @@ static func GenerateWorld(worldResource : GameSave):
 	for y in worldResource.world_info.size.y:
 		for x in worldResource.world_info.size.x:
 			var new_chunk
-			if y <= 1:
+			if y == 0:
 				new_chunk = generate_sky_chunk()
-			elif y == 2:
+			elif y == 1:
 				new_chunk = await generate_surface_chunk(Vector2(x,y), worldResource.world_info.world_seed)
 			else:
 				new_chunk = await generate_cave_chunk(Vector2(x,y), worldResource.world_info.world_seed)
@@ -47,9 +47,9 @@ static func GenerateWorld(worldResource : GameSave):
 	# Set player spawn
 	@warning_ignore("integer_division")
 	var mid_chunk : int = worldResource.world_info.size.x / 2
-	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 2))
+	var chunk = worldResource.get_chunk(Vector2(mid_chunk, 1))
 	@warning_ignore("integer_division")
-	var t = chunk.tiles[GlobalReferences.CHUNK_SIZE/2] # (y = 0)
+	var t = chunk.tiles[GlobalReferences.CHUNK_SIZE/2] # (y = 0) middle of top row
 	var spawn_y = 0
 	while t != grass:
 		spawn_y += 1
@@ -57,7 +57,7 @@ static func GenerateWorld(worldResource : GameSave):
 		t = chunk.tiles[GlobalReferences.CHUNK_SIZE/2 + spawn_y * GlobalReferences.CHUNK_SIZE]
 	
 	var spawnX = (float(mid_chunk)+0.5)*GlobalReferences.CHUNK_SIZE
-	var spawnY = GlobalReferences.CHUNK_SIZE * 2 + spawn_y-1
+	var spawnY = GlobalReferences.CHUNK_SIZE * 1 + spawn_y-1
 	worldResource.world_info.player_spawn = Vector2(spawnX, spawnY)
 	
 	
@@ -233,8 +233,8 @@ static func place_trees(worldResource : GameSave):
 		just_placed = true
 		
 		# find the highest solid tile
-		var tile = worldResource.get_tile(Vector2i(x, 2*GlobalReferences.CHUNK_SIZE), false)
-		var y = 2*GlobalReferences.CHUNK_SIZE
+		var tile = worldResource.get_tile(Vector2i(x, 1*GlobalReferences.CHUNK_SIZE), false)
+		var y = 1*GlobalReferences.CHUNK_SIZE
 		while tile.id != grass and y < (3*GlobalReferences.CHUNK_SIZE) - 1:
 			y += 1
 			tile = worldResource.get_tile(Vector2i(x, y), false)
@@ -275,8 +275,8 @@ static func place_caves(worldResource : GameSave):
 			continue
 		
 		if rng.randf() > 0.2:
-			dig_cave(worldResource, Vector2(x,2), Vector2(sign(rng.randf()-0.5),0))
-			cooldown = 2
+			dig_cave(worldResource, Vector2(x,1), Vector2(sign(rng.randf()-0.5),0))
+			cooldown = 1
 
 static func dig_cave(worldResource : GameSave, chunk_coords : Vector2, direction : Vector2):
 	# Find the starting point for the cave on the surface

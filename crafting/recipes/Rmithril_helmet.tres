@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://e58crxvom72f"]
+
+[ext_resource type="Resource" uid="uid://b68e7k3p7vnum" path="res://items/tiles/Pmithril.tres" id="1_kr42e"]
+[ext_resource type="Script" path="res://inventory/item_stack.gd" id="2_ei5il"]
+[ext_resource type="Resource" uid="uid://78k2f0isdr5d" path="res://items/equipment/mithril_helmet.tres" id="3_ss3nd"]
+[ext_resource type="Script" path="res://crafting/recipe_resource.gd" id="4_ewh3j"]
+
+[sub_resource type="Resource" id="Resource_lkl4f"]
+script = ExtResource("2_ei5il")
+item = ExtResource("1_kr42e")
+count = 2
+
+[sub_resource type="Resource" id="Resource_lv8d0"]
+script = ExtResource("2_ei5il")
+item = ExtResource("3_ss3nd")
+count = 1
+
+[resource]
+script = ExtResource("4_ewh3j")
+result = SubResource("Resource_lv8d0")
+reagents = Array[ExtResource("2_ei5il")]([SubResource("Resource_lkl4f")])

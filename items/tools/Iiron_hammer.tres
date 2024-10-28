@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://cg1yho6ddebj7"]
+
+[ext_resource type="Script" path="res://items/tool_item.gd" id="1_ah4w3"]
+[ext_resource type="Texture2D" uid="uid://dl4073fsae7pr" path="res://art/tools/iron_hammer.png" id="2_sle3y"]
+
+[resource]
+script = ExtResource("1_ah4w3")
+mining_tier = 1
+mining_speed = 4.0
+mines_walls = true
+name = "iron hammer"
+texture = ExtResource("2_sle3y")
+stack_size = 1

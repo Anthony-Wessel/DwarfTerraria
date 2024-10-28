@@ -83,9 +83,6 @@ func get_tile(coords : Vector2, wall : bool):
 func get_light_values(coords : Vector2):
 	return lights[coords.x + coords.y * GlobalReferences.CHUNK_SIZE]
 
-func _on_player_entered(_body):
-	GameWorld.instance.player_entered_chunk(chunk_coords)
-
 func save_entities() -> Dictionary:
 	var result = {}
 	
