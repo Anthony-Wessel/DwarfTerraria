@@ -72,9 +72,6 @@ _data = {
 
 [node name="Player" instance=ExtResource("1_vgd4h")]
 
-[node name="CollisionShape2D" parent="." index="0"]
-position = Vector2(0.5, -7.5)
-
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
 "": SubResource("AnimationLibrary_akhiq")
@@ -133,12 +130,6 @@ visible = false
 texture = ExtResource("5_uccx5")
 script = ExtResource("6_kcnxb")
 
-[node name="StepDetector" parent="SpriteHolder" index="3"]
-visible = false
-
-[node name="StepSpaceDetector" parent="SpriteHolder" index="4"]
-visible = false
-
 [node name="Healthbar" parent="SpriteHolder" index="5" node_paths=PackedStringArray("health_node") instance=ExtResource("13_jjvcd")]
 position = Vector2(0, -16)
 health_node = NodePath("../../Health")
@@ -147,9 +138,6 @@ health_node = NodePath("../../Health")
 visible = false
 collision_layer = 2
 immunity_length = 1.0
-
-[node name="CollisionShape2D" parent="SpriteHolder/Hitbox" index="0"]
-position = Vector2(0.5, -7.5)
 
 [node name="PreviewSprite" parent="." index="3" instance=ExtResource("5_ynaqn")]
 position = Vector2(2, -9)

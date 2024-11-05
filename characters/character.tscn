@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://characters/enemies/floor_detector.gd" id="4_uutov"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_po2bp"]
-size = Vector2(10, 15)
+size = Vector2(10, 14)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jwyaq"]
 
@@ -17,7 +17,7 @@ radius = 2.0
 size = Vector2(3, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pgmhl"]
-size = Vector2(10, 15)
+size = Vector2(10, 14)
 
 [node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite_holder", "step_detector", "obstacle_space_detector")]
 collision_layer = 2
@@ -27,7 +27,7 @@ step_detector = NodePath("SpriteHolder/StepDetector")
 obstacle_space_detector = NodePath("SpriteHolder/StepSpaceDetector")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -7.5)
+position = Vector2(5, -7)
 shape = SubResource("RectangleShape2D_po2bp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." node_paths=PackedStringArray("character_movement")]
@@ -38,6 +38,7 @@ script = ExtResource("2_ddfxg")
 character_movement = NodePath("..")
 
 [node name="SpriteHolder" type="Node2D" parent="."]
+position = Vector2(5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteHolder"]
 position = Vector2(4.5, -10.5)

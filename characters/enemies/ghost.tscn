@@ -38,6 +38,7 @@ _data = {
 script = ExtResource("1_3trwk")
 
 [node name="SpriteHolder" type="Node2D" parent="."]
+position = Vector2(4, -4)
 
 [node name="DynamicLight" parent="SpriteHolder" instance=ExtResource("2_mcieq")]
 modulate = Color(0, 1, 1, 1)

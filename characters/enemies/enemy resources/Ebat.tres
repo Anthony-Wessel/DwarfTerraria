@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_k36y2")
+name = "Bat"
 prefab = ExtResource("1_3sgvd")
 space_required = Vector2i(1, 1)
 require_ground = false

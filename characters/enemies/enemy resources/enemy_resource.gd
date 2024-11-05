@@ -1,6 +1,7 @@
 class_name EnemyResource
 extends Resource
 
+@export var name : String
 @export var prefab : PackedScene
 @export var space_required : Vector2i
 @export var require_ground : bool

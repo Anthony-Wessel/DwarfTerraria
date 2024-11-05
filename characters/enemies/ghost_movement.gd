@@ -28,7 +28,7 @@ func _process(delta):
 		player = Player.instance
 		return
 
-	var diff : Vector2 = (player.global_position + Vector2(0,-GlobalReferences.TILE_SIZE*1.5))- global_position
+	var diff : Vector2 = (player.global_position + Vector2(GlobalReferences.TILE_SIZE*0.5,-GlobalReferences.TILE_SIZE*1))- global_position
 	var movement : Vector2
 	
 	if state == 1: # circle player
@@ -41,7 +41,7 @@ func _process(delta):
 			movement = perp * circle_speed
 	elif state == 2: # chase player
 		movement = (diff+Vector2(0,-5)).normalized() * chase_speed
-		if diff.length() < GlobalReferences.TILE_SIZE/2.0:
+		if diff.length() < 2.0:
 			set_circle_state()
 	elif state == 3: # run away from player
 		movement = -diff.normalized() * chase_speed

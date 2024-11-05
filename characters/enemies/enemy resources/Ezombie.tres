@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_g7cd6")
+name = "Zombie"
 prefab = ExtResource("1_fmqms")
 space_required = Vector2i(3, 2)
 require_ground = true

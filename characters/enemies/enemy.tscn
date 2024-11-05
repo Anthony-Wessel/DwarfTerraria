@@ -73,9 +73,6 @@ radius = 1.41421
 collision_layer = 4
 speed = 40
 
-[node name="CollisionShape2D" parent="." index="0"]
-position = Vector2(1, -7.5)
-
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
 "": SubResource("AnimationLibrary_h7ni0")

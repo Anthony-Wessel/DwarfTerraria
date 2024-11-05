@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://cuq6v60t1om6v"]
+[gd_scene load_steps=41 format=3 uid="uid://cuq6v60t1om6v"]
 
 [ext_resource type="Shader" path="res://environment/lighting/lighting.gdshader" id="1_gcpuu"]
 [ext_resource type="PackedScene" uid="uid://dvjhsqiap8w8s" path="res://ui/hud/gui.tscn" id="1_l83f0"]
@@ -23,6 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://bi30i5t2jevl4" path="res://art/tiles/tileBreakAnimation.png" id="11_vim8l"]
 [ext_resource type="Script" path="res://tiles/tile_handler.gd" id="16_0a2ww"]
 [ext_resource type="Script" path="res://ui/background.gd" id="17_3udcd"]
+[ext_resource type="Resource" uid="uid://rb7vi27uqnub" path="res://characters/enemies/enemy resources/Ezombie.tres" id="22_6c2q7"]
+[ext_resource type="Resource" uid="uid://ls5lgfinfae7" path="res://characters/enemies/enemy resources/Ebat.tres" id="23_ngoow"]
+[ext_resource type="Resource" uid="uid://p1rhllimlybp" path="res://characters/enemies/enemy resources/Eghost.tres" id="24_avi5a"]
 [ext_resource type="Script" path="res://inventory/inventory_interface.gd" id="24_xtiby"]
 [ext_resource type="Resource" uid="uid://kb1owdhfjdaf" path="res://items/weapons/Iwooden_sword.tres" id="25_nwfwg"]
 [ext_resource type="Script" path="res://inventory/item_stack.gd" id="26_0wmaa"]
@@ -190,7 +193,8 @@ player = NodePath("../Player")
 pickup_scene = ExtResource("7_ko0fq")
 
 [node name="EnemySpawner" parent="." instance=ExtResource("8_38sfi")]
-attempt_frequency = 1
+enemies = Array[Resource("res://characters/enemies/enemy resources/enemy_resource.gd")]([ExtResource("22_6c2q7"), ExtResource("23_ngoow"), ExtResource("24_avi5a")])
+attempt_frequency = 0.1
 
 [node name="RecipeHandler" type="Node" parent="."]
 script = ExtResource("8_0g71x")

@@ -69,8 +69,8 @@ func _physics_process(delta):
 			velocity.y = 0
 			position = position + Vector2(0, -8.1)
 			var tween = get_tree().create_tween()
-			$SpriteHolder.position = Vector2(0,8)
-			tween.tween_property($SpriteHolder, "position", Vector2.ZERO, 0.1)
+			$SpriteHolder.position = Vector2(5,8)
+			tween.tween_property($SpriteHolder, "position", Vector2(5,0), 0.1)
 
 
 				#var character_tile_gap = global_position.y - 8*floor(tile.position.y/GlobalReferences.TILE_SIZE)
