@@ -1,3 +1,4 @@
 # Godot 4+ specific ignores
 .godot/
 game saves/Test World/
+addons/resources_spreadsheet_view/saved_state.json
